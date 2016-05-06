@@ -1,0 +1,27 @@
+<template name="index">
+    {{#if currentUser}}
+        <form action="" class="well form-inline center" style="text-align:center;">
+            <textarea class="span8" id="post"></textarea>
+            <button id="submit" class="btn btn-success">发表</button>
+        </form>
+    {{else}}
+        <h2>游客无法发布新闻或者评论。请注册或者登陆。</h2>
+    {{/if}}
+    {{#each posts}}
+        <h2>
+            {{user.username}} 
+            <button id="addFriend" class="btn">加好友</button>:
+        </h2>
+        <p class="muted">{{time}}</p>
+        <p>{{#markdown}}{{post}}{{/markdown}}</p>
+        {{#if currentUser}}
+            <p>
+            <input type="text" class="span8" id="{{this._id}}">
+            <button id="commnetSubmit" class="btn btn-success">评论</button>
+            </p>
+        {{/if}}
+        {{#each comments}}
+            <p>{{user.username}} 评论: {{post}}</p>
+        {{/each}}
+    {{/each}}
+</template>

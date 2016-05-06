@@ -1,0 +1,16 @@
+<template name="self">
+    {{#each self}}
+        {{#if isAdmin}}
+            <h1>尊贵的管理员账户！</h1>
+        {{else}}
+            <h4>普通用户。</h4>
+        {{/if}}
+        <li>用户名：{{user.username}}</li>
+        <li>注册邮箱：{{user.emails.[0].address}}</li>
+        <li>总积分：{{totalScore}}</li>
+        <li>今日积分：{{todayScore}}</li>
+        <li>好友总数：{{totalFriend}}</li>
+        <li>排名：{{rank}}</li>
+        <li>注册时间：{{time}}</li>
+    {{/each}}
+</template>

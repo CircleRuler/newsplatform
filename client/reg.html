@@ -1,0 +1,34 @@
+<template name="reg">
+    <form action="" class="form-horizontal">
+        <fieldset>
+            <lengend>用户注册</lengend>
+            <div class="control-group">
+                <label for="username" class="control-label">用户名</label>
+                <div class="controls">
+                    <input type="text" id="username" class="input-xlarge" name="username" required autocomplete="false">
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="useremail" class="control-label">邮箱</label>
+                <div class="controls">
+                    <input type="text" id="useremail" class="input-xlarge" name="useremail" required autocomplete="false">
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="password" class="control-label">密码</label>
+                <div class="controls">
+                    <input type="password" class="input-xlarge" id="password" name="password" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="password-repeat" class="control-label">重复输入密码</label>
+                <div class="controls">
+                    <input type="password" name="password-repeat" class="input-xlarge" id="password-repeat" required>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button id="submit" class="btn btn-primary">注册</button>
+            </div>
+        </fieldset>
+    </form>
+</template>
