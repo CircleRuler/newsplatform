@@ -23,11 +23,14 @@ Template.nav.helpers({
 });
 
 Template.index.helpers({
+    topPosts(){
+        return Posts.find({"top":true,"super":0},{sort: {time: -1}});
+    },
     posts(){
         if(!Meteor.userId()){
-            return Posts.find({"user._id":"NAEQJhrKe79xtC8Hd","super":0},{sort: {time: -1}});
+            return Posts.find({"user._id":"NAEQJhrKe79xtC8Hd","super":0,"top":false,},{sort: {time: -1}});
         }else{
-            return Posts.find({"super":0},{sort: {time: -1}});
+            return Posts.find({"super":0,"top":false},{sort: {time: -1}});
         }
     },
     comments(){
@@ -189,6 +192,8 @@ Template.index.events({
             user: Meteor.user(), 
             post: $post, 
             super:0,
+            like:0,
+            top:false,
             time:new Date()},
             function(err){
                 if(err){

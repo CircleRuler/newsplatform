@@ -180,56 +180,134 @@ Template["index"] = new Template("Template.index", (function() {                
       action: "",                                                                                                // 9
       "class": "well form-inline center",                                                                        // 10
       style: "text-align:center;"                                                                                // 11
-    }, "\n            ", HTML.TEXTAREA({                                                                         // 12
-      "class": "span8",                                                                                          // 13
-      id: "post"                                                                                                 // 14
-    }), "\n            ", HTML.BUTTON({                                                                          // 15
-      id: "submit",                                                                                              // 16
-      "class": "btn btn-success"                                                                                 // 17
-    }, "发表"), "\n        "), "\n    " ];                                                                         // 18
-  }, function() {                                                                                                // 19
-    return [ "\n        ", HTML.H2("游客无法发布新闻或者评论。请注册或者登陆。"), "\n    " ];                                         // 20
-  }), "\n    ", Blaze.Each(function() {                                                                          // 21
-    return Spacebars.call(view.lookup("posts"));                                                                 // 22
-  }, function() {                                                                                                // 23
-    return [ "\n        ", HTML.H2("\n            ", Blaze.View("lookup:user.username", function() {             // 24
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                 // 25
-    }), " \n            ", HTML.BUTTON({                                                                         // 26
-      id: "addFriend",                                                                                           // 27
-      "class": "btn"                                                                                             // 28
-    }, "加好友"), ":\n        "), "\n        ", HTML.P({                                                            // 29
-      "class": "muted"                                                                                           // 30
-    }, Blaze.View("lookup:time", function() {                                                                    // 31
-      return Spacebars.mustache(view.lookup("time"));                                                            // 32
-    })), "\n        ", HTML.P(Spacebars.include(view.lookupTemplate("markdown"), function() {                    // 33
-      return Blaze.View("lookup:post", function() {                                                              // 34
-        return Spacebars.mustache(view.lookup("post"));                                                          // 35
-      });                                                                                                        // 36
-    })), "\n        ", Blaze.If(function() {                                                                     // 37
-      return Spacebars.call(view.lookup("currentUser"));                                                         // 38
-    }, function() {                                                                                              // 39
-      return [ "\n            ", HTML.P("\n            ", HTML.INPUT({                                           // 40
-        type: "text",                                                                                            // 41
-        "class": "span8",                                                                                        // 42
-        id: function() {                                                                                         // 43
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                     // 44
-        }                                                                                                        // 45
-      }), "\n            ", HTML.BUTTON({                                                                        // 46
-        id: "commnetSubmit",                                                                                     // 47
-        "class": "btn btn-success"                                                                               // 48
-      }, "评论"), "\n            "), "\n        " ];                                                               // 49
-    }), "\n        ", Blaze.Each(function() {                                                                    // 50
-      return Spacebars.call(view.lookup("comments"));                                                            // 51
-    }, function() {                                                                                              // 52
-      return [ "\n            ", HTML.P(Blaze.View("lookup:user.username", function() {                          // 53
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                               // 54
-      }), " 评论: ", Blaze.View("lookup:post", function() {                                                        // 55
-        return Spacebars.mustache(view.lookup("post"));                                                          // 56
-      })), "\n        " ];                                                                                       // 57
-    }), "\n    " ];                                                                                              // 58
-  }) ];                                                                                                          // 59
-}));                                                                                                             // 60
-                                                                                                                 // 61
+    }, "\n            ", HTML.DIV({                                                                              // 12
+      "class": "form-group"                                                                                      // 13
+    }, "\n                ", HTML.LABEL({                                                                        // 14
+      "for": "post"                                                                                              // 15
+    }, "Password"), "\n                ", HTML.TEXTAREA({                                                        // 16
+      "class": "",                                                                                               // 17
+      id: "post",                                                                                                // 18
+      rows: "3"                                                                                                  // 19
+    }), "\n            "), "\n            \n            ", HTML.DIV({                                            // 20
+      "class": "control-group"                                                                                   // 21
+    }, "\n                ", HTML.LABEL({                                                                        // 22
+      "for": "exampleInputFile"                                                                                  // 23
+    }, "链接图片"), "\n                ", HTML.INPUT({                                                               // 24
+      type: "file",                                                                                              // 25
+      id: "exampleInputFile"                                                                                     // 26
+    }), "\n            "), "\n            ", HTML.BUTTON({                                                       // 27
+      id: "submit",                                                                                              // 28
+      "class": "btn btn-success"                                                                                 // 29
+    }, "发表"), "\n        "), "\n    " ];                                                                         // 30
+  }, function() {                                                                                                // 31
+    return [ "\n        ", HTML.H2("游客无法发布新闻或者评论。请注册或者登陆。"), "\n    " ];                                         // 32
+  }), "\n    ", HTML.DIV({                                                                                       // 33
+    "class": "row well center"                                                                                   // 34
+  }, "\n        ", Blaze.Each(function() {                                                                       // 35
+    return Spacebars.call(view.lookup("topPosts"));                                                              // 36
+  }, function() {                                                                                                // 37
+    return [ "\n        ", HTML.DIV({                                                                            // 38
+      "class": "well"                                                                                            // 39
+    }, "\n            ", HTML.DIV({                                                                              // 40
+      "class": "col-xs-3 "                                                                                       // 41
+    }, "\n                ", HTML.H2({                                                                           // 42
+      "class": "pull-left"                                                                                       // 43
+    }, "\n                    ", Blaze.View("lookup:user.username", function() {                                 // 44
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                 // 45
+    }), " :\n                "), "\n            "), "\n            ", HTML.DIV({                                 // 46
+      "class": "col-xs-3 "                                                                                       // 47
+    }, HTML.BUTTON({                                                                                             // 48
+      id: "addFriend",                                                                                           // 49
+      "class": "btn btn-primary pull-right"                                                                      // 50
+    }, "加好友")), "\n            ", HTML.DIV({                                                                     // 51
+      "class": "col-xs-3 "                                                                                       // 52
+    }, HTML.BUTTON({                                                                                             // 53
+      id: "likePost",                                                                                            // 54
+      "class": "btn btn-info col-xs-3 pull-right"                                                                // 55
+    }, "点赞(", Blaze.View("lookup:like", function() {                                                             // 56
+      return Spacebars.mustache(view.lookup("like"));                                                            // 57
+    }), ")")), "\n        "), "\n            ", HTML.P({                                                         // 58
+      "class": "muted"                                                                                           // 59
+    }, Blaze.View("lookup:time", function() {                                                                    // 60
+      return Spacebars.mustache(view.lookup("time"));                                                            // 61
+    })), "\n            ", HTML.P(Spacebars.include(view.lookupTemplate("markdown"), function() {                // 62
+      return Blaze.View("lookup:post", function() {                                                              // 63
+        return Spacebars.mustache(view.lookup("post"));                                                          // 64
+      });                                                                                                        // 65
+    })), "\n            ", Blaze.If(function() {                                                                 // 66
+      return Spacebars.call(view.lookup("currentUser"));                                                         // 67
+    }, function() {                                                                                              // 68
+      return [ "\n                ", HTML.P("\n                ", HTML.INPUT({                                   // 69
+        type: "text",                                                                                            // 70
+        "class": "span8",                                                                                        // 71
+        id: function() {                                                                                         // 72
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                     // 73
+        }                                                                                                        // 74
+      }), "\n                ", HTML.BUTTON({                                                                    // 75
+        id: "commnetSubmit",                                                                                     // 76
+        "class": "btn btn-success"                                                                               // 77
+      }, "评论"), "\n                "), "\n            " ];                                                       // 78
+    }), "\n            ", Blaze.Each(function() {                                                                // 79
+      return Spacebars.call(view.lookup("comments"));                                                            // 80
+    }, function() {                                                                                              // 81
+      return [ "\n                ", HTML.P(Blaze.View("lookup:user.username", function() {                      // 82
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                               // 83
+      }), " 评论: ", Blaze.View("lookup:post", function() {                                                        // 84
+        return Spacebars.mustache(view.lookup("post"));                                                          // 85
+      })), "\n            " ];                                                                                   // 86
+    }), "\n        " ];                                                                                          // 87
+  }), "\n    "), "\n    ", HTML.DIV({                                                                            // 88
+    "class": "row well center"                                                                                   // 89
+  }, "\n        ", Blaze.Each(function() {                                                                       // 90
+    return Spacebars.call(view.lookup("posts"));                                                                 // 91
+  }, function() {                                                                                                // 92
+    return [ "\n        ", HTML.DIV({                                                                            // 93
+      "class": "well"                                                                                            // 94
+    }, "\n            ", HTML.DIV("\n                ", HTML.H2({                                                // 95
+      "class": "pull-left"                                                                                       // 96
+    }, "\n                    ", Blaze.View("lookup:user.username", function() {                                 // 97
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                 // 98
+    }), " :\n                "), "\n            "), "\n            ", HTML.BUTTON({                              // 99
+      id: "addFriend",                                                                                           // 100
+      "class": "btn btn-primary col-xs-3 pull-right"                                                             // 101
+    }, "加好友"), "\n            ", HTML.BUTTON({                                                                   // 102
+      id: "likePost",                                                                                            // 103
+      "class": "btn btn-info col-xs-3 pull-right"                                                                // 104
+    }, "点赞(", Blaze.View("lookup:like", function() {                                                             // 105
+      return Spacebars.mustache(view.lookup("like"));                                                            // 106
+    }), ")"), "\n        "), "\n            ", HTML.P({                                                          // 107
+      "class": "muted"                                                                                           // 108
+    }, Blaze.View("lookup:time", function() {                                                                    // 109
+      return Spacebars.mustache(view.lookup("time"));                                                            // 110
+    })), "\n            ", HTML.P(Spacebars.include(view.lookupTemplate("markdown"), function() {                // 111
+      return Blaze.View("lookup:post", function() {                                                              // 112
+        return Spacebars.mustache(view.lookup("post"));                                                          // 113
+      });                                                                                                        // 114
+    })), "\n            ", Blaze.If(function() {                                                                 // 115
+      return Spacebars.call(view.lookup("currentUser"));                                                         // 116
+    }, function() {                                                                                              // 117
+      return [ "\n                ", HTML.P("\n                ", HTML.INPUT({                                   // 118
+        type: "text",                                                                                            // 119
+        "class": "span8",                                                                                        // 120
+        id: function() {                                                                                         // 121
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                     // 122
+        }                                                                                                        // 123
+      }), "\n                ", HTML.BUTTON({                                                                    // 124
+        id: "commnetSubmit",                                                                                     // 125
+        "class": "btn btn-success"                                                                               // 126
+      }, "评论"), "\n                "), "\n            " ];                                                       // 127
+    }), "\n            ", Blaze.Each(function() {                                                                // 128
+      return Spacebars.call(view.lookup("comments"));                                                            // 129
+    }, function() {                                                                                              // 130
+      return [ "\n                ", HTML.P(Blaze.View("lookup:user.username", function() {                      // 131
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                               // 132
+      }), " 评论: ", Blaze.View("lookup:post", function() {                                                        // 133
+        return Spacebars.mustache(view.lookup("post"));                                                          // 134
+      })), "\n            " ];                                                                                   // 135
+    }), "\n        " ];                                                                                          // 136
+  }), "\n    ") ];                                                                                               // 137
+}));                                                                                                             // 138
+                                                                                                                 // 139
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.lists.js":function(){
@@ -382,210 +460,217 @@ Template.nav.helpers({                                                          
 });                                                                                                              //
                                                                                                                  //
 Template.index.helpers({                                                                                         // 25
-    posts: function () {                                                                                         // 26
+    topPosts: function () {                                                                                      // 26
+        function topPosts() {                                                                                    //
+            return Posts.find({ "top": true, "super": 0 }, { sort: { time: -1 } });                              // 27
+        }                                                                                                        //
+                                                                                                                 //
+        return topPosts;                                                                                         //
+    }(),                                                                                                         //
+    posts: function () {                                                                                         // 29
         function posts() {                                                                                       //
-            if (!Meteor.userId()) {                                                                              // 27
-                return Posts.find({ "user._id": "NAEQJhrKe79xtC8Hd", "super": 0 }, { sort: { time: -1 } });      // 28
+            if (!Meteor.userId()) {                                                                              // 30
+                return Posts.find({ "user._id": "NAEQJhrKe79xtC8Hd", "super": 0, "top": false }, { sort: { time: -1 } });
             } else {                                                                                             //
-                return Posts.find({ "super": 0 }, { sort: { time: -1 } });                                       // 30
+                return Posts.find({ "super": 0, "top": false }, { sort: { time: -1 } });                         // 33
             }                                                                                                    //
         }                                                                                                        //
                                                                                                                  //
         return posts;                                                                                            //
     }(),                                                                                                         //
-    comments: function () {                                                                                      // 33
+    comments: function () {                                                                                      // 36
         function comments() {                                                                                    //
-            return Posts.find({ "super": this._id }, { sort: { time: -1 } });                                    // 34
+            return Posts.find({ "super": this._id }, { sort: { time: -1 } });                                    // 37
         }                                                                                                        //
                                                                                                                  //
         return comments;                                                                                         //
     }()                                                                                                          //
 });                                                                                                              //
                                                                                                                  //
-Template.lists.helpers({                                                                                         // 38
-    lists: function () {                                                                                         // 39
+Template.lists.helpers({                                                                                         // 41
+    lists: function () {                                                                                         // 42
         function lists() {                                                                                       //
-            return UserInfo.find({}, { sort: { rank: 1 } });                                                     // 40
+            return UserInfo.find({}, { sort: { rank: 1 } });                                                     // 43
         }                                                                                                        //
                                                                                                                  //
         return lists;                                                                                            //
     }()                                                                                                          //
 });                                                                                                              //
                                                                                                                  //
-Template.self.helpers({                                                                                          // 44
-    self: function () {                                                                                          // 45
+Template.self.helpers({                                                                                          // 47
+    self: function () {                                                                                          // 48
         function self() {                                                                                        //
-            return UserInfo.find({ "user._id": Meteor.userId() });                                               // 46
+            return UserInfo.find({ "user._id": Meteor.userId() });                                               // 49
         }                                                                                                        //
                                                                                                                  //
         return self;                                                                                             //
     }()                                                                                                          //
 });                                                                                                              //
                                                                                                                  //
-Template.friend.helpers({                                                                                        // 50
-    friend: function () {                                                                                        // 51
+Template.friend.helpers({                                                                                        // 53
+    friend: function () {                                                                                        // 54
         function friend() {                                                                                      //
-            var Afriend = UserInfo.findOne({ "user._id": Meteor.userId() }).Friends;                             // 52
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { rank: 1 } });                       // 53
+            var Afriend = UserInfo.findOne({ "user._id": Meteor.userId() }).Friends;                             // 55
+            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { rank: 1 } });                       // 56
         }                                                                                                        //
                                                                                                                  //
         return friend;                                                                                           //
     }()                                                                                                          //
 });                                                                                                              //
                                                                                                                  //
-Meteor.startup(function () {                                                                                     // 57
-    Backbone.history.start({ pushState: true });                                                                 // 58
+Meteor.startup(function () {                                                                                     // 60
+    Backbone.history.start({ pushState: true });                                                                 // 61
 });                                                                                                              //
                                                                                                                  //
-var urlRouter = Backbone.Router.extend({                                                                         // 61
-    routes: {                                                                                                    // 62
-        "": "index",                                                                                             // 63
-        "login": "login",                                                                                        // 64
-        "reg": "reg",                                                                                            // 65
-        "logout": "logout",                                                                                      // 66
-        "friend": "friend",                                                                                      // 67
-        "lists": "lists",                                                                                        // 68
-        "self": "self"                                                                                           // 69
+var urlRouter = Backbone.Router.extend({                                                                         // 64
+    routes: {                                                                                                    // 65
+        "": "index",                                                                                             // 66
+        "login": "login",                                                                                        // 67
+        "reg": "reg",                                                                                            // 68
+        "logout": "logout",                                                                                      // 69
+        "friend": "friend",                                                                                      // 70
+        "lists": "lists",                                                                                        // 71
+        "self": "self"                                                                                           // 72
     },                                                                                                           //
-    index: function () {                                                                                         // 71
-        function index() {                                                                                       // 71
+    index: function () {                                                                                         // 74
+        function index() {                                                                                       // 74
             Session.set("currentUrl", { index: "active", login: "", reg: "", friend: "", lists: "", self: "" });
         }                                                                                                        //
                                                                                                                  //
         return index;                                                                                            //
     }(),                                                                                                         //
-    friend: function () {                                                                                        // 74
-        function friend() {                                                                                      // 74
+    friend: function () {                                                                                        // 77
+        function friend() {                                                                                      // 77
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "active", lists: "", self: "" });
         }                                                                                                        //
                                                                                                                  //
         return friend;                                                                                           //
     }(),                                                                                                         //
-    lists: function () {                                                                                         // 77
-        function lists() {                                                                                       // 77
+    lists: function () {                                                                                         // 80
+        function lists() {                                                                                       // 80
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "active", self: "" });
         }                                                                                                        //
                                                                                                                  //
         return lists;                                                                                            //
     }(),                                                                                                         //
-    self: function () {                                                                                          // 80
-        function self() {                                                                                        // 80
+    self: function () {                                                                                          // 83
+        function self() {                                                                                        // 83
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "", self: "active" });
         }                                                                                                        //
                                                                                                                  //
         return self;                                                                                             //
     }(),                                                                                                         //
-    login: function () {                                                                                         // 83
-        function login() {                                                                                       // 83
-            if (Meteor.userId()) {                                                                               // 84
-                this.navigate("/", true);                                                                        // 85
-                Session.set("info", { success: "", error: "用户已在线！" });                                           // 86
+    login: function () {                                                                                         // 86
+        function login() {                                                                                       // 86
+            if (Meteor.userId()) {                                                                               // 87
+                this.navigate("/", true);                                                                        // 88
+                Session.set("info", { success: "", error: "用户已在线！" });                                           // 89
             }                                                                                                    //
             Session.set("currentUrl", { index: "", login: "active", reg: "", friend: "", lists: "", self: "" });
         }                                                                                                        //
                                                                                                                  //
         return login;                                                                                            //
     }(),                                                                                                         //
-    reg: function () {                                                                                           // 90
-        function reg() {                                                                                         // 90
-            if (Meteor.userId()) {                                                                               // 91
-                this.navigate("/", true);                                                                        // 92
-                Session.set("info", { success: "", error: "用户已在线！" });                                           // 93
+    reg: function () {                                                                                           // 93
+        function reg() {                                                                                         // 93
+            if (Meteor.userId()) {                                                                               // 94
+                this.navigate("/", true);                                                                        // 95
+                Session.set("info", { success: "", error: "用户已在线！" });                                           // 96
             }                                                                                                    //
             Session.set("currentUrl", { index: "", login: "", reg: "active", friend: "", lists: "", self: "" });
         }                                                                                                        //
                                                                                                                  //
         return reg;                                                                                              //
     }(),                                                                                                         //
-    logout: function () {                                                                                        // 97
-        function logout() {                                                                                      // 97
-            if (Meteor.userId()) {                                                                               // 98
-                Meteor.logout();                                                                                 // 99
-                this.navigate("/", true);                                                                        // 100
-                Session.set("info", { success: "登出成功", error: "" });                                             // 101
-                SystemInfo.update({ "_id": "1" }, { $inc: { totalLogin: -1 } });                                 // 102
+    logout: function () {                                                                                        // 100
+        function logout() {                                                                                      // 100
+            if (Meteor.userId()) {                                                                               // 101
+                Meteor.logout();                                                                                 // 102
+                this.navigate("/", true);                                                                        // 103
+                Session.set("info", { success: "登出成功", error: "" });                                             // 104
+                SystemInfo.update({ "_id": "1" }, { $inc: { totalLogin: -1 } });                                 // 105
             } else {                                                                                             //
-                this.navigate("/", true);                                                                        // 104
-                Session.set("info", { success: "", error: "用户不在线！" });                                           // 105
+                this.navigate("/", true);                                                                        // 107
+                Session.set("info", { success: "", error: "用户不在线！" });                                           // 108
             }                                                                                                    //
         }                                                                                                        //
                                                                                                                  //
         return logout;                                                                                           //
     }(),                                                                                                         //
-    redirect: function () {                                                                                      // 108
-        function redirect(url) {                                                                                 // 108
-            this.navigate(url, true);                                                                            // 109
+    redirect: function () {                                                                                      // 111
+        function redirect(url) {                                                                                 // 111
+            this.navigate(url, true);                                                                            // 112
         }                                                                                                        //
                                                                                                                  //
         return redirect;                                                                                         //
     }()                                                                                                          //
 });                                                                                                              //
-Router = new urlRouter();                                                                                        // 112
+Router = new urlRouter();                                                                                        // 115
                                                                                                                  //
-Template.reg.events({                                                                                            // 114
-    'click #submit': function () {                                                                               // 115
-        function clickSubmit(event) {                                                                            // 115
-            event.preventDefault();                                                                              // 116
-            if (!SystemInfo.find({ "_id": "1" }, { totalUser: true })['totalUser']) {                            // 117
-                SystemInfo.insert({ "_id": "1", "totalUser": 0, "totalPost": 0, "totalLogin": 0 });              // 118
+Template.reg.events({                                                                                            // 117
+    'click #submit': function () {                                                                               // 118
+        function clickSubmit(event) {                                                                            // 118
+            event.preventDefault();                                                                              // 119
+            if (!SystemInfo.find({ "_id": "1" }, { totalUser: true })['totalUser']) {                            // 120
+                SystemInfo.insert({ "_id": "1", "totalUser": 0, "totalPost": 0, "totalLogin": 0 });              // 121
             }                                                                                                    //
-            var $username = $("#username").val();                                                                // 120
-            var $password = $("#password").val();                                                                // 121
-            var $useremail = $("#useremail").val();                                                              // 122
-            var $password_repeat = $("#password-repeat").val();                                                  // 123
-            if ($password.length === 0 || $username.length === 0) {                                              // 124
-                Session.set("info", { success: "", error: "用户名或者密码不能为空" });                                      // 125
-                return;                                                                                          // 126
+            var $username = $("#username").val();                                                                // 123
+            var $password = $("#password").val();                                                                // 124
+            var $useremail = $("#useremail").val();                                                              // 125
+            var $password_repeat = $("#password-repeat").val();                                                  // 126
+            if ($password.length === 0 || $username.length === 0) {                                              // 127
+                Session.set("info", { success: "", error: "用户名或者密码不能为空" });                                      // 128
+                return;                                                                                          // 129
             }                                                                                                    //
-            if ($password !== $password_repeat) {                                                                // 128
-                Session.set("info", { success: "", error: "两次输入密码不一致" });                                        // 129
-                return;                                                                                          // 130
+            if ($password !== $password_repeat) {                                                                // 131
+                Session.set("info", { success: "", error: "两次输入密码不一致" });                                        // 132
+                return;                                                                                          // 133
             }                                                                                                    //
-            Accounts.createUser({                                                                                // 132
-                username: $username,                                                                             // 133
-                password: $password,                                                                             // 134
-                email: $useremail }, function (err) {                                                            // 135
-                if (err) {                                                                                       // 137
-                    Session.set("info", { success: "", error: "注册失败" });                                         // 138
+            Accounts.createUser({                                                                                // 135
+                username: $username,                                                                             // 136
+                password: $password,                                                                             // 137
+                email: $useremail }, function (err) {                                                            // 138
+                if (err) {                                                                                       // 140
+                    Session.set("info", { success: "", error: "注册失败" });                                         // 141
                 } else {                                                                                         //
-                    Session.set("info", { success: "注册成功", error: "" });                                         // 140
-                    UserInfo.insert({                                                                            // 141
-                        user: Meteor.user(),                                                                     // 142
-                        isAdmin: false,                                                                          // 143
-                        totalScore: 0,                                                                           // 144
-                        todayScore: 0,                                                                           // 145
-                        totalFriend: 1,                                                                          // 146
-                        Friends: [Meteor.userId()],                                                              // 147
-                        rank: SystemInfo.findOne({ "_id": "1" }, { totalUser: true })["totalUser"],              // 148
-                        time: new Date()                                                                         // 149
+                    Session.set("info", { success: "注册成功", error: "" });                                         // 143
+                    UserInfo.insert({                                                                            // 144
+                        user: Meteor.user(),                                                                     // 145
+                        isAdmin: false,                                                                          // 146
+                        totalScore: 0,                                                                           // 147
+                        todayScore: 0,                                                                           // 148
+                        totalFriend: 1,                                                                          // 149
+                        Friends: [Meteor.userId()],                                                              // 150
+                        rank: SystemInfo.findOne({ "_id": "1" }, { totalUser: true })["totalUser"],              // 151
+                        time: new Date()                                                                         // 152
                     });                                                                                          //
                 }                                                                                                //
             });                                                                                                  //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalUser": 1 } });                                     // 154
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                    // 155
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalUser": 1 } });                                     // 157
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                    // 158
         }                                                                                                        //
                                                                                                                  //
         return clickSubmit;                                                                                      //
     }()                                                                                                          //
 });                                                                                                              //
                                                                                                                  //
-Template.login.events({                                                                                          // 159
-    'click #submit': function () {                                                                               // 160
-        function clickSubmit(event) {                                                                            // 160
-            event.preventDefault();                                                                              // 161
-            var $username = $("#username").val();                                                                // 162
-            var $password = $("#password").val();                                                                // 163
-            if ($password.length === 0 || $username.length === 0) {                                              // 164
-                Session.set("info", { success: "", error: "用户名或密码不能为空" });                                       // 165
-                return;                                                                                          // 166
+Template.login.events({                                                                                          // 162
+    'click #submit': function () {                                                                               // 163
+        function clickSubmit(event) {                                                                            // 163
+            event.preventDefault();                                                                              // 164
+            var $username = $("#username").val();                                                                // 165
+            var $password = $("#password").val();                                                                // 166
+            if ($password.length === 0 || $username.length === 0) {                                              // 167
+                Session.set("info", { success: "", error: "用户名或密码不能为空" });                                       // 168
+                return;                                                                                          // 169
             }                                                                                                    //
-            Meteor.loginWithPassword($username, $password, function (err) {                                      // 168
-                if (err) {                                                                                       // 169
-                    Session.set("info", { success: "", error: "登陆失败！用户名与密码不匹配。" });                              // 170
+            Meteor.loginWithPassword($username, $password, function (err) {                                      // 171
+                if (err) {                                                                                       // 172
+                    Session.set("info", { success: "", error: "登陆失败！用户名与密码不匹配。" });                              // 173
                 } else {                                                                                         //
-                    Router.redirect("/");                                                                        // 172
-                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                            // 173
-                    Session.set("info", { success: "登陆成功", error: "" });                                         // 174
+                    Router.redirect("/");                                                                        // 175
+                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                            // 176
+                    Session.set("info", { success: "登陆成功", error: "" });                                         // 177
                 }                                                                                                //
             });                                                                                                  //
         }                                                                                                        //
@@ -594,77 +679,79 @@ Template.login.events({                                                         
     }()                                                                                                          //
 });                                                                                                              //
                                                                                                                  //
-Template.index.events({                                                                                          // 180
-    'click #submit': function () {                                                                               // 181
-        function clickSubmit(event) {                                                                            // 181
-            event.preventDefault();                                                                              // 182
-            var $post = $("#post").val();                                                                        // 183
-            if ($post.length === 0 || $post.length >= 200) {                                                     // 184
-                Session.set("info", { success: "", error: "请将字数限制在1-200字以内" });                                  // 185
-                return;                                                                                          // 186
+Template.index.events({                                                                                          // 183
+    'click #submit': function () {                                                                               // 184
+        function clickSubmit(event) {                                                                            // 184
+            event.preventDefault();                                                                              // 185
+            var $post = $("#post").val();                                                                        // 186
+            if ($post.length === 0 || $post.length >= 200) {                                                     // 187
+                Session.set("info", { success: "", error: "请将字数限制在1-200字以内" });                                  // 188
+                return;                                                                                          // 189
             }                                                                                                    //
-            Posts.insert({                                                                                       // 188
-                user: Meteor.user(),                                                                             // 189
-                post: $post,                                                                                     // 190
-                "super": 0,                                                                                      // 191
-                time: new Date() }, function (err) {                                                             // 192
-                if (err) {                                                                                       // 194
-                    Session.set("info", { success: "", error: "发表失败，原因自寻" });                                    // 195
+            Posts.insert({                                                                                       // 191
+                user: Meteor.user(),                                                                             // 192
+                post: $post,                                                                                     // 193
+                "super": 0,                                                                                      // 194
+                like: 0,                                                                                         // 195
+                top: false,                                                                                      // 196
+                time: new Date() }, function (err) {                                                             // 197
+                if (err) {                                                                                       // 199
+                    Session.set("info", { success: "", error: "发表失败，原因自寻" });                                    // 200
                 } else {                                                                                         //
-                    Session.set("info", { success: "发表成功", error: "" });                                         // 197
-                    $("#post").val("");                                                                          // 198
+                    Session.set("info", { success: "发表成功", error: "" });                                         // 202
+                    $("#post").val("");                                                                          // 203
                 }                                                                                                //
             });                                                                                                  //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                     // 202
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                     // 207
         }                                                                                                        //
                                                                                                                  //
         return clickSubmit;                                                                                      //
     }(),                                                                                                         //
-    'click #commnetSubmit': function () {                                                                        // 204
-        function clickCommnetSubmit(event) {                                                                     // 204
-            event.preventDefault();                                                                              // 205
-            var $comment = $("#" + this._id).val();                                                              // 206
-            if ($comment.length === 0 || $comment.length >= 100) {                                               // 207
-                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                  // 208
-                return;                                                                                          // 209
+    'click #commnetSubmit': function () {                                                                        // 209
+        function clickCommnetSubmit(event) {                                                                     // 209
+            event.preventDefault();                                                                              // 210
+            var $comment = $("#" + this._id).val();                                                              // 211
+            if ($comment.length === 0 || $comment.length >= 100) {                                               // 212
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                  // 213
+                return;                                                                                          // 214
             }                                                                                                    //
-            Posts.insert({                                                                                       // 211
-                user: Meteor.user(),                                                                             // 212
-                post: $comment,                                                                                  // 213
-                "super": this._id,                                                                               // 214
-                time: new Date() }, function (err) {                                                             // 215
-                if (err) {                                                                                       // 217
-                    Session.set("info", { success: "", error: "评论失败，原因自寻" });                                    // 218
+            Posts.insert({                                                                                       // 216
+                user: Meteor.user(),                                                                             // 217
+                post: $comment,                                                                                  // 218
+                "super": this._id,                                                                               // 219
+                time: new Date() }, function (err) {                                                             // 220
+                if (err) {                                                                                       // 222
+                    Session.set("info", { success: "", error: "评论失败，原因自寻" });                                    // 223
                 } else {                                                                                         //
-                    Session.set("info", { success: "评论成功", error: "" });                                         // 220
-                    $("#" + this._id).val("");                                                                   // 221
+                    Session.set("info", { success: "评论成功", error: "" });                                         // 225
+                    $("#" + this._id).val("");                                                                   // 226
                 }                                                                                                //
             });                                                                                                  //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                     // 225
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                     // 230
         }                                                                                                        //
                                                                                                                  //
         return clickCommnetSubmit;                                                                               //
     }(),                                                                                                         //
-    'click #addFriend': function () {                                                                            // 227
-        function clickAddFriend(event) {                                                                         // 227
-            event.preventDefault();                                                                              // 228
-            var $friendId = this.user._id;                                                                       // 229
-            if (UserInfo.findOne({ "Friends": $friendId })) {                                                    // 230
-                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                       // 231
-                return;                                                                                          // 232
+    'click #addFriend': function () {                                                                            // 232
+        function clickAddFriend(event) {                                                                         // 232
+            event.preventDefault();                                                                              // 233
+            var $friendId = this.user._id;                                                                       // 234
+            if (UserInfo.findOne({ "Friends": $friendId })) {                                                    // 235
+                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                       // 236
+                return;                                                                                          // 237
             }                                                                                                    //
                                                                                                                  //
-            var userInfoId = UserInfo.findOne({ "user._id": Meteor.userId() })._id;                              // 235
-            UserInfo.update({                                                                                    // 236
-                "_id": userInfoId                                                                                // 237
+            var userInfoId = UserInfo.findOne({ "user._id": Meteor.userId() })._id;                              // 240
+            UserInfo.update({                                                                                    // 241
+                "_id": userInfoId                                                                                // 242
             }, {                                                                                                 //
-                $addToSet: { "Friends": $friendId },                                                             // 239
-                $inc: { "totalFriend": 1 }                                                                       // 240
+                $addToSet: { "Friends": $friendId },                                                             // 244
+                $inc: { "totalFriend": 1 }                                                                       // 245
             }, true, true, function (err) {                                                                      //
-                if (err) {                                                                                       // 244
-                    Session.set("info", { success: "", error: "添加好友失败" });                                       // 245
+                if (err) {                                                                                       // 249
+                    Session.set("info", { success: "", error: "添加好友失败" });                                       // 250
                 } else {                                                                                         //
-                    Session.set("info", { success: "添加成功", error: "" });                                         // 247
+                    Session.set("info", { success: "添加成功", error: "" });                                         // 252
                 }                                                                                                //
             });                                                                                                  //
         }                                                                                                        //
