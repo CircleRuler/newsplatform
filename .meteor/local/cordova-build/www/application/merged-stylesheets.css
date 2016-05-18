@@ -7553,3 +7553,7 @@ a.badge:focus {
 .dropdown-submenu:focus > a > [class*=" icon-"] {
   background-image: url("/packages/bootstrap/img/glyphicons-halflings-white.png");
 }
+
+textarea {
+  resize: none;
+}

@@ -4,7 +4,10 @@ UserInfo = new Meteor.Collection("userInfo");
 Posts.allow({
     insert: function (userId,doc) {
         return userId && (doc.user._id === userId);
-    }
+    },
+     update: function () {
+        return true;
+     }
 })
 SystemInfo.allow({
      insert: function () {

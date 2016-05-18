@@ -16,49 +16,56 @@ Posts.allow({                                                        // 4
       }                                                              //
                                                                      //
       return insert;                                                 //
+   }(),                                                              //
+   update: function () {                                             // 8
+      function update() {                                            // 8
+         return true;                                                // 9
+      }                                                              //
+                                                                     //
+      return update;                                                 //
    }()                                                               //
 });                                                                  //
-SystemInfo.allow({                                                   // 9
-   insert: function () {                                             // 10
-      function insert() {                                            // 10
-         return true;                                                // 11
+SystemInfo.allow({                                                   // 12
+   insert: function () {                                             // 13
+      function insert() {                                            // 13
+         return true;                                                // 14
       }                                                              //
                                                                      //
       return insert;                                                 //
    }(),                                                              //
-   update: function () {                                             // 13
-      function update() {                                            // 13
-         return true;                                                // 14
+   update: function () {                                             // 16
+      function update() {                                            // 16
+         return true;                                                // 17
       }                                                              //
                                                                      //
       return update;                                                 //
    }(),                                                              //
-   remove: function () {                                             // 16
-      function remove() {                                            // 16
-         return true;                                                // 17
+   remove: function () {                                             // 19
+      function remove() {                                            // 19
+         return true;                                                // 20
       }                                                              //
                                                                      //
       return remove;                                                 //
    }()                                                               //
 });                                                                  //
-UserInfo.allow({                                                     // 20
-   insert: function () {                                             // 21
-      function insert() {                                            // 21
-         return true;                                                // 22
+UserInfo.allow({                                                     // 23
+   insert: function () {                                             // 24
+      function insert() {                                            // 24
+         return true;                                                // 25
       }                                                              //
                                                                      //
       return insert;                                                 //
    }(),                                                              //
-   update: function () {                                             // 24
-      function update() {                                            // 24
-         return true;                                                // 25
+   update: function () {                                             // 27
+      function update() {                                            // 27
+         return true;                                                // 28
       }                                                              //
                                                                      //
       return update;                                                 //
    }(),                                                              //
-   remove: function () {                                             // 27
-      function remove() {                                            // 27
-         return true;                                                // 28
+   remove: function () {                                             // 30
+      function remove() {                                            // 30
+         return true;                                                // 31
       }                                                              //
                                                                      //
       return remove;                                                 //

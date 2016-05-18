@@ -2,65 +2,75 @@
     {{#if currentUser}}
         <form action="" class="well form-inline center" style="text-align:center;">
             <div class="form-group">
-                <label for="post">Password</label>
-                <textarea class="" id="post" rows="3"></textarea>
+                <label for="post">发布内容</label>
+                <textarea class="span8" id="post" rows="2"></textarea>
+                <button id="submit" class="btn btn-success btn-large span2 pull-right">发表</button>
             </div>
-            
             <div class="control-group">
                 <label for="exampleInputFile">链接图片</label>
                 <input type="file" id="exampleInputFile">
             </div>
-            <button id="submit" class="btn btn-success">发表</button>
+            
         </form>
     {{else}}
         <h2>游客无法发布新闻或者评论。请注册或者登陆。</h2>
     {{/if}}
-    <div class="row well center">
-        {{#each topPosts}}
-        <div class="well">
-            <div class="col-xs-3 ">
-                <h2 class="pull-left">
-                    {{user.username}} :
-                </h2>
+    
+    {{#each topPosts}}
+        <div class="center well singlePost">
+            <div class="">
+                <div class="postTitle">
+                    <h2 class="text-primary span10">{{user.username}} 
+                    <button id="addFriend" class="btn btn-primary">加好友</button>
+                    <button id="likePost" class="btn btn-warning">点赞({{like}})</button>
+                    <button id="untopPost" class="btn btn-danger">取消置顶 </button>    :
+                    </h2>
+                </div>
+                <div class="col-xs-3 "></div>
             </div>
-            <div class="col-xs-3 "><button id="addFriend" class="btn btn-primary pull-right">加好友</button></div>
-            <div class="col-xs-3 "><button id="likePost" class="btn btn-info col-xs-3 pull-right">点赞({{like}})</button></div>
-        </div>
             <p class="muted">{{time}}</p>
-            <p>{{#markdown}}{{post}}{{/markdown}}</p>
+            <p class="span10">{{#markdown}}{{post}}{{/markdown}}</p>
             {{#if currentUser}}
                 <p>
-                <input type="text" class="span8" id="{{this._id}}">
-                <button id="commnetSubmit" class="btn btn-success">评论</button>
+                    <input type="text" class="span8" id="{{this._id}}">
+                    <button id="commnetSubmit" class="btn btn-success">评论</button>
                 </p>
             {{/if}}
+            <div >
             {{#each comments}}
-                <p>{{user.username}} 评论: {{post}}</p>
+                <p ><span class="postTitle">{{user.username}}</span> : {{post}}</p>
             {{/each}}
-        {{/each}}
-    </div>
-    <div class="row well center">
-        {{#each posts}}
-        <div class="well">
-            <div>
-                <h2 class="pull-left">
-                    {{user.username}} :
-                </h2>
             </div>
-            <button id="addFriend" class="btn btn-primary col-xs-3 pull-right">加好友</button>
-            <button id="likePost" class="btn btn-info col-xs-3 pull-right">点赞({{like}})</button>
         </div>
+    {{/each}}
+
+    {{#each posts}}
+        <div class="center singlePost">
+            <div class="">
+                <div class="postTitle">
+                    <h2 class="text-primary span10">{{user.username}} 
+                    <button id="addFriend" class="btn btn-primary">加好友</button>
+                    <button id="likePost" class="btn btn-warning">点赞({{like}})</button>
+                    <button id="topPost" class="btn btn-danger">置顶 </button>    :
+                    </h2>
+                </div>
+                <div class="col-xs-3 "></div>
+            </div>
             <p class="muted">{{time}}</p>
-            <p>{{#markdown}}{{post}}{{/markdown}}</p>
+            <p class="span10">{{#markdown}}{{post}}{{/markdown}}</p>
             {{#if currentUser}}
                 <p>
-                <input type="text" class="span8" id="{{this._id}}">
-                <button id="commnetSubmit" class="btn btn-success">评论</button>
+                    <input type="text" class="span8" id="{{this._id}}">
+                    <button id="commnetSubmit" class="btn btn-success">评论</button>
                 </p>
             {{/if}}
+            <div >
             {{#each comments}}
-                <p>{{user.username}} 评论: {{post}}</p>
+                <p ><span class="postTitle">{{user.username}}</span> : {{post}}</p>
             {{/each}}
-        {{/each}}
-    </div>
+            </div>
+        </div>
+    {{/each}}
+    
+
 </template>

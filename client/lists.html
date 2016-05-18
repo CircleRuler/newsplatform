@@ -1,5 +1,26 @@
 <template name="lists">
-    {{#each lists}}
-        <li><span>第{{rank}}名</span><span>{{user.username}}</span><span>总分是{{totalScore}}</span></li>
-    {{/each}}
+    <ol>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>＃</th>
+                <td>名次</td>
+                <td>昵称</td>
+                <td>战斗力排名</td>
+                <td>总积分</td>
+            </tr>
+        </thead>
+        <tbody id="scoreList">
+            {{#each lists}}
+                <tr>
+                    <th></th>
+                    <td><li></li></td>
+                    <td>{{user.username}}</td>
+                    <td>{{rank}}</td>
+                    <td>{{totalScore}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    </ol>
 </template>

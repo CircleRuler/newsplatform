@@ -7557,3 +7557,24 @@ a.badge:focus {
 textarea {
   resize: none;
 }
+
+.singlePost {
+  border-top: 1px #ccc solid;
+}
+
+.postTitle {
+  display: inline-block;
+  color: #49afcd;
+}
+
+#scoreList tr:nth-child(odd) {
+  background-color: ##d9534f;
+}
+
+.text-danger {
+  color: #d9534f;
+}
+
+.text-info {
+  color: #5bc0de;
+}

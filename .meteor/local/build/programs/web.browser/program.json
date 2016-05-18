@@ -130,11 +130,11 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/packages/modules.js?hash=716d4e34fcac0eb86d693f6f1eba1852e8fb653d",
+      "url": "/packages/modules.js?hash=4342ea8f84e87d2d99e7c77fb87fad6414a1da3a",
       "sourceMap": "packages/modules.js.map",
-      "sourceMapUrl": "/packages/716d4e34fcac0eb86d693f6f1eba1852e8fb653d.map",
-      "size": 17613,
-      "hash": "716d4e34fcac0eb86d693f6f1eba1852e8fb653d"
+      "sourceMapUrl": "/packages/4342ea8f84e87d2d99e7c77fb87fad6414a1da3a.map",
+      "size": 298319,
+      "hash": "4342ea8f84e87d2d99e7c77fb87fad6414a1da3a"
     },
     {
       "path": "packages/es5-shim.js",
@@ -703,11 +703,11 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/app/app.js?hash=cf3b4335fbcbe8fae275fc89a56184b57fa6a550",
+      "url": "/app/app.js?hash=a56a7f884037213186d0080aa3ac0528346c0c63",
       "sourceMap": "app/app.js.map",
-      "sourceMapUrl": "/app/cf3b4335fbcbe8fae275fc89a56184b57fa6a550.map",
-      "size": 91279,
-      "hash": "cf3b4335fbcbe8fae275fc89a56184b57fa6a550"
+      "sourceMapUrl": "/app/a56a7f884037213186d0080aa3ac0528346c0c63.map",
+      "size": 105102,
+      "hash": "a56a7f884037213186d0080aa3ac0528346c0c63"
     },
     {
       "path": "packages/service-configuration.js",
@@ -725,11 +725,11 @@
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/merged-stylesheets.css?hash=16cab04e2dc1b345e49de4dfe75d113da63f12cf",
+      "url": "/merged-stylesheets.css?hash=96dfdce9b1cbf9a2bd35cb4080061ad5a9653d64",
       "sourceMap": "merged-stylesheets.css.map",
-      "sourceMapUrl": "/16cab04e2dc1b345e49de4dfe75d113da63f12cf.map",
-      "size": 149366,
-      "hash": "16cab04e2dc1b345e49de4dfe75d113da63f12cf"
+      "sourceMapUrl": "/96dfdce9b1cbf9a2bd35cb4080061ad5a9653d64.map",
+      "size": 149606,
+      "hash": "96dfdce9b1cbf9a2bd35cb4080061ad5a9653d64"
     },
     {
       "path": "packages/bootstrap/img/glyphicons-halflings.png",

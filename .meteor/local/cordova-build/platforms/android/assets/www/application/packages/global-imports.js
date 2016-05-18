@@ -6,6 +6,7 @@ $ = Package.jquery.$;
 jQuery = Package.jquery.jQuery;
 Tracker = Package.tracker.Tracker;
 Deps = Package.tracker.Deps;
+Session = Package.session.Session;
 Meteor = Package.meteor.Meteor;
 global = Package.meteor.global;
 meteorEnv = Package.meteor.meteorEnv;

@@ -28,7 +28,7 @@ Template.index.helpers({
     },
     posts(){
         if(!Meteor.userId()){
-            return Posts.find({"user._id":"NAEQJhrKe79xtC8Hd","super":0,"top":false,},{sort: {time: -1}});
+            return Posts.find({"user.username":"admin","super":0,"top":false,},{sort: {time: -1}});
         }else{
             return Posts.find({"super":0,"top":false},{sort: {time: -1}});
         }
@@ -40,7 +40,7 @@ Template.index.helpers({
 
 Template.lists.helpers({
     lists(){
-        return UserInfo.find({},{sort: {rank: 1}})
+        return UserInfo.find({},{sort: {totalScore: 1}})
     },
 });
 
@@ -193,11 +193,12 @@ Template.index.events({
             post: $post, 
             super:0,
             like:0,
+            Likers:[],
             top:false,
             time:new Date()},
             function(err){
                 if(err){
-                    Session.set("info", {success:"", error:"发表失败，原因自寻"});
+                    Session.set("info", {success:"", error:"发表失败"});
                 }else{
                     Session.set("info", {success:"发表成功", error:""});
                     $("#post").val("");
@@ -211,6 +212,7 @@ Template.index.events({
         var $comment = $("#"+this._id).val();
         if ($comment.length === 0 || $comment.length >= 100) {
             Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
             return;
         }
         Posts.insert({
@@ -220,7 +222,7 @@ Template.index.events({
             time:new Date()},
             function(err){
                 if(err){
-                    Session.set("info", {success:"", error:"评论失败，原因自寻"});
+                    Session.set("info", {success:"", error:"评论失败"});
                 }else{
                     Session.set("info", {success:"评论成功", error:""});
                     $("#"+this._id).val("");
@@ -232,8 +234,9 @@ Template.index.events({
     'click #addFriend':function (event) {
         event.preventDefault();
         var $friendId = this.user._id;
-        if (UserInfo.findOne({"Friends":$friendId})) {
+        if (UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
             Session.set("info", {success:"", error:"错误：此好友已经存在"});
+            scroll(0,0);
             return;
         }
         
@@ -250,6 +253,73 @@ Template.index.events({
                     Session.set("info", {success:"", error:"添加好友失败"});
                 }else{
                     Session.set("info", {success:"添加成功", error:""});
+                }
+            }
+        );
+    },
+    'click #likePost':function (event) {
+        event.preventDefault();
+        if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过赞"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Likers":Meteor.userId()},
+                $inc:{"like":1}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"点赞失败"});
+                }else{
+                    Session.set("info", {success:"点赞成功", error:""});
+                }
+            }
+        );
+    },
+    'click #topPost':function (event) {
+        event.preventDefault();
+        if (Meteor.user().username!="admin") {
+            Session.set("info", {success:"", error:"错误：您并非管理员。"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $set:{"top":true}
+            },
+            true,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"置顶失败"});
+                }else{
+                    Session.set("info", {success:"置顶成功", error:""});
+                }
+            }
+        );
+    },
+    'click #untopPost':function (event) {
+        event.preventDefault();
+        if (Meteor.user().username!="admin") {
+            Session.set("info", {success:"", error:"错误：您并非管理员。"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $set:{"top":false}
+            },
+            true,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"取消置顶失败"});
+                }else{
+                    Session.set("info", {success:"取消置顶成功", error:""});
                 }
             }
         );
