@@ -71,6 +71,20 @@ UserInfo.allow({                                                     // 23
       return remove;                                                 //
    }()                                                               //
 });                                                                  //
+                                                                     //
+var timeTask = setInterval(function () {                             // 35
+   var date = new Date();                                            // 36
+   var h = date.getHours();                                          // 37
+   var m = date.getMinutes();                                        // 38
+   var s = date.getSeconds();                                        // 39
+   if (h == 0 && m == 0 && s == 0) {                                 // 40
+      callFunction();                                                // 41
+   }                                                                 //
+}, 1000);                                                            //
+function callFunction() {                                            // 44
+   UserInfo.update({}, { $set: { todayScore: 0 } }, false, true);    // 45
+   console.log(1);                                                   // 46
+}                                                                    //
 ///////////////////////////////////////////////////////////////////////
 
 },"main.js":["meteor/meteor",function(require){
@@ -85,6 +99,7 @@ var _meteor = require('meteor/meteor');                              // 1
                                                                      //
 _meteor.Meteor.startup(function () {                                 // 3
   // code to run on server at startup                                //
+                                                                     //
 });                                                                  //
 ///////////////////////////////////////////////////////////////////////
 

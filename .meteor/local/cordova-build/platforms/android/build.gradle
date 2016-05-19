@@ -86,8 +86,8 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "cordova-plugin-crosswalk-webview/id1gw0eo9t8qg39yi7ncl-xwalk.gradle"
-apply from: "cordova-plugin-meteor-webapp/id1gw0eo9t8qg39yi7ncl-build-extras.gradle"
+apply from: "cordova-plugin-crosswalk-webview/newsplatform-xwalk.gradle"
+apply from: "cordova-plugin-meteor-webapp/newsplatform-build-extras.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()

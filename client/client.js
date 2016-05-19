@@ -1,8 +1,21 @@
+import { Meteor } from 'meteor/meteor';
+
+Meteor.startup(() => {
+  // code to run on server at startup
+  document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        console.log(navigator.device.capture);
+        Session.set("info", {success:"navigator success hahaha", error: ""});
+    }
+});
+
 Session.setDefault("currentUrl", {index: "active", login: "", reg: "",friend:"",lists:"",self:""});
 Session.setDefault("info", {success:"",error:""});
 Posts = new Meteor.Collection("posts");
 SystemInfo = new Meteor.Collection("systemInfo");
 UserInfo = new Meteor.Collection("userInfo");
+
+    
 
 Template.info.helpers({
     info(){
@@ -34,13 +47,13 @@ Template.index.helpers({
         }
     },
     comments(){
-        return Posts.find({"super":this._id},{sort: {time: -1}});
+        return Posts.find({"super":this._id},{sort: {time: 1}});
     },
 });
 
 Template.lists.helpers({
     lists(){
-        return UserInfo.find({},{sort: {totalScore: 1}})
+        return UserInfo.find({},{sort: {totalScore: -1}})
     },
 });
 
@@ -51,10 +64,18 @@ Template.self.helpers({
 });
 
 Template.friend.helpers({
-    friend(){
+    friendRank(){
         var Afriend = UserInfo.findOne({"user._id":Meteor.userId()}).Friends;
-        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{rank:1}});
+        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{rank:1}},{limit: 10 });
     },
+    friendToday(){
+        var Afriend = UserInfo.findOne({"user._id":Meteor.userId()}).Friends;
+        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{todayScore:-1}},{limit: 10 });
+    },
+    friendTotal(){
+        var Afriend = UserInfo.findOne({"user._id":Meteor.userId()}).Friends;
+        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{totalScore:-1}},{limit: 10 });
+    }
 });
 
 Meteor.startup(function () {
@@ -175,6 +196,12 @@ Template.login.events({
                 Router.redirect("/");
                 SystemInfo.update({"_id":"1"},{$inc: {"totalLogin":1}});
                 Session.set("info", {success: "登陆成功", error:""});
+                var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:1,totalScore:1}},
+                        false,true
+                    );
             }
         });
     }
@@ -201,6 +228,12 @@ Template.index.events({
                     Session.set("info", {success:"", error:"发表失败"});
                 }else{
                     Session.set("info", {success:"发表成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:100,totalScore:100}},
+                        false,true
+                    );
                     $("#post").val("");
                 }
             }
@@ -225,6 +258,12 @@ Template.index.events({
                     Session.set("info", {success:"", error:"评论失败"});
                 }else{
                     Session.set("info", {success:"评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
                     $("#"+this._id).val("");
                 }
             }
@@ -253,6 +292,12 @@ Template.index.events({
                     Session.set("info", {success:"", error:"添加好友失败"});
                 }else{
                     Session.set("info", {success:"添加成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:50,totalScore:50}},
+                        false,true
+                    );
                 }
             }
         );
@@ -276,6 +321,12 @@ Template.index.events({
                     Session.set("info", {success:"", error:"点赞失败"});
                 }else{
                     Session.set("info", {success:"点赞成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
                 }
             }
         );
@@ -298,6 +349,12 @@ Template.index.events({
                     Session.set("info", {success:"", error:"置顶失败"});
                 }else{
                     Session.set("info", {success:"置顶成功", error:""});
+                    var userInfoId = Posts.findOne({"_id":this._id}).user._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:80,totalScore:80}},
+                        false,true
+                    );
                 }
             }
         );

@@ -8,23 +8,33 @@
     },
     "installed_plugins": {
         "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.id1gw0eo9t8qg39yi7ncl"
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.id1gw0eo9t8qg39yi7ncl"
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
         },
         "cordova-plugin-wkwebview-engine": {
-            "PACKAGE_NAME": "com.id1gw0eo9t8qg39yi7ncl"
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
         },
         "cordova-plugin-meteor-webapp": {
-            "PACKAGE_NAME": "com.id1gw0eo9t8qg39yi7ncl"
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.id1gw0eo9t8qg39yi7ncl"
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.id1gw0eo9t8qg39yi7ncl"
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.meteor.example.newsplatform"
+        }
+    }
 }

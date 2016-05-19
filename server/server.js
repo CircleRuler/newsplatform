@@ -31,3 +31,17 @@ UserInfo.allow({
         return true;
      }
  });
+
+var timeTask=setInterval(function(){
+        var date=new Date();
+        var h=date.getHours();
+        var m=date.getMinutes();
+        var s=date.getSeconds();
+        if(h==0&&m==0&&s==0){
+             callFunction();                                                          
+        }
+    },1000);
+function callFunction(){
+    UserInfo.update({},{$set:{todayScore:0}},false,true);
+    console.log(1);
+}
