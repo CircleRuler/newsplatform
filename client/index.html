@@ -6,10 +6,13 @@
                 <textarea class="span8" id="post" rows="2"></textarea>
                 <button id="submit" class="btn btn-success btn-large span2 pull-right">发表</button>
             </div>
+            {{#if getAudioBtn}}
             <div class="control-group">
-                <label for="exampleInputFile">链接图片</label>
-                <input type="file" id="exampleInputFile">
+                <button id="getAudio" class="btn btn-default">获取录音</button>
+                <button id="getImage" class="btn btn-default">链接图片</button>
+                <button id="getVideo" class="btn btn-default">获取视频</button>
             </div>
+            {{/if}}
             
         </form>
     {{else}}
@@ -21,7 +24,7 @@
             <div class="">
                 <div class="postTitle">
                     <h2 class="text-primary span10">{{user.username}} 
-                    <button id="addFriend" class="btn btn-primary">加好友</button>
+                    <button id="addFriend" class="btn btn-info">加好友</button>
                     <button id="likePost" class="btn btn-warning">点赞({{like}})</button>
                     <button id="untopPost" class="btn btn-danger">取消置顶 </button>    :
                     </h2>
@@ -49,7 +52,7 @@
             <div class="">
                 <div class="postTitle">
                     <h2 class="text-primary span10">{{user.username}} 
-                    <button id="addFriend" class="btn btn-primary">加好友</button>
+                    <button id="addFriend" class="btn btn-info">加好友</button>
                     <button id="likePost" class="btn btn-warning">点赞({{like}})</button>
                     <button id="topPost" class="btn btn-danger">置顶 </button>    :
                     </h2>

@@ -5,7 +5,7 @@ Meteor.startup(() => {
   document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
         console.log(navigator.device.capture);
-        Session.set("info", {success:"navigator success hahaha", error: ""});
+        //Session.set("info", {success:"navigator success hahaha", error: ""});
     }
 });
 
@@ -15,7 +15,23 @@ Posts = new Meteor.Collection("posts");
 SystemInfo = new Meteor.Collection("systemInfo");
 UserInfo = new Meteor.Collection("userInfo");
 
-    
+var captureSuccess = function(mediaFiles) {
+    var i, path, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+        path = mediaFiles[i].fullPath;
+        // do something interesting with the file
+        Session.set("info", {success:path, error: ""});
+    }
+};
+
+// capture error callback
+var captureError = function(error) {
+    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+};
+
+if(Meteor.isCordova){
+  
+}
 
 Template.info.helpers({
     info(){
@@ -49,6 +65,13 @@ Template.index.helpers({
     comments(){
         return Posts.find({"super":this._id},{sort: {time: 1}});
     },
+    getAudioBtn(){
+        if(Meteor.isCordova){
+            return true;
+        }else{
+            return false;
+        }
+    }
 });
 
 Template.lists.helpers({
@@ -380,5 +403,17 @@ Template.index.events({
                 }
             }
         );
+    },
+    'click #getImage':function (event) {
+        event.preventDefault();
+        navigator.device.capture.captureImage(captureSuccess, captureError, {limit:1});
+    },
+    'click #getAudio':function (event) {
+        event.preventDefault();
+        navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
+    },
+    'click #getVideo':function (event) {
+        event.preventDefault();
+        navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:2}); 
     }
 })
