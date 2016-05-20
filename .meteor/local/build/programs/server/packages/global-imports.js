@@ -30,6 +30,7 @@ meteorBabelHelpers = Package['babel-runtime'].meteorBabelHelpers;
 Promise = Package.promise.Promise;
 Accounts = Package['accounts-base'].Accounts;
 Showdown = Package.markdown.Showdown;
+FS = Package['cfs:base-package'].FS;
 Autoupdate = Package.autoupdate.Autoupdate;
 HTML = Package.htmljs.HTML;
 

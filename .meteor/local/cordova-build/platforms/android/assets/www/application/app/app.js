@@ -211,139 +211,147 @@ Template["index"] = new Template("Template.index", (function() {                
     }), "\n                ", HTML.BUTTON({                                                                            // 20
       id: "submit",                                                                                                    // 21
       "class": "btn btn-success btn-large span2 pull-right"                                                            // 22
-    }, "发表"), "\n            "), "\n            ", HTML.DIV({                                                          // 23
-      "class": "control-group"                                                                                         // 24
-    }, "\n                ", HTML.LABEL({                                                                              // 25
-      "for": "exampleInputFile"                                                                                        // 26
-    }, "链接图片"), "\n                ", HTML.INPUT({                                                                     // 27
-      type: "file",                                                                                                    // 28
-      id: "exampleInputFile"                                                                                           // 29
-    }), "\n            "), "\n            \n        "), "\n    " ];                                                    // 30
-  }, function() {                                                                                                      // 31
-    return [ "\n        ", HTML.H2("游客无法发布新闻或者评论。请注册或者登陆。"), "\n    " ];                                               // 32
-  }), "\n    \n    ", Blaze.Each(function() {                                                                          // 33
-    return Spacebars.call(view.lookup("topPosts"));                                                                    // 34
-  }, function() {                                                                                                      // 35
-    return [ "\n        ", HTML.DIV({                                                                                  // 36
-      "class": "center well singlePost"                                                                                // 37
-    }, "\n            ", HTML.DIV({                                                                                    // 38
-      "class": ""                                                                                                      // 39
-    }, "\n                ", HTML.DIV({                                                                                // 40
-      "class": "postTitle"                                                                                             // 41
-    }, "\n                    ", HTML.H2({                                                                             // 42
-      "class": "text-primary span10"                                                                                   // 43
-    }, Blaze.View("lookup:user.username", function() {                                                                 // 44
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 45
-    }), " \n                    ", HTML.BUTTON({                                                                       // 46
-      id: "addFriend",                                                                                                 // 47
-      "class": "btn btn-primary"                                                                                       // 48
-    }, "加好友"), "\n                    ", HTML.BUTTON({                                                                 // 49
-      id: "likePost",                                                                                                  // 50
-      "class": "btn btn-warning"                                                                                       // 51
-    }, "点赞(", Blaze.View("lookup:like", function() {                                                                   // 52
-      return Spacebars.mustache(view.lookup("like"));                                                                  // 53
-    }), ")"), "\n                    ", HTML.BUTTON({                                                                  // 54
-      id: "untopPost",                                                                                                 // 55
-      "class": "btn btn-danger"                                                                                        // 56
-    }, "取消置顶 "), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({               // 57
-      "class": "col-xs-3 "                                                                                             // 58
-    }), "\n            "), "\n            ", HTML.P({                                                                  // 59
-      "class": "muted"                                                                                                 // 60
-    }, Blaze.View("lookup:time", function() {                                                                          // 61
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 62
-    })), "\n            ", HTML.P({                                                                                    // 63
-      "class": "span10"                                                                                                // 64
-    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 65
-      return Blaze.View("lookup:post", function() {                                                                    // 66
-        return Spacebars.mustache(view.lookup("post"));                                                                // 67
-      });                                                                                                              // 68
-    })), "\n            ", Blaze.If(function() {                                                                       // 69
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 70
-    }, function() {                                                                                                    // 71
-      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 72
-        type: "text",                                                                                                  // 73
-        "class": "span8",                                                                                              // 74
-        id: function() {                                                                                               // 75
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 76
-        }                                                                                                              // 77
-      }), "\n                    ", HTML.BUTTON({                                                                      // 78
-        id: "commnetSubmit",                                                                                           // 79
-        "class": "btn btn-success"                                                                                     // 80
-      }, "评论"), "\n                "), "\n            " ];                                                             // 81
-    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 82
-      return Spacebars.call(view.lookup("comments"));                                                                  // 83
-    }, function() {                                                                                                    // 84
-      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 85
-        "class": "postTitle"                                                                                           // 86
-      }, Blaze.View("lookup:user.username", function() {                                                               // 87
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 88
-      })), " : ", Blaze.View("lookup:post", function() {                                                               // 89
-        return Spacebars.mustache(view.lookup("post"));                                                                // 90
-      })), "\n            " ];                                                                                         // 91
-    }), "\n            "), "\n        "), "\n    " ];                                                                  // 92
-  }), "\n\n    ", Blaze.Each(function() {                                                                              // 93
-    return Spacebars.call(view.lookup("posts"));                                                                       // 94
-  }, function() {                                                                                                      // 95
-    return [ "\n        ", HTML.DIV({                                                                                  // 96
-      "class": "center singlePost"                                                                                     // 97
-    }, "\n            ", HTML.DIV({                                                                                    // 98
-      "class": ""                                                                                                      // 99
-    }, "\n                ", HTML.DIV({                                                                                // 100
-      "class": "postTitle"                                                                                             // 101
-    }, "\n                    ", HTML.H2({                                                                             // 102
-      "class": "text-primary span10"                                                                                   // 103
-    }, Blaze.View("lookup:user.username", function() {                                                                 // 104
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 105
-    }), " \n                    ", HTML.BUTTON({                                                                       // 106
-      id: "addFriend",                                                                                                 // 107
-      "class": "btn btn-primary"                                                                                       // 108
-    }, "加好友"), "\n                    ", HTML.BUTTON({                                                                 // 109
-      id: "likePost",                                                                                                  // 110
-      "class": "btn btn-warning"                                                                                       // 111
-    }, "点赞(", Blaze.View("lookup:like", function() {                                                                   // 112
-      return Spacebars.mustache(view.lookup("like"));                                                                  // 113
-    }), ")"), "\n                    ", HTML.BUTTON({                                                                  // 114
-      id: "topPost",                                                                                                   // 115
-      "class": "btn btn-danger"                                                                                        // 116
-    }, "置顶 "), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({                 // 117
-      "class": "col-xs-3 "                                                                                             // 118
-    }), "\n            "), "\n            ", HTML.P({                                                                  // 119
-      "class": "muted"                                                                                                 // 120
-    }, Blaze.View("lookup:time", function() {                                                                          // 121
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 122
-    })), "\n            ", HTML.P({                                                                                    // 123
-      "class": "span10"                                                                                                // 124
-    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 125
-      return Blaze.View("lookup:post", function() {                                                                    // 126
-        return Spacebars.mustache(view.lookup("post"));                                                                // 127
-      });                                                                                                              // 128
-    })), "\n            ", Blaze.If(function() {                                                                       // 129
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 130
-    }, function() {                                                                                                    // 131
-      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 132
-        type: "text",                                                                                                  // 133
-        "class": "span8",                                                                                              // 134
-        id: function() {                                                                                               // 135
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 136
-        }                                                                                                              // 137
-      }), "\n                    ", HTML.BUTTON({                                                                      // 138
-        id: "commnetSubmit",                                                                                           // 139
-        "class": "btn btn-success"                                                                                     // 140
-      }, "评论"), "\n                "), "\n            " ];                                                             // 141
-    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 142
-      return Spacebars.call(view.lookup("comments"));                                                                  // 143
-    }, function() {                                                                                                    // 144
-      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 145
-        "class": "postTitle"                                                                                           // 146
-      }, Blaze.View("lookup:user.username", function() {                                                               // 147
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 148
-      })), " : ", Blaze.View("lookup:post", function() {                                                               // 149
-        return Spacebars.mustache(view.lookup("post"));                                                                // 150
-      })), "\n            " ];                                                                                         // 151
-    }), "\n            "), "\n        "), "\n    " ];                                                                  // 152
-  }) ];                                                                                                                // 153
-}));                                                                                                                   // 154
-                                                                                                                       // 155
+    }, "发表"), "\n            "), "\n            ", Blaze.If(function() {                                               // 23
+      return Spacebars.call(view.lookup("getAudioBtn"));                                                               // 24
+    }, function() {                                                                                                    // 25
+      return [ "\n            ", HTML.DIV({                                                                            // 26
+        "class": "control-group"                                                                                       // 27
+      }, "\n                ", HTML.BUTTON({                                                                           // 28
+        id: "getAudio",                                                                                                // 29
+        "class": "btn btn-default"                                                                                     // 30
+      }, "获取录音"), "\n                ", HTML.BUTTON({                                                                  // 31
+        id: "getImage",                                                                                                // 32
+        "class": "btn btn-default"                                                                                     // 33
+      }, "链接图片"), "\n                ", HTML.BUTTON({                                                                  // 34
+        id: "getVideo",                                                                                                // 35
+        "class": "btn btn-default"                                                                                     // 36
+      }, "获取视频"), "\n            "), "\n            " ];                                                               // 37
+    }), "\n            \n        "), "\n    " ];                                                                       // 38
+  }, function() {                                                                                                      // 39
+    return [ "\n        ", HTML.H2("游客无法发布新闻或者评论。请注册或者登陆。"), "\n    " ];                                               // 40
+  }), "\n    \n    ", Blaze.Each(function() {                                                                          // 41
+    return Spacebars.call(view.lookup("topPosts"));                                                                    // 42
+  }, function() {                                                                                                      // 43
+    return [ "\n        ", HTML.DIV({                                                                                  // 44
+      "class": "center well singlePost"                                                                                // 45
+    }, "\n            ", HTML.DIV({                                                                                    // 46
+      "class": ""                                                                                                      // 47
+    }, "\n                ", HTML.DIV({                                                                                // 48
+      "class": "postTitle"                                                                                             // 49
+    }, "\n                    ", HTML.H2({                                                                             // 50
+      "class": "text-primary span10"                                                                                   // 51
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 52
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 53
+    }), " \n                    ", HTML.BUTTON({                                                                       // 54
+      id: "addFriend",                                                                                                 // 55
+      "class": "btn btn-info"                                                                                          // 56
+    }, "加好友"), "\n                    ", HTML.BUTTON({                                                                 // 57
+      id: "likePost",                                                                                                  // 58
+      "class": "btn btn-warning"                                                                                       // 59
+    }, "点赞(", Blaze.View("lookup:like", function() {                                                                   // 60
+      return Spacebars.mustache(view.lookup("like"));                                                                  // 61
+    }), ")"), "\n                    ", HTML.BUTTON({                                                                  // 62
+      id: "untopPost",                                                                                                 // 63
+      "class": "btn btn-danger"                                                                                        // 64
+    }, "取消置顶 "), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({               // 65
+      "class": "col-xs-3 "                                                                                             // 66
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 67
+      "class": "muted"                                                                                                 // 68
+    }, Blaze.View("lookup:time", function() {                                                                          // 69
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 70
+    })), "\n            ", HTML.P({                                                                                    // 71
+      "class": "span10"                                                                                                // 72
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 73
+      return Blaze.View("lookup:post", function() {                                                                    // 74
+        return Spacebars.mustache(view.lookup("post"));                                                                // 75
+      });                                                                                                              // 76
+    })), "\n            ", Blaze.If(function() {                                                                       // 77
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 78
+    }, function() {                                                                                                    // 79
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 80
+        type: "text",                                                                                                  // 81
+        "class": "span8",                                                                                              // 82
+        id: function() {                                                                                               // 83
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 84
+        }                                                                                                              // 85
+      }), "\n                    ", HTML.BUTTON({                                                                      // 86
+        id: "commnetSubmit",                                                                                           // 87
+        "class": "btn btn-success"                                                                                     // 88
+      }, "评论"), "\n                "), "\n            " ];                                                             // 89
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 90
+      return Spacebars.call(view.lookup("comments"));                                                                  // 91
+    }, function() {                                                                                                    // 92
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 93
+        "class": "postTitle"                                                                                           // 94
+      }, Blaze.View("lookup:user.username", function() {                                                               // 95
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 96
+      })), " : ", Blaze.View("lookup:post", function() {                                                               // 97
+        return Spacebars.mustache(view.lookup("post"));                                                                // 98
+      })), "\n            " ];                                                                                         // 99
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 100
+  }), "\n\n    ", Blaze.Each(function() {                                                                              // 101
+    return Spacebars.call(view.lookup("posts"));                                                                       // 102
+  }, function() {                                                                                                      // 103
+    return [ "\n        ", HTML.DIV({                                                                                  // 104
+      "class": "center singlePost"                                                                                     // 105
+    }, "\n            ", HTML.DIV({                                                                                    // 106
+      "class": ""                                                                                                      // 107
+    }, "\n                ", HTML.DIV({                                                                                // 108
+      "class": "postTitle"                                                                                             // 109
+    }, "\n                    ", HTML.H2({                                                                             // 110
+      "class": "text-primary span10"                                                                                   // 111
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 112
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 113
+    }), " \n                    ", HTML.BUTTON({                                                                       // 114
+      id: "addFriend",                                                                                                 // 115
+      "class": "btn btn-info"                                                                                          // 116
+    }, "加好友"), "\n                    ", HTML.BUTTON({                                                                 // 117
+      id: "likePost",                                                                                                  // 118
+      "class": "btn btn-warning"                                                                                       // 119
+    }, "点赞(", Blaze.View("lookup:like", function() {                                                                   // 120
+      return Spacebars.mustache(view.lookup("like"));                                                                  // 121
+    }), ")"), "\n                    ", HTML.BUTTON({                                                                  // 122
+      id: "topPost",                                                                                                   // 123
+      "class": "btn btn-danger"                                                                                        // 124
+    }, "置顶 "), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({                 // 125
+      "class": "col-xs-3 "                                                                                             // 126
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 127
+      "class": "muted"                                                                                                 // 128
+    }, Blaze.View("lookup:time", function() {                                                                          // 129
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 130
+    })), "\n            ", HTML.P({                                                                                    // 131
+      "class": "span10"                                                                                                // 132
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 133
+      return Blaze.View("lookup:post", function() {                                                                    // 134
+        return Spacebars.mustache(view.lookup("post"));                                                                // 135
+      });                                                                                                              // 136
+    })), "\n            ", Blaze.If(function() {                                                                       // 137
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 138
+    }, function() {                                                                                                    // 139
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 140
+        type: "text",                                                                                                  // 141
+        "class": "span8",                                                                                              // 142
+        id: function() {                                                                                               // 143
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 144
+        }                                                                                                              // 145
+      }), "\n                    ", HTML.BUTTON({                                                                      // 146
+        id: "commnetSubmit",                                                                                           // 147
+        "class": "btn btn-success"                                                                                     // 148
+      }, "评论"), "\n                "), "\n            " ];                                                             // 149
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 150
+      return Spacebars.call(view.lookup("comments"));                                                                  // 151
+    }, function() {                                                                                                    // 152
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 153
+        "class": "postTitle"                                                                                           // 154
+      }, Blaze.View("lookup:user.username", function() {                                                               // 155
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 156
+      })), " : ", Blaze.View("lookup:post", function() {                                                               // 157
+        return Spacebars.mustache(view.lookup("post"));                                                                // 158
+      })), "\n            " ];                                                                                         // 159
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 160
+  }) ];                                                                                                                // 161
+}));                                                                                                                   // 162
+                                                                                                                       // 163
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.lists.js":function(){
@@ -480,8 +488,8 @@ _meteor.Meteor.startup(function () {                                            
     document.addEventListener("deviceready", onDeviceReady, false);                                                    // 5
     function onDeviceReady() {                                                                                         // 6
         console.log(navigator.device.capture);                                                                         // 7
-        Session.set("info", { success: "navigator success", error: "" });                                              // 8
-    }                                                                                                                  //
+        //Session.set("info", {success:"navigator success hahaha", error: ""});                                        //
+    }                                                                                                                  // 6
 });                                                                                                                    //
                                                                                                                        //
 Session.setDefault("currentUrl", { index: "active", login: "", reg: "", friend: "", lists: "", self: "" });            // 12
@@ -490,266 +498,305 @@ Posts = new _meteor.Meteor.Collection("posts");                                 
 SystemInfo = new _meteor.Meteor.Collection("systemInfo");                                                              // 15
 UserInfo = new _meteor.Meteor.Collection("userInfo");                                                                  // 16
                                                                                                                        //
-Template.info.helpers({                                                                                                // 20
-    info: function () {                                                                                                // 21
+Images = new FS.Collection("images", {                                                                                 // 18
+    stores: [new FS.Store.FileSystem("images", { path: "~/uploadsImage" })]                                            // 19
+});                                                                                                                    //
+                                                                                                                       //
+Audios = new FS.Collection("audios", {                                                                                 // 22
+    stores: [new FS.Store.FileSystem("audios", { path: "~/uploadsAudio" })]                                            // 23
+});                                                                                                                    //
+                                                                                                                       //
+Videos = new FS.Collection("videos", {                                                                                 // 26
+    stores: [new FS.Store.FileSystem("videos", { path: "~/uploadsVideo" })]                                            // 27
+});                                                                                                                    //
+                                                                                                                       //
+var captureSuccess = function captureSuccess(mediaFiles) {                                                             // 30
+    var i, path, len;                                                                                                  // 31
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 32
+        path = mediaFiles[i].fullPath;                                                                                 // 33
+        // do something interesting with the file                                                                      //
+        Session.set("info", { success: mediaFiles[i], error: "" });                                                    // 32
+    }                                                                                                                  //
+};                                                                                                                     //
+                                                                                                                       //
+// capture error callback                                                                                              //
+var captureError = function captureError(error) {                                                                      // 40
+    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');                                  // 41
+};                                                                                                                     //
+                                                                                                                       //
+if (_meteor.Meteor.isCordova) {}                                                                                       // 44
+                                                                                                                       //
+Template.info.helpers({                                                                                                // 48
+    info: function () {                                                                                                // 49
         function info() {                                                                                              //
-            return Session.get("info");                                                                                // 22
+            return Session.get("info");                                                                                // 50
         }                                                                                                              //
                                                                                                                        //
         return info;                                                                                                   //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.container.helpers({                                                                                           // 26
-    currentUrl: function () {                                                                                          // 27
+Template.container.helpers({                                                                                           // 54
+    currentUrl: function () {                                                                                          // 55
         function currentUrl() {                                                                                        //
-            return Session.get("currentUrl");                                                                          // 28
+            return Session.get("currentUrl");                                                                          // 56
         }                                                                                                              //
                                                                                                                        //
         return currentUrl;                                                                                             //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.nav.helpers({                                                                                                 // 32
-    active: function () {                                                                                              // 33
+Template.nav.helpers({                                                                                                 // 60
+    active: function () {                                                                                              // 61
         function active() {                                                                                            //
-            return Session.get("currentUrl");                                                                          // 34
+            return Session.get("currentUrl");                                                                          // 62
         }                                                                                                              //
                                                                                                                        //
         return active;                                                                                                 //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.index.helpers({                                                                                               // 38
-    topPosts: function () {                                                                                            // 39
+Template.index.helpers({                                                                                               // 66
+    topPosts: function () {                                                                                            // 67
         function topPosts() {                                                                                          //
-            return Posts.find({ "top": true, "super": 0 }, { sort: { time: -1 } });                                    // 40
+            return Posts.find({ "top": true, "super": 0 }, { sort: { time: -1 } });                                    // 68
         }                                                                                                              //
                                                                                                                        //
         return topPosts;                                                                                               //
     }(),                                                                                                               //
-    posts: function () {                                                                                               // 42
+    posts: function () {                                                                                               // 70
         function posts() {                                                                                             //
-            if (!_meteor.Meteor.userId()) {                                                                            // 43
-                return Posts.find({ "user.username": "admin", "super": 0, "top": false }, { sort: { time: -1 } });     // 44
+            if (!_meteor.Meteor.userId()) {                                                                            // 71
+                return Posts.find({ "user.username": "admin", "super": 0, "top": false }, { sort: { time: -1 } });     // 72
             } else {                                                                                                   //
-                return Posts.find({ "super": 0, "top": false }, { sort: { time: -1 } });                               // 46
+                return Posts.find({ "super": 0, "top": false }, { sort: { time: -1 } });                               // 74
             }                                                                                                          //
         }                                                                                                              //
                                                                                                                        //
         return posts;                                                                                                  //
     }(),                                                                                                               //
-    comments: function () {                                                                                            // 49
+    comments: function () {                                                                                            // 77
         function comments() {                                                                                          //
-            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 50
+            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 78
         }                                                                                                              //
                                                                                                                        //
         return comments;                                                                                               //
+    }(),                                                                                                               //
+    getAudioBtn: function () {                                                                                         // 80
+        function getAudioBtn() {                                                                                       //
+            if (_meteor.Meteor.isCordova) {                                                                            // 81
+                return true;                                                                                           // 82
+            } else {                                                                                                   //
+                return false;                                                                                          // 84
+            }                                                                                                          //
+        }                                                                                                              //
+                                                                                                                       //
+        return getAudioBtn;                                                                                            //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.lists.helpers({                                                                                               // 54
-    lists: function () {                                                                                               // 55
+Template.lists.helpers({                                                                                               // 89
+    lists: function () {                                                                                               // 90
         function lists() {                                                                                             //
-            return UserInfo.find({}, { sort: { totalScore: -1 } });                                                    // 56
+            return UserInfo.find({}, { sort: { totalScore: -1 } });                                                    // 91
         }                                                                                                              //
                                                                                                                        //
         return lists;                                                                                                  //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.self.helpers({                                                                                                // 60
-    self: function () {                                                                                                // 61
+Template.self.helpers({                                                                                                // 95
+    self: function () {                                                                                                // 96
         function self() {                                                                                              //
-            return UserInfo.find({ "user._id": _meteor.Meteor.userId() });                                             // 62
+            return UserInfo.find({ "user._id": _meteor.Meteor.userId() });                                             // 97
         }                                                                                                              //
                                                                                                                        //
         return self;                                                                                                   //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.friend.helpers({                                                                                              // 66
-    friendRank: function () {                                                                                          // 67
+Template.friend.helpers({                                                                                              // 101
+    friendRank: function () {                                                                                          // 102
         function friendRank() {                                                                                        //
-            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 68
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { rank: 1 } }, { limit: 10 });              // 69
+            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 103
+            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { rank: 1 } }, { limit: 10 });              // 104
         }                                                                                                              //
                                                                                                                        //
         return friendRank;                                                                                             //
     }(),                                                                                                               //
-    friendToday: function () {                                                                                         // 71
+    friendToday: function () {                                                                                         // 106
         function friendToday() {                                                                                       //
-            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 72
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { todayScore: -1 } }, { limit: 10 });       // 73
+            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 107
+            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { todayScore: -1 } }, { limit: 10 });       // 108
         }                                                                                                              //
                                                                                                                        //
         return friendToday;                                                                                            //
     }(),                                                                                                               //
-    friendTotal: function () {                                                                                         // 75
+    friendTotal: function () {                                                                                         // 110
         function friendTotal() {                                                                                       //
-            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 76
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { totalScore: -1 } }, { limit: 10 });       // 77
+            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 111
+            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { totalScore: -1 } }, { limit: 10 });       // 112
         }                                                                                                              //
                                                                                                                        //
         return friendTotal;                                                                                            //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-_meteor.Meteor.startup(function () {                                                                                   // 81
-    Backbone.history.start({ pushState: true });                                                                       // 82
+_meteor.Meteor.startup(function () {                                                                                   // 116
+    Backbone.history.start({ pushState: true });                                                                       // 117
 });                                                                                                                    //
                                                                                                                        //
-var urlRouter = Backbone.Router.extend({                                                                               // 85
-    routes: {                                                                                                          // 86
-        "": "index",                                                                                                   // 87
-        "login": "login",                                                                                              // 88
-        "reg": "reg",                                                                                                  // 89
-        "logout": "logout",                                                                                            // 90
-        "friend": "friend",                                                                                            // 91
-        "lists": "lists",                                                                                              // 92
-        "self": "self"                                                                                                 // 93
+var urlRouter = Backbone.Router.extend({                                                                               // 120
+    routes: {                                                                                                          // 121
+        "": "index",                                                                                                   // 122
+        "login": "login",                                                                                              // 123
+        "reg": "reg",                                                                                                  // 124
+        "logout": "logout",                                                                                            // 125
+        "friend": "friend",                                                                                            // 126
+        "lists": "lists",                                                                                              // 127
+        "self": "self"                                                                                                 // 128
     },                                                                                                                 //
-    index: function () {                                                                                               // 95
-        function index() {                                                                                             // 95
-            Session.set("currentUrl", { index: "active", login: "", reg: "", friend: "", lists: "", self: "" });       // 96
+    index: function () {                                                                                               // 130
+        function index() {                                                                                             // 130
+            Session.set("currentUrl", { index: "active", login: "", reg: "", friend: "", lists: "", self: "" });       // 131
         }                                                                                                              //
                                                                                                                        //
         return index;                                                                                                  //
     }(),                                                                                                               //
-    friend: function () {                                                                                              // 98
-        function friend() {                                                                                            // 98
-            Session.set("currentUrl", { index: "", login: "", reg: "", friend: "active", lists: "", self: "" });       // 99
+    friend: function () {                                                                                              // 133
+        function friend() {                                                                                            // 133
+            Session.set("currentUrl", { index: "", login: "", reg: "", friend: "active", lists: "", self: "" });       // 134
         }                                                                                                              //
                                                                                                                        //
         return friend;                                                                                                 //
     }(),                                                                                                               //
-    lists: function () {                                                                                               // 101
-        function lists() {                                                                                             // 101
-            Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "active", self: "" });       // 102
+    lists: function () {                                                                                               // 136
+        function lists() {                                                                                             // 136
+            Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "active", self: "" });       // 137
         }                                                                                                              //
                                                                                                                        //
         return lists;                                                                                                  //
     }(),                                                                                                               //
-    self: function () {                                                                                                // 104
-        function self() {                                                                                              // 104
-            Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "", self: "active" });       // 105
+    self: function () {                                                                                                // 139
+        function self() {                                                                                              // 139
+            Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "", self: "active" });       // 140
         }                                                                                                              //
                                                                                                                        //
         return self;                                                                                                   //
     }(),                                                                                                               //
-    login: function () {                                                                                               // 107
-        function login() {                                                                                             // 107
-            if (_meteor.Meteor.userId()) {                                                                             // 108
-                this.navigate("/", true);                                                                              // 109
-                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 110
+    login: function () {                                                                                               // 142
+        function login() {                                                                                             // 142
+            if (_meteor.Meteor.userId()) {                                                                             // 143
+                this.navigate("/", true);                                                                              // 144
+                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 145
             }                                                                                                          //
-            Session.set("currentUrl", { index: "", login: "active", reg: "", friend: "", lists: "", self: "" });       // 112
+            Session.set("currentUrl", { index: "", login: "active", reg: "", friend: "", lists: "", self: "" });       // 147
         }                                                                                                              //
                                                                                                                        //
         return login;                                                                                                  //
     }(),                                                                                                               //
-    reg: function () {                                                                                                 // 114
-        function reg() {                                                                                               // 114
-            if (_meteor.Meteor.userId()) {                                                                             // 115
-                this.navigate("/", true);                                                                              // 116
-                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 117
+    reg: function () {                                                                                                 // 149
+        function reg() {                                                                                               // 149
+            if (_meteor.Meteor.userId()) {                                                                             // 150
+                this.navigate("/", true);                                                                              // 151
+                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 152
             }                                                                                                          //
-            Session.set("currentUrl", { index: "", login: "", reg: "active", friend: "", lists: "", self: "" });       // 119
+            Session.set("currentUrl", { index: "", login: "", reg: "active", friend: "", lists: "", self: "" });       // 154
         }                                                                                                              //
                                                                                                                        //
         return reg;                                                                                                    //
     }(),                                                                                                               //
-    logout: function () {                                                                                              // 121
-        function logout() {                                                                                            // 121
-            if (_meteor.Meteor.userId()) {                                                                             // 122
-                _meteor.Meteor.logout();                                                                               // 123
-                this.navigate("/", true);                                                                              // 124
-                Session.set("info", { success: "登出成功", error: "" });                                                   // 125
-                SystemInfo.update({ "_id": "1" }, { $inc: { totalLogin: -1 } });                                       // 126
+    logout: function () {                                                                                              // 156
+        function logout() {                                                                                            // 156
+            if (_meteor.Meteor.userId()) {                                                                             // 157
+                _meteor.Meteor.logout();                                                                               // 158
+                this.navigate("/", true);                                                                              // 159
+                Session.set("info", { success: "登出成功", error: "" });                                                   // 160
+                SystemInfo.update({ "_id": "1" }, { $inc: { totalLogin: -1 } });                                       // 161
             } else {                                                                                                   //
-                this.navigate("/", true);                                                                              // 128
-                Session.set("info", { success: "", error: "用户不在线！" });                                                 // 129
+                this.navigate("/", true);                                                                              // 163
+                Session.set("info", { success: "", error: "用户不在线！" });                                                 // 164
             }                                                                                                          //
         }                                                                                                              //
                                                                                                                        //
         return logout;                                                                                                 //
     }(),                                                                                                               //
-    redirect: function () {                                                                                            // 132
-        function redirect(url) {                                                                                       // 132
-            this.navigate(url, true);                                                                                  // 133
+    redirect: function () {                                                                                            // 167
+        function redirect(url) {                                                                                       // 167
+            this.navigate(url, true);                                                                                  // 168
         }                                                                                                              //
                                                                                                                        //
         return redirect;                                                                                               //
     }()                                                                                                                //
 });                                                                                                                    //
-Router = new urlRouter();                                                                                              // 136
+Router = new urlRouter();                                                                                              // 171
                                                                                                                        //
-Template.reg.events({                                                                                                  // 138
-    'click #submit': function () {                                                                                     // 139
-        function clickSubmit(event) {                                                                                  // 139
-            event.preventDefault();                                                                                    // 140
-            if (!SystemInfo.find({ "_id": "1" }, { totalUser: true })['totalUser']) {                                  // 141
-                SystemInfo.insert({ "_id": "1", "totalUser": 0, "totalPost": 0, "totalLogin": 0 });                    // 142
+Template.reg.events({                                                                                                  // 173
+    'click #submit': function () {                                                                                     // 174
+        function clickSubmit(event) {                                                                                  // 174
+            event.preventDefault();                                                                                    // 175
+            if (!SystemInfo.find({ "_id": "1" }, { totalUser: true })['totalUser']) {                                  // 176
+                SystemInfo.insert({ "_id": "1", "totalUser": 0, "totalPost": 0, "totalLogin": 0 });                    // 177
             }                                                                                                          //
-            var $username = $("#username").val();                                                                      // 144
-            var $password = $("#password").val();                                                                      // 145
-            var $useremail = $("#useremail").val();                                                                    // 146
-            var $password_repeat = $("#password-repeat").val();                                                        // 147
-            if ($password.length === 0 || $username.length === 0) {                                                    // 148
-                Session.set("info", { success: "", error: "用户名或者密码不能为空" });                                            // 149
-                return;                                                                                                // 150
+            var $username = $("#username").val();                                                                      // 179
+            var $password = $("#password").val();                                                                      // 180
+            var $useremail = $("#useremail").val();                                                                    // 181
+            var $password_repeat = $("#password-repeat").val();                                                        // 182
+            if ($password.length === 0 || $username.length === 0) {                                                    // 183
+                Session.set("info", { success: "", error: "用户名或者密码不能为空" });                                            // 184
+                return;                                                                                                // 185
             }                                                                                                          //
-            if ($password !== $password_repeat) {                                                                      // 152
-                Session.set("info", { success: "", error: "两次输入密码不一致" });                                              // 153
-                return;                                                                                                // 154
+            if ($password !== $password_repeat) {                                                                      // 187
+                Session.set("info", { success: "", error: "两次输入密码不一致" });                                              // 188
+                return;                                                                                                // 189
             }                                                                                                          //
-            Accounts.createUser({                                                                                      // 156
-                username: $username,                                                                                   // 157
-                password: $password,                                                                                   // 158
-                email: $useremail }, function (err) {                                                                  // 159
-                if (err) {                                                                                             // 161
-                    Session.set("info", { success: "", error: "注册失败" });                                               // 162
+            Accounts.createUser({                                                                                      // 191
+                username: $username,                                                                                   // 192
+                password: $password,                                                                                   // 193
+                email: $useremail }, function (err) {                                                                  // 194
+                if (err) {                                                                                             // 196
+                    Session.set("info", { success: "", error: "注册失败" });                                               // 197
                 } else {                                                                                               //
-                    Session.set("info", { success: "注册成功", error: "" });                                               // 164
-                    UserInfo.insert({                                                                                  // 165
-                        user: _meteor.Meteor.user(),                                                                   // 166
-                        isAdmin: false,                                                                                // 167
-                        totalScore: 0,                                                                                 // 168
-                        todayScore: 0,                                                                                 // 169
-                        totalFriend: 1,                                                                                // 170
-                        Friends: [_meteor.Meteor.userId()],                                                            // 171
-                        rank: SystemInfo.findOne({ "_id": "1" }, { totalUser: true })["totalUser"],                    // 172
-                        time: new Date()                                                                               // 173
+                    Session.set("info", { success: "注册成功", error: "" });                                               // 199
+                    UserInfo.insert({                                                                                  // 200
+                        user: _meteor.Meteor.user(),                                                                   // 201
+                        isAdmin: false,                                                                                // 202
+                        totalScore: 0,                                                                                 // 203
+                        todayScore: 0,                                                                                 // 204
+                        totalFriend: 1,                                                                                // 205
+                        Friends: [_meteor.Meteor.userId()],                                                            // 206
+                        rank: SystemInfo.findOne({ "_id": "1" }, { totalUser: true })["totalUser"],                    // 207
+                        time: new Date()                                                                               // 208
                     });                                                                                                //
                 }                                                                                                      //
             });                                                                                                        //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalUser": 1 } });                                           // 178
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                          // 179
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalUser": 1 } });                                           // 213
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                          // 214
         }                                                                                                              //
                                                                                                                        //
         return clickSubmit;                                                                                            //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.login.events({                                                                                                // 183
-    'click #submit': function () {                                                                                     // 184
-        function clickSubmit(event) {                                                                                  // 184
-            event.preventDefault();                                                                                    // 185
-            var $username = $("#username").val();                                                                      // 186
-            var $password = $("#password").val();                                                                      // 187
-            if ($password.length === 0 || $username.length === 0) {                                                    // 188
-                Session.set("info", { success: "", error: "用户名或密码不能为空" });                                             // 189
-                return;                                                                                                // 190
+Template.login.events({                                                                                                // 218
+    'click #submit': function () {                                                                                     // 219
+        function clickSubmit(event) {                                                                                  // 219
+            event.preventDefault();                                                                                    // 220
+            var $username = $("#username").val();                                                                      // 221
+            var $password = $("#password").val();                                                                      // 222
+            if ($password.length === 0 || $username.length === 0) {                                                    // 223
+                Session.set("info", { success: "", error: "用户名或密码不能为空" });                                             // 224
+                return;                                                                                                // 225
             }                                                                                                          //
-            _meteor.Meteor.loginWithPassword($username, $password, function (err) {                                    // 192
-                if (err) {                                                                                             // 193
-                    Session.set("info", { success: "", error: "登陆失败！用户名与密码不匹配。" });                                    // 194
+            _meteor.Meteor.loginWithPassword($username, $password, function (err) {                                    // 227
+                if (err) {                                                                                             // 228
+                    Session.set("info", { success: "", error: "登陆失败！用户名与密码不匹配。" });                                    // 229
                 } else {                                                                                               //
-                    Router.redirect("/");                                                                              // 196
-                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                  // 197
-                    Session.set("info", { success: "登陆成功", error: "" });                                               // 198
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 199
-                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 1, totalScore: 1 } }, false, true);   // 200
+                    Router.redirect("/");                                                                              // 231
+                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                  // 232
+                    Session.set("info", { success: "登陆成功", error: "" });                                               // 233
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 234
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 1, totalScore: 1 } }, false, true);   // 235
                 }                                                                                                      //
             });                                                                                                        //
         }                                                                                                              //
@@ -758,87 +805,87 @@ Template.login.events({                                                         
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.index.events({                                                                                                // 210
-    'click #submit': function () {                                                                                     // 211
-        function clickSubmit(event) {                                                                                  // 211
-            event.preventDefault();                                                                                    // 212
-            var $post = $("#post").val();                                                                              // 213
-            if ($post.length === 0 || $post.length >= 200) {                                                           // 214
-                Session.set("info", { success: "", error: "请将字数限制在1-200字以内" });                                        // 215
-                return;                                                                                                // 216
+Template.index.events({                                                                                                // 245
+    'click #submit': function () {                                                                                     // 246
+        function clickSubmit(event) {                                                                                  // 246
+            event.preventDefault();                                                                                    // 247
+            var $post = $("#post").val();                                                                              // 248
+            if ($post.length === 0 || $post.length >= 200) {                                                           // 249
+                Session.set("info", { success: "", error: "请将字数限制在1-200字以内" });                                        // 250
+                return;                                                                                                // 251
             }                                                                                                          //
-            Posts.insert({                                                                                             // 218
-                user: _meteor.Meteor.user(),                                                                           // 219
-                post: $post,                                                                                           // 220
-                "super": 0,                                                                                            // 221
-                like: 0,                                                                                               // 222
-                Likers: [],                                                                                            // 223
-                top: false,                                                                                            // 224
-                time: new Date() }, function (err) {                                                                   // 225
-                if (err) {                                                                                             // 227
-                    Session.set("info", { success: "", error: "发表失败" });                                               // 228
+            Posts.insert({                                                                                             // 253
+                user: _meteor.Meteor.user(),                                                                           // 254
+                post: $post,                                                                                           // 255
+                "super": 0,                                                                                            // 256
+                like: 0,                                                                                               // 257
+                Likers: [],                                                                                            // 258
+                top: false,                                                                                            // 259
+                time: new Date() }, function (err) {                                                                   // 260
+                if (err) {                                                                                             // 262
+                    Session.set("info", { success: "", error: "发表失败" });                                               // 263
                 } else {                                                                                               //
-                    Session.set("info", { success: "发表成功", error: "" });                                               // 230
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 231
+                    Session.set("info", { success: "发表成功", error: "" });                                               // 265
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 266
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 100, totalScore: 100 } }, false, true);
-                    $("#post").val("");                                                                                // 237
+                    $("#post").val("");                                                                                // 272
                 }                                                                                                      //
             });                                                                                                        //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 241
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 276
         }                                                                                                              //
                                                                                                                        //
         return clickSubmit;                                                                                            //
     }(),                                                                                                               //
-    'click #commnetSubmit': function () {                                                                              // 243
-        function clickCommnetSubmit(event) {                                                                           // 243
-            event.preventDefault();                                                                                    // 244
-            var $comment = $("#" + this._id).val();                                                                    // 245
-            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 246
-                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 247
-                scroll(0, 0);                                                                                          // 248
-                return;                                                                                                // 249
+    'click #commnetSubmit': function () {                                                                              // 278
+        function clickCommnetSubmit(event) {                                                                           // 278
+            event.preventDefault();                                                                                    // 279
+            var $comment = $("#" + this._id).val();                                                                    // 280
+            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 281
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 282
+                scroll(0, 0);                                                                                          // 283
+                return;                                                                                                // 284
             }                                                                                                          //
-            Posts.insert({                                                                                             // 251
-                user: _meteor.Meteor.user(),                                                                           // 252
-                post: $comment,                                                                                        // 253
-                "super": this._id,                                                                                     // 254
-                time: new Date() }, function (err) {                                                                   // 255
-                if (err) {                                                                                             // 257
-                    Session.set("info", { success: "", error: "评论失败" });                                               // 258
+            Posts.insert({                                                                                             // 286
+                user: _meteor.Meteor.user(),                                                                           // 287
+                post: $comment,                                                                                        // 288
+                "super": this._id,                                                                                     // 289
+                time: new Date() }, function (err) {                                                                   // 290
+                if (err) {                                                                                             // 292
+                    Session.set("info", { success: "", error: "评论失败" });                                               // 293
                 } else {                                                                                               //
-                    Session.set("info", { success: "评论成功", error: "" });                                               // 260
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 261
+                    Session.set("info", { success: "评论成功", error: "" });                                               // 295
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 296
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
-                    $("#" + this._id).val("");                                                                         // 267
+                    $("#" + this._id).val("");                                                                         // 302
                 }                                                                                                      //
             });                                                                                                        //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 271
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 306
         }                                                                                                              //
                                                                                                                        //
         return clickCommnetSubmit;                                                                                     //
     }(),                                                                                                               //
-    'click #addFriend': function () {                                                                                  // 273
-        function clickAddFriend(event) {                                                                               // 273
-            event.preventDefault();                                                                                    // 274
-            var $friendId = this.user._id;                                                                             // 275
-            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 276
-                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 277
-                scroll(0, 0);                                                                                          // 278
-                return;                                                                                                // 279
+    'click #addFriend': function () {                                                                                  // 308
+        function clickAddFriend(event) {                                                                               // 308
+            event.preventDefault();                                                                                    // 309
+            var $friendId = this.user._id;                                                                             // 310
+            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 311
+                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 312
+                scroll(0, 0);                                                                                          // 313
+                return;                                                                                                // 314
             }                                                                                                          //
                                                                                                                        //
-            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 282
-            UserInfo.update({                                                                                          // 283
-                "_id": userInfoId                                                                                      // 284
+            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 317
+            UserInfo.update({                                                                                          // 318
+                "_id": userInfoId                                                                                      // 319
             }, {                                                                                                       //
-                $addToSet: { "Friends": $friendId },                                                                   // 286
-                $inc: { "totalFriend": 1 }                                                                             // 287
+                $addToSet: { "Friends": $friendId },                                                                   // 321
+                $inc: { "totalFriend": 1 }                                                                             // 322
             }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 291
-                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 292
+                if (err) {                                                                                             // 326
+                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 327
                 } else {                                                                                               //
-                    Session.set("info", { success: "添加成功", error: "" });                                               // 294
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 295
+                    Session.set("info", { success: "添加成功", error: "" });                                               // 329
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 330
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 50, totalScore: 50 } }, false, true);
                 }                                                                                                      //
             });                                                                                                        //
@@ -846,50 +893,50 @@ Template.index.events({                                                         
                                                                                                                        //
         return clickAddFriend;                                                                                         //
     }(),                                                                                                               //
-    'click #likePost': function () {                                                                                   // 305
-        function clickLikePost(event) {                                                                                // 305
-            event.preventDefault();                                                                                    // 306
-            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 307
-                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 308
-                scroll(0, 0);                                                                                          // 309
-                return;                                                                                                // 310
+    'click #likePost': function () {                                                                                   // 340
+        function clickLikePost(event) {                                                                                // 340
+            event.preventDefault();                                                                                    // 341
+            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 342
+                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 343
+                scroll(0, 0);                                                                                          // 344
+                return;                                                                                                // 345
             }                                                                                                          //
-            Posts.update({                                                                                             // 312
-                "_id": this._id                                                                                        // 313
+            Posts.update({                                                                                             // 347
+                "_id": this._id                                                                                        // 348
             }, {                                                                                                       //
-                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 315
-                $inc: { "like": 1 }                                                                                    // 316
+                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 350
+                $inc: { "like": 1 }                                                                                    // 351
             }, false, true, function (err) {                                                                           //
-                if (err) {                                                                                             // 320
-                    Session.set("info", { success: "", error: "点赞失败" });                                               // 321
+                if (err) {                                                                                             // 355
+                    Session.set("info", { success: "", error: "点赞失败" });                                               // 356
                 } else {                                                                                               //
-                    Session.set("info", { success: "点赞成功", error: "" });                                               // 323
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 324
-                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 325
+                    Session.set("info", { success: "点赞成功", error: "" });                                               // 358
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 359
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 360
                 }                                                                                                      //
             });                                                                                                        //
         }                                                                                                              //
                                                                                                                        //
         return clickLikePost;                                                                                          //
     }(),                                                                                                               //
-    'click #topPost': function () {                                                                                    // 334
-        function clickTopPost(event) {                                                                                 // 334
-            event.preventDefault();                                                                                    // 335
-            if (_meteor.Meteor.user().username != "admin") {                                                           // 336
-                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 337
-                scroll(0, 0);                                                                                          // 338
-                return;                                                                                                // 339
+    'click #topPost': function () {                                                                                    // 369
+        function clickTopPost(event) {                                                                                 // 369
+            event.preventDefault();                                                                                    // 370
+            if (_meteor.Meteor.user().username != "admin") {                                                           // 371
+                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 372
+                scroll(0, 0);                                                                                          // 373
+                return;                                                                                                // 374
             }                                                                                                          //
-            Posts.update({                                                                                             // 341
-                "_id": this._id                                                                                        // 342
+            Posts.update({                                                                                             // 376
+                "_id": this._id                                                                                        // 377
             }, {                                                                                                       //
-                $set: { "top": true }                                                                                  // 344
+                $set: { "top": true }                                                                                  // 379
             }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 348
-                    Session.set("info", { success: "", error: "置顶失败" });                                               // 349
+                if (err) {                                                                                             // 383
+                    Session.set("info", { success: "", error: "置顶失败" });                                               // 384
                 } else {                                                                                               //
-                    Session.set("info", { success: "置顶成功", error: "" });                                               // 351
-                    var userInfoId = Posts.findOne({ "_id": this._id }).user._id;                                      // 352
+                    Session.set("info", { success: "置顶成功", error: "" });                                               // 386
+                    var userInfoId = Posts.findOne({ "_id": this._id }).user._id;                                      // 387
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 80, totalScore: 80 } }, false, true);
                 }                                                                                                      //
             });                                                                                                        //
@@ -897,28 +944,52 @@ Template.index.events({                                                         
                                                                                                                        //
         return clickTopPost;                                                                                           //
     }(),                                                                                                               //
-    'click #untopPost': function () {                                                                                  // 362
-        function clickUntopPost(event) {                                                                               // 362
-            event.preventDefault();                                                                                    // 363
-            if (_meteor.Meteor.user().username != "admin") {                                                           // 364
-                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 365
-                scroll(0, 0);                                                                                          // 366
-                return;                                                                                                // 367
+    'click #untopPost': function () {                                                                                  // 397
+        function clickUntopPost(event) {                                                                               // 397
+            event.preventDefault();                                                                                    // 398
+            if (_meteor.Meteor.user().username != "admin") {                                                           // 399
+                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 400
+                scroll(0, 0);                                                                                          // 401
+                return;                                                                                                // 402
             }                                                                                                          //
-            Posts.update({                                                                                             // 369
-                "_id": this._id                                                                                        // 370
+            Posts.update({                                                                                             // 404
+                "_id": this._id                                                                                        // 405
             }, {                                                                                                       //
-                $set: { "top": false }                                                                                 // 372
+                $set: { "top": false }                                                                                 // 407
             }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 376
-                    Session.set("info", { success: "", error: "取消置顶失败" });                                             // 377
+                if (err) {                                                                                             // 411
+                    Session.set("info", { success: "", error: "取消置顶失败" });                                             // 412
                 } else {                                                                                               //
-                    Session.set("info", { success: "取消置顶成功", error: "" });                                             // 379
+                    Session.set("info", { success: "取消置顶成功", error: "" });                                             // 414
                 }                                                                                                      //
             });                                                                                                        //
         }                                                                                                              //
                                                                                                                        //
         return clickUntopPost;                                                                                         //
+    }(),                                                                                                               //
+    'click #getImage': function () {                                                                                   // 419
+        function clickGetImage(event) {                                                                                // 419
+            event.preventDefault();                                                                                    // 420
+            navigator.device.capture.captureImage(captureSuccess, captureError, { limit: 1 });                         // 421
+        }                                                                                                              //
+                                                                                                                       //
+        return clickGetImage;                                                                                          //
+    }(),                                                                                                               //
+    'click #getAudio': function () {                                                                                   // 423
+        function clickGetAudio(event) {                                                                                // 423
+            event.preventDefault();                                                                                    // 424
+            navigator.device.capture.captureAudio(captureSuccess, captureError, { limit: 1 });                         // 425
+        }                                                                                                              //
+                                                                                                                       //
+        return clickGetAudio;                                                                                          //
+    }(),                                                                                                               //
+    'click #getVideo': function () {                                                                                   // 427
+        function clickGetVideo(event) {                                                                                // 427
+            event.preventDefault();                                                                                    // 428
+            navigator.device.capture.captureVideo(captureSuccess, captureError, { limit: 2 });                         // 429
+        }                                                                                                              //
+                                                                                                                       //
+        return clickGetVideo;                                                                                          //
     }()                                                                                                                //
 });                                                                                                                    //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

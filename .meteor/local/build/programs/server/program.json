@@ -278,7 +278,31 @@
       "path": "packages/session.js"
     },
     {
+      "path": "packages/cfs_standard-packages.js"
+    },
+    {
+      "sourceMap": "packages/cfs_base-package.js.map",
+      "path": "packages/cfs_base-package.js"
+    },
+    {
       "path": "packages/livedata.js"
+    },
+    {
+      "path": "packages/mongo-livedata.js"
+    },
+    {
+      "sourceMap": "packages/raix_eventemitter.js.map",
+      "path": "packages/raix_eventemitter.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/cfs_storage-adapter/node_modules",
+      "sourceMap": "packages/cfs_storage-adapter.js.map",
+      "path": "packages/cfs_storage-adapter.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/cfs_filesystem/node_modules",
+      "sourceMap": "packages/cfs_filesystem.js.map",
+      "path": "packages/cfs_filesystem.js"
     },
     {
       "path": "packages/hot-code-push.js"
@@ -292,6 +316,70 @@
     {
       "sourceMap": "packages/markdown.js.map",
       "path": "packages/markdown.js"
+    },
+    {
+      "sourceMap": "packages/url.js.map",
+      "path": "packages/url.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/http/node_modules",
+      "sourceMap": "packages/http.js.map",
+      "path": "packages/http.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/cfs_data-man/node_modules",
+      "sourceMap": "packages/cfs_data-man.js.map",
+      "path": "packages/cfs_data-man.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/cfs_file/node_modules",
+      "sourceMap": "packages/cfs_file.js.map",
+      "path": "packages/cfs_file.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/cfs_tempstore/node_modules",
+      "sourceMap": "packages/cfs_tempstore.js.map",
+      "path": "packages/cfs_tempstore.js"
+    },
+    {
+      "sourceMap": "packages/cfs_http-methods.js.map",
+      "path": "packages/cfs_http-methods.js"
+    },
+    {
+      "sourceMap": "packages/cfs_http-publish.js.map",
+      "path": "packages/cfs_http-publish.js"
+    },
+    {
+      "sourceMap": "packages/cfs_access-point.js.map",
+      "path": "packages/cfs_access-point.js"
+    },
+    {
+      "sourceMap": "packages/cfs_reactive-property.js.map",
+      "path": "packages/cfs_reactive-property.js"
+    },
+    {
+      "sourceMap": "packages/cfs_reactive-list.js.map",
+      "path": "packages/cfs_reactive-list.js"
+    },
+    {
+      "sourceMap": "packages/cfs_power-queue.js.map",
+      "path": "packages/cfs_power-queue.js"
+    },
+    {
+      "sourceMap": "packages/cfs_upload-http.js.map",
+      "path": "packages/cfs_upload-http.js"
+    },
+    {
+      "sourceMap": "packages/cfs_collection.js.map",
+      "path": "packages/cfs_collection.js"
+    },
+    {
+      "sourceMap": "packages/cfs_collection-filters.js.map",
+      "path": "packages/cfs_collection-filters.js"
+    },
+    {
+      "sourceMap": "packages/cfs_worker.js.map",
+      "path": "packages/cfs_worker.js"
     },
     {
       "sourceMap": "packages/autoupdate.js.map",

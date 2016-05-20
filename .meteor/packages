@@ -26,3 +26,5 @@ practicalmeteor:mocha
 crosswalk
 session
 insecure
+cfs:standard-packages
+cfs:filesystem

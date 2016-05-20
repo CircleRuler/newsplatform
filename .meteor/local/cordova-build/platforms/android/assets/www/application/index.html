@@ -12,7 +12,7 @@
   <link rel="stylesheet" type="text/css" class="__meteor-css__" href="/merged-stylesheets.css?hash=3fbe64a2221cfc847f0e159e30b3b915aa80601d">
 
   <script type="text/javascript">
-    __meteor_runtime_config__ = JSON.parse(decodeURIComponent("%7B%22meteorRelease%22%3A%22METEOR%401.3.2.4%22%2C%22ROOT_URL%22%3A%22http%3A%2F%2F222.20.3.54%3A3000%2F%22%2C%22ROOT_URL_PATH_PREFIX%22%3A%22%22%2C%22DDP_DEFAULT_CONNECTION_URL%22%3A%22http%3A%2F%2F222.20.3.54%3A3000%2F%22%2C%22autoupdateVersionCordova%22%3A%22ae012c092599ad9824d95f1c78b8f506809df8ce%22%2C%22appId%22%3A%221gw0eo9t8qg39yi7ncl%22%2C%22meteorEnv%22%3A%7B%22NODE_ENV%22%3A%22development%22%2C%22TEST_METADATA%22%3A%22%7B%7D%22%7D%7D"));
+    __meteor_runtime_config__ = JSON.parse(decodeURIComponent("%7B%22meteorRelease%22%3A%22METEOR%401.3.2.4%22%2C%22ROOT_URL%22%3A%22http%3A%2F%2F222.20.3.54%3A3000%2F%22%2C%22ROOT_URL_PATH_PREFIX%22%3A%22%22%2C%22DDP_DEFAULT_CONNECTION_URL%22%3A%22http%3A%2F%2F222.20.3.54%3A3000%2F%22%2C%22autoupdateVersionCordova%22%3A%226b7f2668e436c62ffe8e003ae0e25e1d8b731549%22%2C%22appId%22%3A%221gw0eo9t8qg39yi7ncl%22%2C%22meteorEnv%22%3A%7B%22NODE_ENV%22%3A%22development%22%2C%22TEST_METADATA%22%3A%22%7B%7D%22%7D%7D"));
 
     if (/Android/i.test(navigator.userAgent)) {
       // When Android app is emulated, it cannot connect to localhost,
@@ -38,7 +38,7 @@
   <script type="text/javascript" src="/packages/ordered-dict.js?hash=61f1d7f16d10d9f37890aaf2455697ef7c8c378b"></script>
   <script type="text/javascript" src="/packages/tracker.js?hash=6f5d0f5486aaa54b0abe636174eeb06dcc2a736b"></script>
   <script type="text/javascript" src="/packages/modules-runtime.js?hash=06e09a3c04e9e6663ffff9e7a8ee3291658833b2"></script>
-  <script type="text/javascript" src="/packages/modules.js?hash=5a4f020467341e2a2e4065ae1761c76cdf9d59d8"></script>
+  <script type="text/javascript" src="/packages/modules.js?hash=de543731ce54822c12bd929f6bd83051529645b7"></script>
   <script type="text/javascript" src="/packages/es5-shim.js?hash=e4d68c9ebbcdbd230d16f4bd933ee8dbf2978a22"></script>
   <script type="text/javascript" src="/packages/promise.js?hash=f03c28bde91db29bf1ac0d5073f93cafccc4e59e"></script>
   <script type="text/javascript" src="/packages/ecmascript-runtime.js?hash=e4dd2b138377d446dc7dc3af21bb5bcd4b2b88a3"></script>
@@ -83,8 +83,14 @@
   <script type="text/javascript" src="/packages/crosswalk.js?hash=bfde1e6211a536a2193278d4adf71dff94e99d65"></script>
   <script type="text/javascript" src="/packages/reactive-dict.js?hash=8a78efb82b75a8822118656632a6dc7d4a185c62"></script>
   <script type="text/javascript" src="/packages/session.js?hash=9ac45190b217c0c6a6293b0769e5a83f9dc8c003"></script>
-  <script type="text/javascript" src="/packages/webapp.js?hash=2552b0d8c8f134d5763b6897c1be6c9bfa3e9c28"></script>
+  <script type="text/javascript" src="/packages/cfs_standard-packages.js?hash=becf86a54c96c1d00ec236babaa881ac9f57f980"></script>
+  <script type="text/javascript" src="/packages/cfs_base-package.js?hash=6a7aec1eda3131220d6b1c2eef5baa5f01e85e23"></script>
   <script type="text/javascript" src="/packages/livedata.js?hash=e7fb2e783bc81b00b914c2e27966b7b6d3d081b6"></script>
+  <script type="text/javascript" src="/packages/mongo-livedata.js?hash=90f8db0d77ad58af0be8b649be9a6bcffe778b82"></script>
+  <script type="text/javascript" src="/packages/raix_eventemitter.js?hash=f73e7166ed24e605f095ac7f16cc2ee6b3aafcea"></script>
+  <script type="text/javascript" src="/packages/cfs_storage-adapter.js?hash=c7ca941ba178d21c619492ec0a66bd597f8ee9ab"></script>
+  <script type="text/javascript" src="/packages/cfs_filesystem.js?hash=554ceacc2bfe791ce09eb797c08d20f564e553fc"></script>
+  <script type="text/javascript" src="/packages/webapp.js?hash=2552b0d8c8f134d5763b6897c1be6c9bfa3e9c28"></script>
   <script type="text/javascript" src="/packages/hot-code-push.js?hash=9121bd39124b5010787be320ca559344b6691712"></script>
   <script type="text/javascript" src="/packages/fastclick.js?hash=f09653fe47c6acffa2d5a6a2d8e1e39664a660d3"></script>
   <script type="text/javascript" src="/packages/mobile-status-bar.js?hash=7c4b032a3e264cb701c128f1ece5d71ba81465c7"></script>
@@ -95,9 +101,22 @@
   <script type="text/javascript" src="/packages/markdown.js?hash=bfc706b03cb54a0bc61977e798765f29962e72bb"></script>
   <script type="text/javascript" src="/packages/url.js?hash=4784636fd5077ac379ba1f01a5c4ff3295ae642b"></script>
   <script type="text/javascript" src="/packages/http.js?hash=18533e1caf7c942be3ecaa4dc168c938768df8ca"></script>
+  <script type="text/javascript" src="/packages/cfs_data-man.js?hash=a36f9d562df41aba575db4260832d7928ee7736c"></script>
+  <script type="text/javascript" src="/packages/cfs_file.js?hash=2aba81f452b41c88fa9498a1a5a7e5d2c5d232fa"></script>
+  <script type="text/javascript" src="/packages/cfs_tempstore.js?hash=d21be8e41a345118dcbd680c21ae271e9dc9b67a"></script>
+  <script type="text/javascript" src="/packages/cfs_http-methods.js?hash=a306cdf55dd63acc7b567092a87c11c9ea759bc9"></script>
+  <script type="text/javascript" src="/packages/cfs_http-publish.js?hash=09bfc85b9a8f181f9f6202c4df473c72a4297db6"></script>
+  <script type="text/javascript" src="/packages/cfs_access-point.js?hash=73e7cc74ddf9a99c298bfb3f8efcd161a007d734"></script>
+  <script type="text/javascript" src="/packages/cfs_reactive-property.js?hash=bfe603e4046e37b51c1b7eac1361a554e2cb5aff"></script>
+  <script type="text/javascript" src="/packages/cfs_reactive-list.js?hash=c8ffe5fe4fd4fcf9926a840dd0570f2f42cce98b"></script>
+  <script type="text/javascript" src="/packages/cfs_power-queue.js?hash=e4665727a598dc14e881678d52609b4e627641d8"></script>
+  <script type="text/javascript" src="/packages/cfs_upload-http.js?hash=87001be837462dfd3bde6bf6bbca972d7839f1f9"></script>
+  <script type="text/javascript" src="/packages/cfs_collection.js?hash=cc4c9068779f2c6ab8e0aa20b5e834a20e8325e6"></script>
+  <script type="text/javascript" src="/packages/cfs_collection-filters.js?hash=4adf8948762d30f07da55511b2705c70e97a6098"></script>
+  <script type="text/javascript" src="/packages/cfs_worker.js?hash=0d1dfcf85d26aed89392dbe36aa82b6ae02834a9"></script>
   <script type="text/javascript" src="/packages/autoupdate.js?hash=b8023eef660c2b01ae18946f94c4c7755b3de37c"></script>
-  <script type="text/javascript" src="/packages/global-imports.js?hash=cc309ebe984aa4b8c14c688e9801e3ade37892bb"></script>
-  <script type="text/javascript" src="/app/app.js?hash=7985674134f79f249942f7885371671e3805ba44"></script>
+  <script type="text/javascript" src="/packages/global-imports.js?hash=15b276b76eec832deeef938d1ec7c86f63f2826a"></script>
+  <script type="text/javascript" src="/app/app.js?hash=19f24eb8068b7258b8a027ff835358dabdbb4798"></script>
   <script type="text/javascript" src="/packages/service-configuration.js?hash=331fe144dc8f69e5e44f23dd74b9de74ed80c6f3"></script>
 
 

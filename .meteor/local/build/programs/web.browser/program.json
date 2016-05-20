@@ -130,11 +130,11 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/packages/modules.js?hash=4342ea8f84e87d2d99e7c77fb87fad6414a1da3a",
+      "url": "/packages/modules.js?hash=b7bd1aea7d28af6125a262d33d029dc783342191",
       "sourceMap": "packages/modules.js.map",
-      "sourceMapUrl": "/packages/4342ea8f84e87d2d99e7c77fb87fad6414a1da3a.map",
-      "size": 298319,
-      "hash": "4342ea8f84e87d2d99e7c77fb87fad6414a1da3a"
+      "sourceMapUrl": "/packages/b7bd1aea7d28af6125a262d33d029dc783342191.map",
+      "size": 300747,
+      "hash": "b7bd1aea7d28af6125a262d33d029dc783342191"
     },
     {
       "path": "packages/es5-shim.js",
@@ -597,15 +597,26 @@
       "hash": "9ac45190b217c0c6a6293b0769e5a83f9dc8c003"
     },
     {
-      "path": "packages/webapp.js",
+      "path": "packages/cfs_standard-packages.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/packages/webapp.js?hash=7431a11f1c671b350504fe7192b94219e5200359",
-      "sourceMap": "packages/webapp.js.map",
-      "sourceMapUrl": "/packages/7431a11f1c671b350504fe7192b94219e5200359.map",
-      "size": 3443,
-      "hash": "7431a11f1c671b350504fe7192b94219e5200359"
+      "url": "/packages/cfs_standard-packages.js?hash=becf86a54c96c1d00ec236babaa881ac9f57f980",
+      "sourceMap": "packages/cfs_standard-packages.js.map",
+      "sourceMapUrl": "/packages/becf86a54c96c1d00ec236babaa881ac9f57f980.map",
+      "size": 1467,
+      "hash": "becf86a54c96c1d00ec236babaa881ac9f57f980"
+    },
+    {
+      "path": "packages/cfs_base-package.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_base-package.js?hash=6a7aec1eda3131220d6b1c2eef5baa5f01e85e23",
+      "sourceMap": "packages/cfs_base-package.js.map",
+      "sourceMapUrl": "/packages/6a7aec1eda3131220d6b1c2eef5baa5f01e85e23.map",
+      "size": 49488,
+      "hash": "6a7aec1eda3131220d6b1c2eef5baa5f01e85e23"
     },
     {
       "path": "packages/livedata.js",
@@ -615,6 +626,59 @@
       "url": "/packages/livedata.js?hash=e7fb2e783bc81b00b914c2e27966b7b6d3d081b6",
       "size": 470,
       "hash": "e7fb2e783bc81b00b914c2e27966b7b6d3d081b6"
+    },
+    {
+      "path": "packages/mongo-livedata.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/mongo-livedata.js?hash=90f8db0d77ad58af0be8b649be9a6bcffe778b82",
+      "size": 250,
+      "hash": "90f8db0d77ad58af0be8b649be9a6bcffe778b82"
+    },
+    {
+      "path": "packages/raix_eventemitter.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/raix_eventemitter.js?hash=f73e7166ed24e605f095ac7f16cc2ee6b3aafcea",
+      "sourceMap": "packages/raix_eventemitter.js.map",
+      "sourceMapUrl": "/packages/f73e7166ed24e605f095ac7f16cc2ee6b3aafcea.map",
+      "size": 26336,
+      "hash": "f73e7166ed24e605f095ac7f16cc2ee6b3aafcea"
+    },
+    {
+      "path": "packages/cfs_storage-adapter.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_storage-adapter.js?hash=c7ca941ba178d21c619492ec0a66bd597f8ee9ab",
+      "sourceMap": "packages/cfs_storage-adapter.js.map",
+      "sourceMapUrl": "/packages/c7ca941ba178d21c619492ec0a66bd597f8ee9ab.map",
+      "size": 6381,
+      "hash": "c7ca941ba178d21c619492ec0a66bd597f8ee9ab"
+    },
+    {
+      "path": "packages/cfs_filesystem.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_filesystem.js?hash=554ceacc2bfe791ce09eb797c08d20f564e553fc",
+      "sourceMap": "packages/cfs_filesystem.js.map",
+      "sourceMapUrl": "/packages/554ceacc2bfe791ce09eb797c08d20f564e553fc.map",
+      "size": 3311,
+      "hash": "554ceacc2bfe791ce09eb797c08d20f564e553fc"
+    },
+    {
+      "path": "packages/webapp.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/webapp.js?hash=7431a11f1c671b350504fe7192b94219e5200359",
+      "sourceMap": "packages/webapp.js.map",
+      "sourceMapUrl": "/packages/7431a11f1c671b350504fe7192b94219e5200359.map",
+      "size": 3443,
+      "hash": "7431a11f1c671b350504fe7192b94219e5200359"
     },
     {
       "path": "packages/hot-code-push.js",
@@ -679,6 +743,171 @@
       "hash": "bfc706b03cb54a0bc61977e798765f29962e72bb"
     },
     {
+      "path": "packages/url.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/url.js?hash=4784636fd5077ac379ba1f01a5c4ff3295ae642b",
+      "sourceMap": "packages/url.js.map",
+      "sourceMapUrl": "/packages/4784636fd5077ac379ba1f01a5c4ff3295ae642b.map",
+      "size": 6287,
+      "hash": "4784636fd5077ac379ba1f01a5c4ff3295ae642b"
+    },
+    {
+      "path": "packages/http.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/http.js?hash=18533e1caf7c942be3ecaa4dc168c938768df8ca",
+      "sourceMap": "packages/http.js.map",
+      "sourceMapUrl": "/packages/18533e1caf7c942be3ecaa4dc168c938768df8ca.map",
+      "size": 38076,
+      "hash": "18533e1caf7c942be3ecaa4dc168c938768df8ca"
+    },
+    {
+      "path": "packages/cfs_data-man.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_data-man.js?hash=a36f9d562df41aba575db4260832d7928ee7736c",
+      "sourceMap": "packages/cfs_data-man.js.map",
+      "sourceMapUrl": "/packages/a36f9d562df41aba575db4260832d7928ee7736c.map",
+      "size": 63099,
+      "hash": "a36f9d562df41aba575db4260832d7928ee7736c"
+    },
+    {
+      "path": "packages/cfs_file.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_file.js?hash=2aba81f452b41c88fa9498a1a5a7e5d2c5d232fa",
+      "sourceMap": "packages/cfs_file.js.map",
+      "sourceMapUrl": "/packages/2aba81f452b41c88fa9498a1a5a7e5d2c5d232fa.map",
+      "size": 90824,
+      "hash": "2aba81f452b41c88fa9498a1a5a7e5d2c5d232fa"
+    },
+    {
+      "path": "packages/cfs_tempstore.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_tempstore.js?hash=d21be8e41a345118dcbd680c21ae271e9dc9b67a",
+      "sourceMap": "packages/cfs_tempstore.js.map",
+      "sourceMapUrl": "/packages/d21be8e41a345118dcbd680c21ae271e9dc9b67a.map",
+      "size": 1533,
+      "hash": "d21be8e41a345118dcbd680c21ae271e9dc9b67a"
+    },
+    {
+      "path": "packages/cfs_http-methods.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_http-methods.js?hash=a306cdf55dd63acc7b567092a87c11c9ea759bc9",
+      "sourceMap": "packages/cfs_http-methods.js.map",
+      "sourceMapUrl": "/packages/a306cdf55dd63acc7b567092a87c11c9ea759bc9.map",
+      "size": 2103,
+      "hash": "a306cdf55dd63acc7b567092a87c11c9ea759bc9"
+    },
+    {
+      "path": "packages/cfs_http-publish.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_http-publish.js?hash=09bfc85b9a8f181f9f6202c4df473c72a4297db6",
+      "sourceMap": "packages/cfs_http-publish.js.map",
+      "sourceMapUrl": "/packages/09bfc85b9a8f181f9f6202c4df473c72a4297db6.map",
+      "size": 3775,
+      "hash": "09bfc85b9a8f181f9f6202c4df473c72a4297db6"
+    },
+    {
+      "path": "packages/cfs_access-point.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_access-point.js?hash=73e7cc74ddf9a99c298bfb3f8efcd161a007d734",
+      "sourceMap": "packages/cfs_access-point.js.map",
+      "sourceMapUrl": "/packages/73e7cc74ddf9a99c298bfb3f8efcd161a007d734.map",
+      "size": 34005,
+      "hash": "73e7cc74ddf9a99c298bfb3f8efcd161a007d734"
+    },
+    {
+      "path": "packages/cfs_reactive-property.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_reactive-property.js?hash=bfe603e4046e37b51c1b7eac1361a554e2cb5aff",
+      "sourceMap": "packages/cfs_reactive-property.js.map",
+      "sourceMapUrl": "/packages/bfe603e4046e37b51c1b7eac1361a554e2cb5aff.map",
+      "size": 16002,
+      "hash": "bfe603e4046e37b51c1b7eac1361a554e2cb5aff"
+    },
+    {
+      "path": "packages/cfs_reactive-list.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_reactive-list.js?hash=c8ffe5fe4fd4fcf9926a840dd0570f2f42cce98b",
+      "sourceMap": "packages/cfs_reactive-list.js.map",
+      "sourceMapUrl": "/packages/c8ffe5fe4fd4fcf9926a840dd0570f2f42cce98b.map",
+      "size": 34794,
+      "hash": "c8ffe5fe4fd4fcf9926a840dd0570f2f42cce98b"
+    },
+    {
+      "path": "packages/cfs_power-queue.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_power-queue.js?hash=e4665727a598dc14e881678d52609b4e627641d8",
+      "sourceMap": "packages/cfs_power-queue.js.map",
+      "sourceMapUrl": "/packages/e4665727a598dc14e881678d52609b4e627641d8.map",
+      "size": 93152,
+      "hash": "e4665727a598dc14e881678d52609b4e627641d8"
+    },
+    {
+      "path": "packages/cfs_upload-http.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_upload-http.js?hash=87001be837462dfd3bde6bf6bbca972d7839f1f9",
+      "sourceMap": "packages/cfs_upload-http.js.map",
+      "sourceMapUrl": "/packages/87001be837462dfd3bde6bf6bbca972d7839f1f9.map",
+      "size": 72258,
+      "hash": "87001be837462dfd3bde6bf6bbca972d7839f1f9"
+    },
+    {
+      "path": "packages/cfs_collection.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_collection.js?hash=cc4c9068779f2c6ab8e0aa20b5e834a20e8325e6",
+      "sourceMap": "packages/cfs_collection.js.map",
+      "sourceMapUrl": "/packages/cc4c9068779f2c6ab8e0aa20b5e834a20e8325e6.map",
+      "size": 58584,
+      "hash": "cc4c9068779f2c6ab8e0aa20b5e834a20e8325e6"
+    },
+    {
+      "path": "packages/cfs_collection-filters.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_collection-filters.js?hash=4adf8948762d30f07da55511b2705c70e97a6098",
+      "sourceMap": "packages/cfs_collection-filters.js.map",
+      "sourceMapUrl": "/packages/4adf8948762d30f07da55511b2705c70e97a6098.map",
+      "size": 26752,
+      "hash": "4adf8948762d30f07da55511b2705c70e97a6098"
+    },
+    {
+      "path": "packages/cfs_worker.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/packages/cfs_worker.js?hash=0d1dfcf85d26aed89392dbe36aa82b6ae02834a9",
+      "sourceMap": "packages/cfs_worker.js.map",
+      "sourceMapUrl": "/packages/0d1dfcf85d26aed89392dbe36aa82b6ae02834a9.map",
+      "size": 1623,
+      "hash": "0d1dfcf85d26aed89392dbe36aa82b6ae02834a9"
+    },
+    {
       "path": "packages/autoupdate.js",
       "where": "client",
       "type": "js",
@@ -694,20 +923,20 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/packages/global-imports.js?hash=137a28cfa25cced38744c6551927109c824cff9d",
-      "size": 1209,
-      "hash": "137a28cfa25cced38744c6551927109c824cff9d"
+      "url": "/packages/global-imports.js?hash=f1a4777d986e0bd9ff18c011abbcdf0b223c0287",
+      "size": 1246,
+      "hash": "f1a4777d986e0bd9ff18c011abbcdf0b223c0287"
     },
     {
       "path": "app/app.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/app/app.js?hash=c2e81935f43656a62c988d69c43699733e811ce6",
+      "url": "/app/app.js?hash=255bf7e789c12bfe3c398408cd910e65a9241bc6",
       "sourceMap": "app/app.js.map",
-      "sourceMapUrl": "/app/c2e81935f43656a62c988d69c43699733e811ce6.map",
-      "size": 124539,
-      "hash": "c2e81935f43656a62c988d69c43699733e811ce6"
+      "sourceMapUrl": "/app/255bf7e789c12bfe3c398408cd910e65a9241bc6.map",
+      "size": 139931,
+      "hash": "255bf7e789c12bfe3c398408cd910e65a9241bc6"
     },
     {
       "path": "packages/service-configuration.js",
@@ -725,11 +954,11 @@
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/merged-stylesheets.css?hash=3fbe64a2221cfc847f0e159e30b3b915aa80601d",
+      "url": "/merged-stylesheets.css?hash=769f76b2f6f11b6ab0c7931966f32cd5461e56a8",
       "sourceMap": "merged-stylesheets.css.map",
-      "sourceMapUrl": "/3fbe64a2221cfc847f0e159e30b3b915aa80601d.map",
-      "size": 149943,
-      "hash": "3fbe64a2221cfc847f0e159e30b3b915aa80601d"
+      "sourceMapUrl": "/769f76b2f6f11b6ab0c7931966f32cd5461e56a8.map",
+      "size": 150062,
+      "hash": "769f76b2f6f11b6ab0c7931966f32cd5461e56a8"
     },
     {
       "path": "packages/bootstrap/img/glyphicons-halflings.png",
@@ -753,7 +982,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "593f0198c69001b981e1466da6e33cc3fb85b484"
+      "hash": "a49277a817f4ae57592fcfb440baaa6d50a213d7"
     }
   ]
 }

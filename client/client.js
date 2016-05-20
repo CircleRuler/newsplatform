@@ -15,12 +15,58 @@ Posts = new Meteor.Collection("posts");
 SystemInfo = new Meteor.Collection("systemInfo");
 UserInfo = new Meteor.Collection("userInfo");
 
-var captureSuccess = function(mediaFiles) {
+var isGetImage = false;
+var isGetAudio = false;
+var isGetVideo = false;
+var captureImageId = false;
+var captureAudioId = false;
+var captureVideoId = false;
+
+Images = new FS.Collection("images", {
+  stores: [new FS.Store.FileSystem("images", {path: "~/uploadsImage"})]
+});
+
+Audios = new FS.Collection("audios", {
+  stores: [new FS.Store.FileSystem("audios", {path: "~/uploadsAudio"})]
+});
+
+Videos = new FS.Collection("videos", {
+  stores: [new FS.Store.FileSystem("videos", {path: "~/uploadsVideo"})]
+});
+
+var captureImageSuccess = function(mediaFiles) {
     var i, path, len;
     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
         path = mediaFiles[i].fullPath;
-        // do something interesting with the file
-        Session.set("info", {success:path, error: ""});
+        Images.insert(mediaFiles[i],function (err, fileObj) {
+            isGetImage = true;
+            captureImageId = fileObj._id;
+            Session.set("info", {success:"插入图片成功", error: ""});
+        });
+    }
+};
+
+var captureAudioSuccess = function(mediaFiles) {
+    var i, path, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+        path = mediaFiles[i].fullPath;
+        Audios.insert(mediaFiles[i],function (err, fileObj) {
+            isGetAudio = true;
+            captureAudioId = fileObj._id;
+            Session.set("info", {success:"插入音频成功", error: ""});
+        });
+    }
+};
+
+var captureVideoSuccess = function(mediaFiles) {
+    var i, path, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+        path = mediaFiles[i].fullPath;
+        Videos.insert(mediaFiles[i],function (err, fileObj) {
+            isGetVideo = true;
+            captureVideoId = fileObj._id;
+            Session.set("info", {success:"插入小视频成功", error: ""});
+        });
     }
 };
 
@@ -65,12 +111,21 @@ Template.index.helpers({
     comments(){
         return Posts.find({"super":this._id},{sort: {time: 1}});
     },
-    getAudioBtn(){
+    getMediaBtn(){
         if(Meteor.isCordova){
             return true;
         }else{
             return false;
         }
+    },
+    displayImage(id){
+        return Images.find({"_id":id});
+    },
+    displayAudio(id){
+        return Audios.find({"_id":id});
+    },
+    displayVideo(id){
+        return Videos.find({"_id":id});
     }
 });
 
@@ -245,6 +300,12 @@ Template.index.events({
             like:0,
             Likers:[],
             top:false,
+            isGetImage:isGetImage,
+            isGetAudio:isGetAudio,
+            isGetVideo:isGetVideo,
+            captureImageId:captureImageId,
+            captureAudioId:captureAudioId,
+            captureVideoId:captureVideoId,
             time:new Date()},
             function(err){
                 if(err){
@@ -261,6 +322,12 @@ Template.index.events({
                 }
             }
         );
+        isGetImage = false;
+        isGetAudio = false;
+        isGetVideo = false;
+        captureImageId = false;
+        captureAudioId = false;
+        captureVideoId = false;
         SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
     },
     'click #commnetSubmit':function (event) {
@@ -406,14 +473,14 @@ Template.index.events({
     },
     'click #getImage':function (event) {
         event.preventDefault();
-        navigator.device.capture.captureImage(captureSuccess, captureError, {limit:1});
+        navigator.device.capture.captureImage(captureImageSuccess, captureError, {limit:1});
     },
     'click #getAudio':function (event) {
         event.preventDefault();
-        navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
+        navigator.device.capture.captureAudio(captureAudioSuccess, captureError, {limit:1});
     },
     'click #getVideo':function (event) {
         event.preventDefault();
-        navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:2}); 
+        navigator.device.capture.captureVideo(captureVideoSuccess, captureError, {limit:1}); 
     }
 })
