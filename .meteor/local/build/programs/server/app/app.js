@@ -1,189 +1,244 @@
 var require = meteorInstall({"server":{"server.js":function(){
 
-/////////////////////////////////////////////////////////////////////////////
-//                                                                         //
-// server/server.js                                                        //
-//                                                                         //
-/////////////////////////////////////////////////////////////////////////////
-                                                                           //
-Posts = new Meteor.Collection("posts");                                    // 1
-SystemInfo = new Meteor.Collection("systemInfo");                          // 2
-UserInfo = new Meteor.Collection("userInfo");                              // 3
-                                                                           //
-Images = new FS.Collection("images", {                                     // 5
-   stores: [new FS.Store.FileSystem("images", { path: "~/uploadsImage" })]
-});                                                                        //
-                                                                           //
-Audios = new FS.Collection("audios", {                                     // 9
-   stores: [new FS.Store.FileSystem("audios", { path: "~/uploadsAudio" })]
-});                                                                        //
-                                                                           //
-Videos = new FS.Collection("videos", {                                     // 13
-   stores: [new FS.Store.FileSystem("videos", { path: "~/uploadsVideo" })]
-});                                                                        //
-                                                                           //
-Posts.allow({                                                              // 17
-   insert: function () {                                                   // 18
-      function insert(userId, doc) {                                       // 18
-         return userId && doc.user._id === userId;                         // 19
-      }                                                                    //
-                                                                           //
-      return insert;                                                       //
-   }(),                                                                    //
-   update: function () {                                                   // 21
-      function update() {                                                  // 21
-         return true;                                                      // 22
-      }                                                                    //
-                                                                           //
-      return update;                                                       //
-   }()                                                                     //
-});                                                                        //
-SystemInfo.allow({                                                         // 25
-   insert: function () {                                                   // 26
-      function insert() {                                                  // 26
-         return true;                                                      // 27
-      }                                                                    //
-                                                                           //
-      return insert;                                                       //
-   }(),                                                                    //
-   update: function () {                                                   // 29
-      function update() {                                                  // 29
-         return true;                                                      // 30
-      }                                                                    //
-                                                                           //
-      return update;                                                       //
-   }(),                                                                    //
-   remove: function () {                                                   // 32
-      function remove() {                                                  // 32
-         return true;                                                      // 33
-      }                                                                    //
-                                                                           //
-      return remove;                                                       //
-   }()                                                                     //
-});                                                                        //
-UserInfo.allow({                                                           // 36
-   insert: function () {                                                   // 37
-      function insert() {                                                  // 37
-         return true;                                                      // 38
-      }                                                                    //
-                                                                           //
-      return insert;                                                       //
-   }(),                                                                    //
-   update: function () {                                                   // 40
-      function update() {                                                  // 40
-         return true;                                                      // 41
-      }                                                                    //
-                                                                           //
-      return update;                                                       //
-   }(),                                                                    //
-   remove: function () {                                                   // 43
-      function remove() {                                                  // 43
-         return true;                                                      // 44
-      }                                                                    //
-                                                                           //
-      return remove;                                                       //
-   }()                                                                     //
-});                                                                        //
-Images.allow({                                                             // 47
-   insert: function () {                                                   // 48
-      function insert() {                                                  // 48
-         return true;                                                      // 49
-      }                                                                    //
-                                                                           //
-      return insert;                                                       //
-   }(),                                                                    //
-   update: function () {                                                   // 51
-      function update() {                                                  // 51
-         return true;                                                      // 52
-      }                                                                    //
-                                                                           //
-      return update;                                                       //
-   }(),                                                                    //
-   remove: function () {                                                   // 54
-      function remove() {                                                  // 54
-         return true;                                                      // 55
-      }                                                                    //
-                                                                           //
-      return remove;                                                       //
-   }()                                                                     //
-});                                                                        //
-Audios.allow({                                                             // 58
-   insert: function () {                                                   // 59
-      function insert() {                                                  // 59
-         return true;                                                      // 60
-      }                                                                    //
-                                                                           //
-      return insert;                                                       //
-   }(),                                                                    //
-   update: function () {                                                   // 62
-      function update() {                                                  // 62
-         return true;                                                      // 63
-      }                                                                    //
-                                                                           //
-      return update;                                                       //
-   }(),                                                                    //
-   remove: function () {                                                   // 65
-      function remove() {                                                  // 65
-         return true;                                                      // 66
-      }                                                                    //
-                                                                           //
-      return remove;                                                       //
-   }()                                                                     //
-});                                                                        //
-Videos.allow({                                                             // 69
-   insert: function () {                                                   // 70
-      function insert() {                                                  // 70
-         return true;                                                      // 71
-      }                                                                    //
-                                                                           //
-      return insert;                                                       //
-   }(),                                                                    //
-   update: function () {                                                   // 73
-      function update() {                                                  // 73
-         return true;                                                      // 74
-      }                                                                    //
-                                                                           //
-      return update;                                                       //
-   }(),                                                                    //
-   remove: function () {                                                   // 76
-      function remove() {                                                  // 76
-         return true;                                                      // 77
-      }                                                                    //
-                                                                           //
-      return remove;                                                       //
-   }()                                                                     //
-});                                                                        //
-                                                                           //
-var timeTask = setInterval(function () {                                   // 81
-   var date = new Date();                                                  // 82
-   var h = date.getHours();                                                // 83
-   var m = date.getMinutes();                                              // 84
-   var s = date.getSeconds();                                              // 85
-   if (h == 0 && m == 0 && s == 0) {                                       // 86
-      callFunction();                                                      // 87
-   }                                                                       //
-}, 1000);                                                                  //
-function callFunction() {                                                  // 90
-   UserInfo.update({}, { $set: { todayScore: 0 } }, false, true);          // 91
-   console.log(1);                                                         // 92
-}                                                                          //
-/////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+//                                                                                   //
+// server/server.js                                                                  //
+//                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////
+                                                                                     //
+Posts = new Meteor.Collection("posts");                                              // 1
+SystemInfo = new Meteor.Collection("systemInfo");                                    // 2
+UserInfo = new Meteor.Collection("userInfo");                                        // 3
+                                                                                     //
+Images = new FS.Collection("images", {                                               // 5
+   stores: [new FS.Store.FileSystem("images", { path: "~/uploadsImage" })]           // 6
+});                                                                                  //
+                                                                                     //
+Audios = new FS.Collection("audios", {                                               // 9
+   stores: [new FS.Store.FileSystem("audios", { path: "~/uploadsAudio" })]           // 10
+});                                                                                  //
+                                                                                     //
+Videos = new FS.Collection("videos", {                                               // 13
+   stores: [new FS.Store.FileSystem("videos", { path: "~/uploadsVideo" })]           // 14
+});                                                                                  //
+                                                                                     //
+LocalImages = new FS.Collection("localimages", {                                     // 17
+   stores: [new FS.Store.FileSystem("localimages", { path: "~/uploadsLocalImage" })]
+});                                                                                  //
+                                                                                     //
+Posts.allow({                                                                        // 21
+   insert: function () {                                                             // 22
+      function insert(userId, doc) {                                                 // 22
+         return userId && doc.user._id === userId;                                   // 23
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 25
+      function update() {                                                            // 25
+         return true;                                                                // 26
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }()                                                                               //
+});                                                                                  //
+SystemInfo.allow({                                                                   // 29
+   insert: function () {                                                             // 30
+      function insert() {                                                            // 30
+         return true;                                                                // 31
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 33
+      function update() {                                                            // 33
+         return true;                                                                // 34
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }(),                                                                              //
+   remove: function () {                                                             // 36
+      function remove() {                                                            // 36
+         return true;                                                                // 37
+      }                                                                              //
+                                                                                     //
+      return remove;                                                                 //
+   }()                                                                               //
+});                                                                                  //
+UserInfo.allow({                                                                     // 40
+   insert: function () {                                                             // 41
+      function insert() {                                                            // 41
+         return true;                                                                // 42
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 44
+      function update() {                                                            // 44
+         return true;                                                                // 45
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }(),                                                                              //
+   remove: function () {                                                             // 47
+      function remove() {                                                            // 47
+         return true;                                                                // 48
+      }                                                                              //
+                                                                                     //
+      return remove;                                                                 //
+   }()                                                                               //
+});                                                                                  //
+Images.allow({                                                                       // 51
+   insert: function () {                                                             // 52
+      function insert() {                                                            // 52
+         return true;                                                                // 53
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 55
+      function update() {                                                            // 55
+         return true;                                                                // 56
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }(),                                                                              //
+   remove: function () {                                                             // 58
+      function remove() {                                                            // 58
+         return true;                                                                // 59
+      }                                                                              //
+                                                                                     //
+      return remove;                                                                 //
+   }(),                                                                              //
+   download: function () {                                                           // 61
+      function download() {                                                          // 61
+         return true;                                                                // 62
+      }                                                                              //
+                                                                                     //
+      return download;                                                               //
+   }()                                                                               //
+});                                                                                  //
+Audios.allow({                                                                       // 65
+   insert: function () {                                                             // 66
+      function insert() {                                                            // 66
+         return true;                                                                // 67
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 69
+      function update() {                                                            // 69
+         return true;                                                                // 70
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }(),                                                                              //
+   remove: function () {                                                             // 72
+      function remove() {                                                            // 72
+         return true;                                                                // 73
+      }                                                                              //
+                                                                                     //
+      return remove;                                                                 //
+   }(),                                                                              //
+   download: function () {                                                           // 75
+      function download() {                                                          // 75
+         return true;                                                                // 76
+      }                                                                              //
+                                                                                     //
+      return download;                                                               //
+   }()                                                                               //
+});                                                                                  //
+Videos.allow({                                                                       // 79
+   insert: function () {                                                             // 80
+      function insert() {                                                            // 80
+         return true;                                                                // 81
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 83
+      function update() {                                                            // 83
+         return true;                                                                // 84
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }(),                                                                              //
+   remove: function () {                                                             // 86
+      function remove() {                                                            // 86
+         return true;                                                                // 87
+      }                                                                              //
+                                                                                     //
+      return remove;                                                                 //
+   }(),                                                                              //
+   download: function () {                                                           // 89
+      function download() {                                                          // 89
+         return true;                                                                // 90
+      }                                                                              //
+                                                                                     //
+      return download;                                                               //
+   }()                                                                               //
+});                                                                                  //
+LocalImages.allow({                                                                  // 93
+   insert: function () {                                                             // 94
+      function insert() {                                                            // 94
+         return true;                                                                // 95
+      }                                                                              //
+                                                                                     //
+      return insert;                                                                 //
+   }(),                                                                              //
+   update: function () {                                                             // 97
+      function update() {                                                            // 97
+         return true;                                                                // 98
+      }                                                                              //
+                                                                                     //
+      return update;                                                                 //
+   }(),                                                                              //
+   remove: function () {                                                             // 100
+      function remove() {                                                            // 100
+         return true;                                                                // 101
+      }                                                                              //
+                                                                                     //
+      return remove;                                                                 //
+   }(),                                                                              //
+   download: function () {                                                           // 103
+      function download() {                                                          // 103
+         return true;                                                                // 104
+      }                                                                              //
+                                                                                     //
+      return download;                                                               //
+   }()                                                                               //
+});                                                                                  //
+                                                                                     //
+var timeTask = setInterval(function () {                                             // 108
+   var date = new Date();                                                            // 109
+   var h = date.getHours();                                                          // 110
+   var m = date.getMinutes();                                                        // 111
+   var s = date.getSeconds();                                                        // 112
+   if (h == 0 && m == 0 && s == 0) {                                                 // 113
+      callFunction();                                                                // 114
+   }                                                                                 //
+}, 1000);                                                                            //
+function callFunction() {                                                            // 117
+   UserInfo.update({}, { $set: { todayScore: 0 } }, false, true);                    // 118
+   console.log(1);                                                                   // 119
+}                                                                                    //
+///////////////////////////////////////////////////////////////////////////////////////
 
 },"main.js":["meteor/meteor",function(require){
 
-/////////////////////////////////////////////////////////////////////////////
-//                                                                         //
-// server/main.js                                                          //
-//                                                                         //
-/////////////////////////////////////////////////////////////////////////////
-                                                                           //
-var _meteor = require('meteor/meteor');                                    // 1
-                                                                           //
-_meteor.Meteor.startup(function () {                                       // 4
-  // code to run on server at startup                                      //
-  UserInfo.update({}, { $set: { todayScore: 0 } }, false, true);           // 6
-});                                                                        //
-/////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+//                                                                                   //
+// server/main.js                                                                    //
+//                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////
+                                                                                     //
+var _meteor = require('meteor/meteor');                                              // 1
+                                                                                     //
+_meteor.Meteor.startup(function () {                                                 // 4
+  // code to run on server at startup                                                //
+  UserInfo.update({}, { $set: { todayScore: 0 } }, false, true);                     // 6
+});                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////
 
 }]}},{"extensions":[".js",".json"]});
 require("./server/server.js");

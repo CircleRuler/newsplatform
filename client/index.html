@@ -1,13 +1,18 @@
 <template name="index">
     {{#if currentUser}}
-        <form action="" class="well form-inline center" style="text-align:center;">
+        <form action="" class="well form-inline center" style="text-align:center;" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="post">发布新闻</label>
                 <textarea class="span7" id="post" rows="2"></textarea>
                 <p class="span1" style="visibility:hidden;">  nbsp</p>
                 <button id="submit" class="btn btn-success btn-large span2 pull-right">发表</button>
             </div>
-            <p style="visibility:hidden;">nbsp</p>
+            <p >
+                <div class="form-group">
+                <label for="myFileInput">上传图片</label>
+                <input type="file" id="myFileInput" accept="image/png,image/gif,image/jpg" name="myFileInput" multiple="multiple">
+                </div>
+            </p>
             {{#if getMediaBtn}}
             <div class="control-group">
                 <button id="getAudio" class="btn btn-default">获取录音</button>
@@ -66,7 +71,7 @@
                 <p style="display:none;" id="p{{this._id}}" class="commnetP">
                 {{#if currentUser}}
                     <input type="text" class="span8" id="{{this._id}}">
-                    <button id="commnetSubmitToCommnet" class="btn btn-success">评论</button>
+                    <button id="commnetSubmitToCommnet" class="btn btn-success">回复</button>
                 {{/if}}
                 </p>
             {{/each}}
@@ -107,6 +112,13 @@
             <p><video src="{{this.url}}"></video></p>
             {{/each}}
             {{/if}}
+            <p class="span8 imageBox">
+            {{#if isGetLocalImage}} 
+            {{#each displayLocalImage this.localimagesId}}
+            <a href="{{this.url}}" target="_blank"><p class="ninePhoto"><img src="{{this.url}}" alt="" class="ninePicture" ></p></a>
+            {{/each}}
+            {{/if}}
+            </p>
             {{#if currentUser}}
                 <p>
                     <input type="text" class="span8" id="{{this._id}}">
@@ -119,7 +131,7 @@
                 <p style="display:none;" id="p{{this._id}}" class="commnetP">
                 {{#if currentUser}}
                     <input type="text" class="span8" id="{{this._id}}">
-                    <button id="commnetSubmitToCommnet" class="btn btn-success">评论</button>
+                    <button id="commnetSubmitToCommnet" class="btn btn-success">回复</button>
                 {{/if}}
                 </p>
             {{/each}}

@@ -14,6 +14,10 @@ Videos = new FS.Collection("videos", {
   stores: [new FS.Store.FileSystem("videos", {path: "~/uploadsVideo"})]
 });
 
+LocalImages = new FS.Collection("localimages", {
+  stores: [new FS.Store.FileSystem("localimages", {path: "~/uploadsLocalImage"})]
+});
+
 Posts.allow({
     insert: function (userId,doc) {
         return userId && (doc.user._id === userId);
@@ -21,7 +25,7 @@ Posts.allow({
      update: function () {
         return true;
      }
-})
+});
 SystemInfo.allow({
      insert: function () {
         return true;
@@ -53,7 +57,10 @@ Images.allow({
      },
      remove: function () {
         return true;
-     }
+     },
+     download: function() {
+        return true
+    }
  });
 Audios.allow({
      insert: function () {
@@ -64,7 +71,10 @@ Audios.allow({
      },
      remove: function () {
         return true;
-     }
+     },
+     download: function() {
+        return true
+    }
  });
 Videos.allow({
      insert: function () {
@@ -75,7 +85,24 @@ Videos.allow({
      },
      remove: function () {
         return true;
-     }
+     },
+     download: function() {
+        return true
+    }
+ });
+LocalImages.allow({
+     insert: function () {
+        return true;
+     },
+     update: function () {
+        return true;
+     },
+     remove: function () {
+        return true;
+     },
+     download: function() {
+        return true
+    }
  });
 
 var timeTask=setInterval(function(){

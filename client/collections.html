@@ -4,11 +4,16 @@
         <div class="center singlePost">
             <div class="">
                 <div class="postTitle">
-                    <h2 class="text-primary span10">{{user.username}} 
+                    <h2 class="text-primary span10"><a href="/self" id="toViewOther">{{user.username}}</a>
+                    {{#if currentUser}}
                     <button id="addFriend" class="btn btn-info">加好友</button>
-                    <button id="likePost" class="btn btn-warning">点赞({{like}})</button>  :
+                    <button id="addCollection" class="btn btn-primary">收藏({{totalCollection}})</button>
+                    <button id="likePost" class="btn btn-warning">点赞({{like}})</button>
+                    <button id="objectPost" class="btn btn-danger">异议({{object}})</button>
+                    {{/if}} :
                     </h2>
                 </div>
+                <div class="col-xs-3 "></div>
             </div>
             <p class="muted">{{time}}</p>
             <p class="">{{#markdown}}{{post}}{{/markdown}}</p>
@@ -35,11 +40,11 @@
             {{/if}}
             <div >
             {{#each comments}}
-                <p ><span class="postTitle">{{user.username}} {{#if to}}<span style="color:black;">回复</span>{{/if}} {{to}}</span> :<button id="displayCommnetButton" type="button" class="btn btn-link">{{post}}</button></p>
+                <p ><span class="postTitle"><a href="/self" id="toViewOther">{{user.username}}</a> {{#if to}}<span style="color:black;">回复</span>{{/if}} {{to}}</span> :<button id="displayCommnetButton" type="button" class="btn btn-link">{{post}}</button></p>
                 <p style="display:none;" id="p{{this._id}}" class="commnetP">
                 {{#if currentUser}}
                     <input type="text" class="span8" id="{{this._id}}">
-                    <button id="commnetSubmitToCommnet" class="btn btn-success">评论</button>
+                    <button id="commnetSubmitToCommnet" class="btn btn-success">回复</button>
                 {{/if}}
                 </p>
             {{/each}}

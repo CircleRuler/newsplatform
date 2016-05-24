@@ -23,7 +23,7 @@ var isGetLocalImage = false;
 var captureImageId = false;
 var captureAudioId = false;
 var captureVideoId = false;
-var locallImageId = false;
+var localimagesId = [];
 
 Images = new FS.Collection("images", {
   stores: [new FS.Store.FileSystem("images", {path: "~/uploadsImage"})]
@@ -133,6 +133,9 @@ Template.index.helpers({
     },
     displayVideo(id){
         return Videos.find({"_id":id});
+    },
+    displayLocalImage(id){
+        return LocalImages.find({"_id":{$in:id}});
     }
 });
 
@@ -142,6 +145,9 @@ Template.lists.helpers({
     },
     lists(){
         return UserInfo.find({},{sort: {totalScore: -1},limit: 10});
+    },
+    comments(){
+        return Posts.find({"super":this._id},{sort: {time: 1}});
     },
 });
 
@@ -163,13 +169,19 @@ Template.self.helpers({
         var otherPost = Posts.find({"super":0,"user._id":localStorage.getItem("targetUserId")},{sort: {time: -1}});
         localStorage.setItem("targetUserId",Meteor.userId());
         return otherPost;
-    }
+    },
+    comments(){
+        return Posts.find({"super":this._id},{sort: {time: 1}});
+    },
 });
 
 Template.collections.helpers({
     collections(){
         return Posts.find({"super":0,"collectioners":Meteor.userId()},{sort: {time: -1}});
-    }
+    },
+    comments(){
+        return Posts.find({"super":this._id},{sort: {time: 1}});
+    },
 });
 
 Template.friend.helpers({
@@ -353,9 +365,11 @@ Template.index.events({
             isGetImage:isGetImage,
             isGetAudio:isGetAudio,
             isGetVideo:isGetVideo,
+            isGetLocalImage:isGetLocalImage,
             captureImageId:captureImageId,
             captureAudioId:captureAudioId,
             captureVideoId:captureVideoId,
+            localimagesId:localimagesId,
             time:new Date()},
             function(err){
                 if(err){
@@ -375,9 +389,11 @@ Template.index.events({
         isGetImage = false;
         isGetAudio = false;
         isGetVideo = false;
+        isGetLocalImage = false;
         captureImageId = false;
         captureAudioId = false;
         captureVideoId = false;
+        localimagesId = [];
         UserInfo.update(
             {"_id":Meteor.userId()},
             {$inc:{"totalPost":1}},
@@ -658,20 +674,704 @@ Template.index.events({
     'click #getImage':function (event) {
         event.preventDefault();
         navigator.device.capture.captureImage(captureImageSuccess, captureError, {limit:1});
+        Session.set("info", {success:"图片上传成功", error:""});
     },
     'click #getAudio':function (event) {
         event.preventDefault();
         navigator.device.capture.captureAudio(captureAudioSuccess, captureError, {limit:1});
+        Session.set("info", {success:"音频上传成功", error:""});
     },
     'click #getVideo':function (event) {
         event.preventDefault();
         navigator.device.capture.captureVideo(captureVideoSuccess, captureError, {limit:1}); 
+        Session.set("info", {success:"视频上传成功", error:""});
+    },
+    'change #myFileInput': function(event, template) {
+        var files = event.target.files;
+        var ln = files.length;
+        if (ln > 9) {ln = 9};
+        for (var i = 0; i < ln; i++) {
+            LocalImages.insert(files[i], function (err, fileObj) {
+                isGetLocalImage = true;
+                localimagesId.push(fileObj._id);
+                console.log(fileObj._id);
+                console.log(localimagesId);
+                Session.set("info", {success:"插入本地" + i + "张图片成功", error: ""});
+            // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
+          });
+        }
     }
 });
 
 Template.collections.events({
-    
+    'click #commnetSubmit':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $comment = $("#"+this._id).val();
+        if ($comment.length === 0 || $comment.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $comment, 
+            super:this._id,
+            to:false,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"评论失败"});
+                }else{
+                    Session.set("info", {success:"评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+    },
+    'click #commnetSubmitToCommnet':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $commentTo = $("#"+this._id).val();
+        if ($commentTo.length === 0 || $commentTo.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        var userName = Posts.findOne({"_id":this._id}).user.username; 
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $commentTo, 
+            super:this.super,
+            to:userName,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"回复评论失败"});
+                }else{
+                    Session.set("info", {success:"回复评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+        $(".commnetP").css("display","none");
+    },
+    'click #displayCommnetButton':function (event) {
+        event.preventDefault();
+        var thisId = "#"+"p"+this._id;
+        $(".commnetP").css("display","none");
+        $(thisId).css("display","block");
+    },
+    'click #toViewOther':function (event) {
+        //event.preventDefault();
+        localStorage.setItem("targetUserId",this.user._id);
+        console.log(Meteor.userId());
+        console.log(targetUserId);
+    },
+    'click #addFriend':function (event) {
+        event.preventDefault();
+        var $friendId = this.user._id;
+        if (UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
+            Session.set("info", {success:"", error:"错误：此好友已经存在"});
+            scroll(0,0);
+            return;
+        }
+        
+        var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+        UserInfo.update({
+                "_id":userInfoId
+            },{
+                $addToSet:{"Friends":$friendId},
+                $inc:{"totalFriend":1}
+            },
+            true,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"添加好友失败"});
+                }else{
+                    Session.set("info", {success:"添加成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:50,totalScore:50}},
+                        false,true
+                    );
+                }
+            }
+        );
+    },
+    'click #addCollection':function (event) {
+        event.preventDefault();
+        var $PostId = this._id;
+        if (Posts.findOne({"_id":$PostId,"collectioners":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：你已经此收藏过此新闻"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"collectioners":Meteor.userId()},
+                $inc:{"totalCollection":1,"score":15}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"收藏失败"});
+                }else{
+                    Session.set("info", {success:"收藏成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":$PostId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalCollection:1}},
+            false,true
+        );
+        
+    },
+    'click #likePost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过赞"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Likers":Meteor.userId()},
+                $inc:{"like":1,"score":10}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"点赞失败"});
+                }else{
+                    Session.set("info", {success:"点赞成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalLike:1}},
+            false,true
+        );
+    },
+    'click #objectPost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Objecters":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过异议"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Objecters":Meteor.userId()},
+                $inc:{"object":1,"score":-8}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"异议无效"});
+                }else{
+                    Session.set("info", {success:"反对有效", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalObject:1}},
+            false,true
+        );
+    }
 });
+
+Template.self.events({
+    'click #commnetSubmit':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $comment = $("#"+this._id).val();
+        if ($comment.length === 0 || $comment.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $comment, 
+            super:this._id,
+            to:false,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"评论失败"});
+                }else{
+                    Session.set("info", {success:"评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+    },
+    'click #commnetSubmitToCommnet':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $commentTo = $("#"+this._id).val();
+        if ($commentTo.length === 0 || $commentTo.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        var userName = Posts.findOne({"_id":this._id}).user.username; 
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $commentTo, 
+            super:this.super,
+            to:userName,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"回复评论失败"});
+                }else{
+                    Session.set("info", {success:"回复评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+        $(".commnetP").css("display","none");
+    },
+    'click #displayCommnetButton':function (event) {
+        event.preventDefault();
+        var thisId = "#"+"p"+this._id;
+        $(".commnetP").css("display","none");
+        $(thisId).css("display","block");
+    },
+    'click #toViewOther':function (event) {
+        //event.preventDefault();
+        localStorage.setItem("targetUserId",this.user._id);
+        console.log(Meteor.userId());
+        console.log(targetUserId);
+    },
+    'click #addFriend':function (event) {
+        event.preventDefault();
+        var $friendId = this.user._id;
+        if (UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
+            Session.set("info", {success:"", error:"错误：此好友已经存在"});
+            scroll(0,0);
+            return;
+        }
+        
+        var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+        UserInfo.update({
+                "_id":userInfoId
+            },{
+                $addToSet:{"Friends":$friendId},
+                $inc:{"totalFriend":1}
+            },
+            true,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"添加好友失败"});
+                }else{
+                    Session.set("info", {success:"添加成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:50,totalScore:50}},
+                        false,true
+                    );
+                }
+            }
+        );
+    },
+    'click #addCollection':function (event) {
+        event.preventDefault();
+        var $PostId = this._id;
+        if (Posts.findOne({"_id":$PostId,"collectioners":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：你已经此收藏过此新闻"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"collectioners":Meteor.userId()},
+                $inc:{"totalCollection":1,"score":15}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"收藏失败"});
+                }else{
+                    Session.set("info", {success:"收藏成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":$PostId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalCollection:1}},
+            false,true
+        );
+        
+    },
+    'click #likePost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过赞"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Likers":Meteor.userId()},
+                $inc:{"like":1,"score":10}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"点赞失败"});
+                }else{
+                    Session.set("info", {success:"点赞成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalLike:1}},
+            false,true
+        );
+    },
+    'click #objectPost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Objecters":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过异议"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Objecters":Meteor.userId()},
+                $inc:{"object":1,"score":-8}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"异议无效"});
+                }else{
+                    Session.set("info", {success:"反对有效", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalObject:1}},
+            false,true
+        );
+    }
+});
+
+Template.lists.events({
+    'click #commnetSubmit':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $comment = $("#"+this._id).val();
+        if ($comment.length === 0 || $comment.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $comment, 
+            super:this._id,
+            to:false,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"评论失败"});
+                }else{
+                    Session.set("info", {success:"评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+    },
+    'click #commnetSubmitToCommnet':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $commentTo = $("#"+this._id).val();
+        if ($commentTo.length === 0 || $commentTo.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        var userName = Posts.findOne({"_id":this._id}).user.username; 
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $commentTo, 
+            super:this.super,
+            to:userName,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"回复评论失败"});
+                }else{
+                    Session.set("info", {success:"回复评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+        $(".commnetP").css("display","none");
+    },
+    'click #displayCommnetButton':function (event) {
+        event.preventDefault();
+        var thisId = "#"+"p"+this._id;
+        $(".commnetP").css("display","none");
+        $(thisId).css("display","block");
+    },
+    'click #toViewOther':function (event) {
+        //event.preventDefault();
+        localStorage.setItem("targetUserId",this.user._id);
+        console.log(Meteor.userId());
+        console.log(targetUserId);
+    },
+    'click #addFriend':function (event) {
+        event.preventDefault();
+        var $friendId = this.user._id;
+        if (UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
+            Session.set("info", {success:"", error:"错误：此好友已经存在"});
+            scroll(0,0);
+            return;
+        }
+        
+        var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+        UserInfo.update({
+                "_id":userInfoId
+            },{
+                $addToSet:{"Friends":$friendId},
+                $inc:{"totalFriend":1}
+            },
+            true,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"添加好友失败"});
+                }else{
+                    Session.set("info", {success:"添加成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:50,totalScore:50}},
+                        false,true
+                    );
+                }
+            }
+        );
+    },
+    'click #addCollection':function (event) {
+        event.preventDefault();
+        var $PostId = this._id;
+        if (Posts.findOne({"_id":$PostId,"collectioners":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：你已经此收藏过此新闻"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"collectioners":Meteor.userId()},
+                $inc:{"totalCollection":1,"score":15}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"收藏失败"});
+                }else{
+                    Session.set("info", {success:"收藏成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":$PostId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalCollection:1}},
+            false,true
+        );
+        
+    },
+    'click #likePost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过赞"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Likers":Meteor.userId()},
+                $inc:{"like":1,"score":10}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"点赞失败"});
+                }else{
+                    Session.set("info", {success:"点赞成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalLike:1}},
+            false,true
+        );
+    },
+    'click #objectPost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Objecters":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过异议"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Objecters":Meteor.userId()},
+                $inc:{"object":1,"score":-8}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"异议无效"});
+                }else{
+                    Session.set("info", {success:"反对有效", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalObject:1}},
+            false,true
+        );
+    }
+});
+
 Template.friend.events({
     'click #deleteFriend':function (event) {
         event.preventDefault();

@@ -117,7 +117,7 @@ Template["container"] = new Template("Template.container", (function() {        
 Template.__checkName("footer");                                                                                        // 109
 Template["footer"] = new Template("Template.footer", (function() {                                                     // 110
   var view = this;                                                                                                     // 111
-  return HTML.Raw('<p class="muted text-center">Newsplatform 2016</p>');                                               // 112
+  return HTML.Raw('<p class="muted text-center">Newsplatform 2016</p>\n    <div class="x-goto-top" style="display: block;" onclick="javascript:scroll(0,0);">\n        <div class="x-arrow"></div>\n        <div class="x-stick"></div>\n    </div>');
 }));                                                                                                                   // 113
                                                                                                                        // 114
 Template.__checkName("info");                                                                                          // 115
@@ -167,123 +167,145 @@ Template["collections"] = new Template("Template.collections", (function() {    
       "class": "postTitle"                                                                                             // 13
     }, "\n                    ", HTML.H2({                                                                             // 14
       "class": "text-primary span10"                                                                                   // 15
-    }, Blaze.View("lookup:user.username", function() {                                                                 // 16
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 17
-    }), " \n                    ", HTML.BUTTON({                                                                       // 18
-      id: "addFriend",                                                                                                 // 19
-      "class": "btn btn-info"                                                                                          // 20
-    }, "加好友"), "\n                    ", HTML.BUTTON({                                                                 // 21
-      id: "likePost",                                                                                                  // 22
-      "class": "btn btn-warning"                                                                                       // 23
-    }, "点赞(", Blaze.View("lookup:like", function() {                                                                   // 24
-      return Spacebars.mustache(view.lookup("like"));                                                                  // 25
-    }), ")"), "  :\n                    "), "\n                "), "\n            "), "\n            ", HTML.P({       // 26
-      "class": "muted"                                                                                                 // 27
-    }, Blaze.View("lookup:time", function() {                                                                          // 28
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 29
-    })), "\n            ", HTML.P({                                                                                    // 30
-      "class": ""                                                                                                      // 31
-    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 32
-      return Blaze.View("lookup:post", function() {                                                                    // 33
-        return Spacebars.mustache(view.lookup("post"));                                                                // 34
-      });                                                                                                              // 35
-    })), "\n            ", Blaze.If(function() {                                                                       // 36
-      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 37
-    }, function() {                                                                                                    // 38
-      return [ "\n            ", Blaze.Each(function() {                                                               // 39
+    }, HTML.A({                                                                                                        // 16
+      href: "/self",                                                                                                   // 17
+      id: "toViewOther"                                                                                                // 18
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 19
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 20
+    })), "\n                    ", Blaze.If(function() {                                                               // 21
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 22
+    }, function() {                                                                                                    // 23
+      return [ "\n                    ", HTML.BUTTON({                                                                 // 24
+        id: "addFriend",                                                                                               // 25
+        "class": "btn btn-info"                                                                                        // 26
+      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 27
+        id: "addCollection",                                                                                           // 28
+        "class": "btn btn-primary"                                                                                     // 29
+      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 30
+        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 31
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 32
+        id: "likePost",                                                                                                // 33
+        "class": "btn btn-warning"                                                                                     // 34
+      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 35
+        return Spacebars.mustache(view.lookup("like"));                                                                // 36
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 37
+        id: "objectPost",                                                                                              // 38
+        "class": "btn btn-danger"                                                                                      // 39
+      }, "异议(", Blaze.View("lookup:object", function() {                                                               // 40
+        return Spacebars.mustache(view.lookup("object"));                                                              // 41
+      }), ")"), "\n                    " ];                                                                            // 42
+    }), " :\n                    "), "\n                "), "\n                ", HTML.DIV({                           // 43
+      "class": "col-xs-3 "                                                                                             // 44
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 45
+      "class": "muted"                                                                                                 // 46
+    }, Blaze.View("lookup:time", function() {                                                                          // 47
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 48
+    })), "\n            ", HTML.P({                                                                                    // 49
+      "class": ""                                                                                                      // 50
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 51
+      return Blaze.View("lookup:post", function() {                                                                    // 52
+        return Spacebars.mustache(view.lookup("post"));                                                                // 53
+      });                                                                                                              // 54
+    })), "\n            ", Blaze.If(function() {                                                                       // 55
+      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 56
+    }, function() {                                                                                                    // 57
+      return [ "\n            ", Blaze.Each(function() {                                                               // 58
         return Spacebars.dataMustache(view.lookup("displayAudio"), Spacebars.dot(view.lookup("."), "captureAudioId"));
-      }, function() {                                                                                                  // 41
-        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 42
-          controls: "",                                                                                                // 43
-          src: function() {                                                                                            // 44
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 45
-          }                                                                                                            // 46
-        })), "\n            " ];                                                                                       // 47
-      }), "\n            " ];                                                                                          // 48
-    }), "\n            ", Blaze.If(function() {                                                                        // 49
-      return Spacebars.call(view.lookup("isGetImage"));                                                                // 50
-    }, function() {                                                                                                    // 51
-      return [ "\n            ", Blaze.Each(function() {                                                               // 52
+      }, function() {                                                                                                  // 60
+        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 61
+          controls: "",                                                                                                // 62
+          src: function() {                                                                                            // 63
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 64
+          }                                                                                                            // 65
+        })), "\n            " ];                                                                                       // 66
+      }), "\n            " ];                                                                                          // 67
+    }), "\n            ", Blaze.If(function() {                                                                        // 68
+      return Spacebars.call(view.lookup("isGetImage"));                                                                // 69
+    }, function() {                                                                                                    // 70
+      return [ "\n            ", Blaze.Each(function() {                                                               // 71
         return Spacebars.dataMustache(view.lookup("displayImage"), Spacebars.dot(view.lookup("."), "captureImageId"));
-      }, function() {                                                                                                  // 54
-        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 55
-          src: function() {                                                                                            // 56
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 57
-          },                                                                                                           // 58
-          alt: "",                                                                                                     // 59
-          "class": "thumbnail"                                                                                         // 60
-        })), "\n            " ];                                                                                       // 61
-      }), "\n            " ];                                                                                          // 62
-    }), "\n            ", Blaze.If(function() {                                                                        // 63
-      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 64
-    }, function() {                                                                                                    // 65
-      return [ "\n            ", Blaze.Each(function() {                                                               // 66
+      }, function() {                                                                                                  // 73
+        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 74
+          src: function() {                                                                                            // 75
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 76
+          },                                                                                                           // 77
+          alt: "",                                                                                                     // 78
+          "class": "thumbnail"                                                                                         // 79
+        })), "\n            " ];                                                                                       // 80
+      }), "\n            " ];                                                                                          // 81
+    }), "\n            ", Blaze.If(function() {                                                                        // 82
+      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 83
+    }, function() {                                                                                                    // 84
+      return [ "\n            ", Blaze.Each(function() {                                                               // 85
         return Spacebars.dataMustache(view.lookup("displayVideo"), Spacebars.dot(view.lookup("."), "captureVideoId"));
-      }, function() {                                                                                                  // 68
-        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 69
-          src: function() {                                                                                            // 70
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 71
-          }                                                                                                            // 72
-        })), "\n            " ];                                                                                       // 73
-      }), "\n            " ];                                                                                          // 74
-    }), "\n            ", Blaze.If(function() {                                                                        // 75
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 76
-    }, function() {                                                                                                    // 77
-      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 78
-        type: "text",                                                                                                  // 79
-        "class": "span8",                                                                                              // 80
-        id: function() {                                                                                               // 81
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 82
-        }                                                                                                              // 83
-      }), "\n                    ", HTML.BUTTON({                                                                      // 84
-        id: "commnetSubmit",                                                                                           // 85
-        "class": "btn btn-success"                                                                                     // 86
-      }, "评论"), "\n                "), "\n            " ];                                                             // 87
-    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 88
-      return Spacebars.call(view.lookup("comments"));                                                                  // 89
-    }, function() {                                                                                                    // 90
-      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 91
-        "class": "postTitle"                                                                                           // 92
-      }, Blaze.View("lookup:user.username", function() {                                                               // 93
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 94
-      }), " ", Blaze.If(function() {                                                                                   // 95
-        return Spacebars.call(view.lookup("to"));                                                                      // 96
-      }, function() {                                                                                                  // 97
-        return HTML.SPAN({                                                                                             // 98
-          style: "color:black;"                                                                                        // 99
-        }, "回复");                                                                                                      // 100
-      }), " ", Blaze.View("lookup:to", function() {                                                                    // 101
-        return Spacebars.mustache(view.lookup("to"));                                                                  // 102
-      })), " :", HTML.BUTTON({                                                                                         // 103
-        id: "displayCommnetButton",                                                                                    // 104
-        type: "button",                                                                                                // 105
-        "class": "btn btn-link"                                                                                        // 106
-      }, Blaze.View("lookup:post", function() {                                                                        // 107
-        return Spacebars.mustache(view.lookup("post"));                                                                // 108
-      }))), "\n                ", HTML.P({                                                                             // 109
-        style: "display:none;",                                                                                        // 110
-        id: function() {                                                                                               // 111
-          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 112
-        },                                                                                                             // 113
-        "class": "commnetP"                                                                                            // 114
-      }, "\n                ", Blaze.If(function() {                                                                   // 115
-        return Spacebars.call(view.lookup("currentUser"));                                                             // 116
-      }, function() {                                                                                                  // 117
-        return [ "\n                    ", HTML.INPUT({                                                                // 118
-          type: "text",                                                                                                // 119
-          "class": "span8",                                                                                            // 120
-          id: function() {                                                                                             // 121
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 122
-          }                                                                                                            // 123
-        }), "\n                    ", HTML.BUTTON({                                                                    // 124
-          id: "commnetSubmitToCommnet",                                                                                // 125
-          "class": "btn btn-success"                                                                                   // 126
-        }, "评论"), "\n                " ];                                                                              // 127
-      }), "\n                "), "\n            " ];                                                                   // 128
-    }), "\n            "), "\n        "), "\n    " ];                                                                  // 129
-  }) ];                                                                                                                // 130
-}));                                                                                                                   // 131
-                                                                                                                       // 132
+      }, function() {                                                                                                  // 87
+        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 88
+          src: function() {                                                                                            // 89
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 90
+          }                                                                                                            // 91
+        })), "\n            " ];                                                                                       // 92
+      }), "\n            " ];                                                                                          // 93
+    }), "\n            ", Blaze.If(function() {                                                                        // 94
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 95
+    }, function() {                                                                                                    // 96
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 97
+        type: "text",                                                                                                  // 98
+        "class": "span8",                                                                                              // 99
+        id: function() {                                                                                               // 100
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 101
+        }                                                                                                              // 102
+      }), "\n                    ", HTML.BUTTON({                                                                      // 103
+        id: "commnetSubmit",                                                                                           // 104
+        "class": "btn btn-success"                                                                                     // 105
+      }, "评论"), "\n                "), "\n            " ];                                                             // 106
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 107
+      return Spacebars.call(view.lookup("comments"));                                                                  // 108
+    }, function() {                                                                                                    // 109
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 110
+        "class": "postTitle"                                                                                           // 111
+      }, HTML.A({                                                                                                      // 112
+        href: "/self",                                                                                                 // 113
+        id: "toViewOther"                                                                                              // 114
+      }, Blaze.View("lookup:user.username", function() {                                                               // 115
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 116
+      })), " ", Blaze.If(function() {                                                                                  // 117
+        return Spacebars.call(view.lookup("to"));                                                                      // 118
+      }, function() {                                                                                                  // 119
+        return HTML.SPAN({                                                                                             // 120
+          style: "color:black;"                                                                                        // 121
+        }, "回复");                                                                                                      // 122
+      }), " ", Blaze.View("lookup:to", function() {                                                                    // 123
+        return Spacebars.mustache(view.lookup("to"));                                                                  // 124
+      })), " :", HTML.BUTTON({                                                                                         // 125
+        id: "displayCommnetButton",                                                                                    // 126
+        type: "button",                                                                                                // 127
+        "class": "btn btn-link"                                                                                        // 128
+      }, Blaze.View("lookup:post", function() {                                                                        // 129
+        return Spacebars.mustache(view.lookup("post"));                                                                // 130
+      }))), "\n                ", HTML.P({                                                                             // 131
+        style: "display:none;",                                                                                        // 132
+        id: function() {                                                                                               // 133
+          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 134
+        },                                                                                                             // 135
+        "class": "commnetP"                                                                                            // 136
+      }, "\n                ", Blaze.If(function() {                                                                   // 137
+        return Spacebars.call(view.lookup("currentUser"));                                                             // 138
+      }, function() {                                                                                                  // 139
+        return [ "\n                    ", HTML.INPUT({                                                                // 140
+          type: "text",                                                                                                // 141
+          "class": "span8",                                                                                            // 142
+          id: function() {                                                                                             // 143
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 144
+          }                                                                                                            // 145
+        }), "\n                    ", HTML.BUTTON({                                                                    // 146
+          id: "commnetSubmitToCommnet",                                                                                // 147
+          "class": "btn btn-success"                                                                                   // 148
+        }, "回复"), "\n                " ];                                                                              // 149
+      }), "\n                "), "\n            " ];                                                                   // 150
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 151
+  }) ];                                                                                                                // 152
+}));                                                                                                                   // 153
+                                                                                                                       // 154
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.friend.js":function(){
@@ -298,39 +320,25 @@ Template["collections"] = new Template("Template.collections", (function() {    
 Template.__checkName("friend");                                                                                        // 2
 Template["friend"] = new Template("Template.friend", (function() {                                                     // 3
   var view = this;                                                                                                     // 4
-  return [ HTML.OL("\n    ", HTML.Raw('<h1 class="text-danger" align="top">今日积分排行</h1>'), "\n    ", HTML.TABLE({       // 5
+  return HTML.OL(HTML.Raw('\n    <h1 class="text-danger" align="top">好友列表</h1>\n    '), HTML.TABLE({                   // 5
     "class": "table table-striped table-hover"                                                                         // 6
-  }, "\n        ", HTML.THEAD("\n            ", HTML.TR("\n                ", HTML.TH("＃"), "\n                ", HTML.TD("名次"), "\n                ", HTML.TD("昵称"), "\n                ", HTML.TD("今日积分"), "\n            "), "\n        "), "\n        ", HTML.TBODY("\n            ", Blaze.Each(function() {
+  }, "\n        ", HTML.THEAD("\n            ", HTML.TR("\n                ", HTML.TH("＃"), "\n                ", HTML.TD("名次"), "\n                ", HTML.TD("昵称"), "\n                ", HTML.TD("总发布数"), "\n                ", HTML.TD("操作"), "\n            "), "\n        "), "\n        ", HTML.TBODY("\n            ", Blaze.Each(function() {
     return Spacebars.call(view.lookup("friendToday"));                                                                 // 8
   }, function() {                                                                                                      // 9
-    return [ "\n                ", HTML.TR("\n                    ", HTML.TH(), "\n                    ", HTML.TD(HTML.LI()), "\n                    ", HTML.TD(Blaze.View("lookup:user.username", function() {
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 11
-    })), "\n                    ", HTML.TD(Blaze.View("lookup:todayScore", function() {                                // 12
-      return Spacebars.mustache(view.lookup("todayScore"));                                                            // 13
-    })), "\n                "), "\n            " ];                                                                    // 14
-  }), "\n        "), "\n    "), "\n    "), "\n    ", HTML.OL("\n    ", HTML.Raw('<h1 class="text-primary" align="top">总积分排行</h1>'), "\n    ", HTML.TABLE({
-    "class": "table table-striped table-hover"                                                                         // 16
-  }, "\n        ", HTML.THEAD("\n            ", HTML.TR("\n                ", HTML.TH("＃"), "\n                ", HTML.TD("名次"), "\n                ", HTML.TD("昵称"), "\n                ", HTML.TD("总积分数"), "\n            "), "\n        "), "\n        ", HTML.TBODY("\n            ", Blaze.Each(function() {
-    return Spacebars.call(view.lookup("friendTotal"));                                                                 // 18
-  }, function() {                                                                                                      // 19
-    return [ "\n                ", HTML.TR("\n                    ", HTML.TH(), "\n                    ", HTML.TD(HTML.LI()), "\n                    ", HTML.TD(Blaze.View("lookup:user.username", function() {
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 21
-    })), "\n                    ", HTML.TD(Blaze.View("lookup:totalScore", function() {                                // 22
-      return Spacebars.mustache(view.lookup("totalScore"));                                                            // 23
-    })), "\n                "), "\n            " ];                                                                    // 24
-  }), "\n        "), "\n    "), "\n    "), "\n    ", HTML.OL("\n    ", HTML.Raw('<h1 class="text-info" align="top">总战斗力排行</h1>'), "\n    ", HTML.TABLE({
-    "class": "table table-striped table-hover"                                                                         // 26
-  }, "\n        ", HTML.THEAD("\n            ", HTML.TR("\n                ", HTML.TH("＃"), "\n                ", HTML.TD("名次"), "\n                ", HTML.TD("昵称"), "\n                ", HTML.TD("战斗力排名"), "\n            "), "\n        "), "\n        ", HTML.TBODY("\n            ", Blaze.Each(function() {
-    return Spacebars.call(view.lookup("friendRank"));                                                                  // 28
-  }, function() {                                                                                                      // 29
-    return [ "\n                ", HTML.TR("\n                    ", HTML.TH(), "\n                    ", HTML.TD(HTML.LI()), "\n                    ", HTML.TD(Blaze.View("lookup:user.username", function() {
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 31
-    })), "\n                    ", HTML.TD(Blaze.View("lookup:rank", function() {                                      // 32
-      return Spacebars.mustache(view.lookup("rank"));                                                                  // 33
-    })), "\n                "), "\n            " ];                                                                    // 34
-  }), "\n        "), "\n    "), "\n    ") ];                                                                           // 35
-}));                                                                                                                   // 36
-                                                                                                                       // 37
+    return [ "\n                ", HTML.TR("\n                    ", HTML.TH(), "\n                    ", HTML.TD(HTML.LI()), "\n                    ", HTML.TD(HTML.A({
+      href: "/self",                                                                                                   // 11
+      id: "toViewOther"                                                                                                // 12
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 13
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 14
+    }))), "\n                    ", HTML.TD(Blaze.View("lookup:totalPost", function() {                                // 15
+      return Spacebars.mustache(view.lookup("totalPost"));                                                             // 16
+    })), "\n                    ", HTML.TD(HTML.BUTTON({                                                               // 17
+      id: "deleteFriend",                                                                                              // 18
+      "class": "btn btn-info"                                                                                          // 19
+    }, "删除")), " \n                "), "\n            " ];                                                             // 20
+  }), "\n        "), "\n    "), "\n    ");                                                                             // 21
+}));                                                                                                                   // 22
+                                                                                                                       // 23
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.index.js":function(){
@@ -397,276 +405,298 @@ Template["index"] = new Template("Template.index", (function() {                
       "class": "postTitle"                                                                                             // 54
     }, "\n                    ", HTML.H2({                                                                             // 55
       "class": "text-primary span10"                                                                                   // 56
-    }, Blaze.View("lookup:user.username", function() {                                                                 // 57
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 58
-    }), "\n                    ", Blaze.If(function() {                                                                // 59
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 60
-    }, function() {                                                                                                    // 61
-      return [ "\n                    ", HTML.BUTTON({                                                                 // 62
-        id: "addFriend",                                                                                               // 63
-        "class": "btn btn-info"                                                                                        // 64
-      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 65
-        id: "addCollection",                                                                                           // 66
-        "class": "btn btn-primary"                                                                                     // 67
-      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 68
-        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 69
-      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 70
-        id: "likePost",                                                                                                // 71
-        "class": "btn btn-warning"                                                                                     // 72
-      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 73
-        return Spacebars.mustache(view.lookup("like"));                                                                // 74
-      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 75
-        id: "untopPost",                                                                                               // 76
-        "class": "btn btn-danger"                                                                                      // 77
-      }, "取消置顶 "), " \n                    " ];                                                                        // 78
-    }), "   :\n                    "), "\n                "), "\n                ", HTML.DIV({                         // 79
-      "class": "col-xs-3 "                                                                                             // 80
-    }), "\n            "), "\n            ", HTML.P({                                                                  // 81
-      "class": "muted"                                                                                                 // 82
-    }, Blaze.View("lookup:time", function() {                                                                          // 83
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 84
-    })), "\n            ", HTML.P({                                                                                    // 85
-      "class": ""                                                                                                      // 86
-    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 87
-      return Blaze.View("lookup:post", function() {                                                                    // 88
-        return Spacebars.mustache(view.lookup("post"));                                                                // 89
-      });                                                                                                              // 90
-    })), "\n            ", Blaze.If(function() {                                                                       // 91
-      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 92
-    }, function() {                                                                                                    // 93
-      return [ "\n            ", Blaze.Each(function() {                                                               // 94
+    }, HTML.A({                                                                                                        // 57
+      href: "/self",                                                                                                   // 58
+      id: "toViewOther"                                                                                                // 59
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 60
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 61
+    })), "\n                    ", Blaze.If(function() {                                                               // 62
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 63
+    }, function() {                                                                                                    // 64
+      return [ "\n                    ", HTML.BUTTON({                                                                 // 65
+        id: "addFriend",                                                                                               // 66
+        "class": "btn btn-info"                                                                                        // 67
+      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 68
+        id: "addCollection",                                                                                           // 69
+        "class": "btn btn-primary"                                                                                     // 70
+      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 71
+        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 72
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 73
+        id: "likePost",                                                                                                // 74
+        "class": "btn btn-warning"                                                                                     // 75
+      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 76
+        return Spacebars.mustache(view.lookup("like"));                                                                // 77
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 78
+        id: "objectPost",                                                                                              // 79
+        "class": "btn btn-warning"                                                                                     // 80
+      }, "异议(", Blaze.View("lookup:object", function() {                                                               // 81
+        return Spacebars.mustache(view.lookup("object"));                                                              // 82
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 83
+        id: "untopPost",                                                                                               // 84
+        "class": "btn btn-danger"                                                                                      // 85
+      }, "取消置顶 "), " \n                    " ];                                                                        // 86
+    }), "   :\n                    "), "\n                "), "\n                ", HTML.DIV({                         // 87
+      "class": "col-xs-3 "                                                                                             // 88
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 89
+      "class": "muted"                                                                                                 // 90
+    }, Blaze.View("lookup:time", function() {                                                                          // 91
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 92
+    })), "\n            ", HTML.P({                                                                                    // 93
+      "class": ""                                                                                                      // 94
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 95
+      return Blaze.View("lookup:post", function() {                                                                    // 96
+        return Spacebars.mustache(view.lookup("post"));                                                                // 97
+      });                                                                                                              // 98
+    })), "\n            ", Blaze.If(function() {                                                                       // 99
+      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 100
+    }, function() {                                                                                                    // 101
+      return [ "\n            ", Blaze.Each(function() {                                                               // 102
         return Spacebars.dataMustache(view.lookup("displayAudio"), Spacebars.dot(view.lookup("."), "captureAudioId"));
-      }, function() {                                                                                                  // 96
-        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 97
-          controls: "",                                                                                                // 98
-          src: function() {                                                                                            // 99
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 100
-          }                                                                                                            // 101
-        })), "\n            " ];                                                                                       // 102
-      }), "\n            " ];                                                                                          // 103
-    }), "\n            ", Blaze.If(function() {                                                                        // 104
-      return Spacebars.call(view.lookup("isGetImage"));                                                                // 105
-    }, function() {                                                                                                    // 106
-      return [ "\n            ", Blaze.Each(function() {                                                               // 107
+      }, function() {                                                                                                  // 104
+        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 105
+          controls: "",                                                                                                // 106
+          src: function() {                                                                                            // 107
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 108
+          }                                                                                                            // 109
+        })), "\n            " ];                                                                                       // 110
+      }), "\n            " ];                                                                                          // 111
+    }), "\n            ", Blaze.If(function() {                                                                        // 112
+      return Spacebars.call(view.lookup("isGetImage"));                                                                // 113
+    }, function() {                                                                                                    // 114
+      return [ "\n            ", Blaze.Each(function() {                                                               // 115
         return Spacebars.dataMustache(view.lookup("displayImage"), Spacebars.dot(view.lookup("."), "captureImageId"));
-      }, function() {                                                                                                  // 109
-        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 110
-          src: function() {                                                                                            // 111
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 112
-          },                                                                                                           // 113
-          alt: "",                                                                                                     // 114
-          "class": "thumbnail"                                                                                         // 115
-        })), "\n            " ];                                                                                       // 116
-      }), "\n            " ];                                                                                          // 117
-    }), "\n            ", Blaze.If(function() {                                                                        // 118
-      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 119
-    }, function() {                                                                                                    // 120
-      return [ "\n            ", Blaze.Each(function() {                                                               // 121
+      }, function() {                                                                                                  // 117
+        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 118
+          src: function() {                                                                                            // 119
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 120
+          },                                                                                                           // 121
+          alt: "",                                                                                                     // 122
+          "class": "thumbnail"                                                                                         // 123
+        })), "\n            " ];                                                                                       // 124
+      }), "\n            " ];                                                                                          // 125
+    }), "\n            ", Blaze.If(function() {                                                                        // 126
+      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 127
+    }, function() {                                                                                                    // 128
+      return [ "\n            ", Blaze.Each(function() {                                                               // 129
         return Spacebars.dataMustache(view.lookup("displayVideo"), Spacebars.dot(view.lookup("."), "captureVideoId"));
-      }, function() {                                                                                                  // 123
-        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 124
-          src: function() {                                                                                            // 125
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 126
-          }                                                                                                            // 127
-        })), "\n            " ];                                                                                       // 128
-      }), "\n            " ];                                                                                          // 129
-    }), "\n            ", Blaze.If(function() {                                                                        // 130
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 131
-    }, function() {                                                                                                    // 132
-      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 133
-        type: "text",                                                                                                  // 134
-        "class": "span8",                                                                                              // 135
-        id: function() {                                                                                               // 136
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 137
-        }                                                                                                              // 138
-      }), "\n                    ", HTML.BUTTON({                                                                      // 139
-        id: "commnetSubmit",                                                                                           // 140
-        "class": "btn btn-success"                                                                                     // 141
-      }, "评论"), "\n                "), "\n            " ];                                                             // 142
-    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 143
-      return Spacebars.call(view.lookup("comments"));                                                                  // 144
-    }, function() {                                                                                                    // 145
-      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 146
-        "class": "postTitle"                                                                                           // 147
-      }, Blaze.View("lookup:user.username", function() {                                                               // 148
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 149
-      }), " ", Blaze.If(function() {                                                                                   // 150
-        return Spacebars.call(view.lookup("to"));                                                                      // 151
-      }, function() {                                                                                                  // 152
-        return HTML.SPAN({                                                                                             // 153
-          style: "color:black;"                                                                                        // 154
-        }, "回复");                                                                                                      // 155
-      }), " ", Blaze.View("lookup:to", function() {                                                                    // 156
-        return Spacebars.mustache(view.lookup("to"));                                                                  // 157
-      })), " : ", HTML.BUTTON({                                                                                        // 158
-        id: "displayCommnetButton",                                                                                    // 159
-        type: "button",                                                                                                // 160
-        "class": "btn btn-link"                                                                                        // 161
-      }, Blaze.View("lookup:post", function() {                                                                        // 162
-        return Spacebars.mustache(view.lookup("post"));                                                                // 163
-      }))), "\n                ", HTML.P({                                                                             // 164
-        style: "display:none;",                                                                                        // 165
-        id: function() {                                                                                               // 166
-          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 167
-        },                                                                                                             // 168
-        "class": "commnetP"                                                                                            // 169
-      }, "\n                ", Blaze.If(function() {                                                                   // 170
-        return Spacebars.call(view.lookup("currentUser"));                                                             // 171
-      }, function() {                                                                                                  // 172
-        return [ "\n                    ", HTML.INPUT({                                                                // 173
-          type: "text",                                                                                                // 174
-          "class": "span8",                                                                                            // 175
-          id: function() {                                                                                             // 176
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 177
-          }                                                                                                            // 178
-        }), "\n                    ", HTML.BUTTON({                                                                    // 179
-          id: "commnetSubmitToCommnet",                                                                                // 180
-          "class": "btn btn-success"                                                                                   // 181
-        }, "评论"), "\n                " ];                                                                              // 182
-      }), "\n                "), "\n            " ];                                                                   // 183
-    }), "\n            "), "\n        "), "\n    " ];                                                                  // 184
-  }), "\n\n    ", Blaze.Each(function() {                                                                              // 185
-    return Spacebars.call(view.lookup("posts"));                                                                       // 186
-  }, function() {                                                                                                      // 187
-    return [ "\n        ", HTML.DIV({                                                                                  // 188
-      "class": "center singlePost"                                                                                     // 189
-    }, "\n            ", HTML.DIV({                                                                                    // 190
-      "class": ""                                                                                                      // 191
-    }, "\n                ", HTML.DIV({                                                                                // 192
-      "class": "postTitle"                                                                                             // 193
-    }, "\n                    ", HTML.H2({                                                                             // 194
-      "class": "text-primary span10"                                                                                   // 195
-    }, Blaze.View("lookup:user.username", function() {                                                                 // 196
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 197
-    }), "\n                    ", Blaze.If(function() {                                                                // 198
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 199
-    }, function() {                                                                                                    // 200
-      return [ "\n                    ", HTML.BUTTON({                                                                 // 201
-        id: "addFriend",                                                                                               // 202
-        "class": "btn btn-info"                                                                                        // 203
-      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 204
-        id: "addCollection",                                                                                           // 205
-        "class": "btn btn-primary"                                                                                     // 206
-      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 207
-        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 208
-      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 209
-        id: "likePost",                                                                                                // 210
-        "class": "btn btn-warning"                                                                                     // 211
-      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 212
-        return Spacebars.mustache(view.lookup("like"));                                                                // 213
-      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 214
-        id: "topPost",                                                                                                 // 215
-        "class": "btn btn-danger"                                                                                      // 216
-      }, "置顶 "), "\n                    " ];                                                                           // 217
-    }), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({                        // 218
-      "class": "col-xs-3 "                                                                                             // 219
-    }), "\n            "), "\n            ", HTML.P({                                                                  // 220
-      "class": "muted"                                                                                                 // 221
-    }, Blaze.View("lookup:time", function() {                                                                          // 222
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 223
-    })), "\n            ", HTML.P({                                                                                    // 224
-      "class": ""                                                                                                      // 225
-    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 226
-      return Blaze.View("lookup:post", function() {                                                                    // 227
-        return Spacebars.mustache(view.lookup("post"));                                                                // 228
-      });                                                                                                              // 229
-    })), "\n            ", Blaze.If(function() {                                                                       // 230
-      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 231
-    }, function() {                                                                                                    // 232
-      return [ "\n            ", Blaze.Each(function() {                                                               // 233
+      }, function() {                                                                                                  // 131
+        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 132
+          src: function() {                                                                                            // 133
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 134
+          }                                                                                                            // 135
+        })), "\n            " ];                                                                                       // 136
+      }), "\n            " ];                                                                                          // 137
+    }), "\n            ", Blaze.If(function() {                                                                        // 138
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 139
+    }, function() {                                                                                                    // 140
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 141
+        type: "text",                                                                                                  // 142
+        "class": "span8",                                                                                              // 143
+        id: function() {                                                                                               // 144
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 145
+        }                                                                                                              // 146
+      }), "\n                    ", HTML.BUTTON({                                                                      // 147
+        id: "commnetSubmit",                                                                                           // 148
+        "class": "btn btn-success"                                                                                     // 149
+      }, "评论"), "\n                "), "\n            " ];                                                             // 150
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 151
+      return Spacebars.call(view.lookup("comments"));                                                                  // 152
+    }, function() {                                                                                                    // 153
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 154
+        "class": "postTitle"                                                                                           // 155
+      }, HTML.A({                                                                                                      // 156
+        href: "/self",                                                                                                 // 157
+        id: "toViewOther"                                                                                              // 158
+      }, Blaze.View("lookup:user.username", function() {                                                               // 159
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 160
+      })), " ", Blaze.If(function() {                                                                                  // 161
+        return Spacebars.call(view.lookup("to"));                                                                      // 162
+      }, function() {                                                                                                  // 163
+        return HTML.SPAN({                                                                                             // 164
+          style: "color:black;"                                                                                        // 165
+        }, "回复");                                                                                                      // 166
+      }), " ", Blaze.View("lookup:to", function() {                                                                    // 167
+        return Spacebars.mustache(view.lookup("to"));                                                                  // 168
+      })), " : ", HTML.BUTTON({                                                                                        // 169
+        id: "displayCommnetButton",                                                                                    // 170
+        type: "button",                                                                                                // 171
+        "class": "btn btn-link"                                                                                        // 172
+      }, Blaze.View("lookup:post", function() {                                                                        // 173
+        return Spacebars.mustache(view.lookup("post"));                                                                // 174
+      }))), "\n                ", HTML.P({                                                                             // 175
+        style: "display:none;",                                                                                        // 176
+        id: function() {                                                                                               // 177
+          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 178
+        },                                                                                                             // 179
+        "class": "commnetP"                                                                                            // 180
+      }, "\n                ", Blaze.If(function() {                                                                   // 181
+        return Spacebars.call(view.lookup("currentUser"));                                                             // 182
+      }, function() {                                                                                                  // 183
+        return [ "\n                    ", HTML.INPUT({                                                                // 184
+          type: "text",                                                                                                // 185
+          "class": "span8",                                                                                            // 186
+          id: function() {                                                                                             // 187
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 188
+          }                                                                                                            // 189
+        }), "\n                    ", HTML.BUTTON({                                                                    // 190
+          id: "commnetSubmitToCommnet",                                                                                // 191
+          "class": "btn btn-success"                                                                                   // 192
+        }, "回复"), "\n                " ];                                                                              // 193
+      }), "\n                "), "\n            " ];                                                                   // 194
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 195
+  }), "\n\n    ", Blaze.Each(function() {                                                                              // 196
+    return Spacebars.call(view.lookup("posts"));                                                                       // 197
+  }, function() {                                                                                                      // 198
+    return [ "\n        ", HTML.DIV({                                                                                  // 199
+      "class": "center singlePost"                                                                                     // 200
+    }, "\n            ", HTML.DIV({                                                                                    // 201
+      "class": ""                                                                                                      // 202
+    }, "\n                ", HTML.DIV({                                                                                // 203
+      "class": "postTitle"                                                                                             // 204
+    }, "\n                    ", HTML.H2({                                                                             // 205
+      "class": "text-primary span10"                                                                                   // 206
+    }, HTML.A({                                                                                                        // 207
+      href: "/self",                                                                                                   // 208
+      id: "toViewOther"                                                                                                // 209
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 210
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 211
+    })), "\n                    ", Blaze.If(function() {                                                               // 212
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 213
+    }, function() {                                                                                                    // 214
+      return [ "\n                    ", HTML.BUTTON({                                                                 // 215
+        id: "addFriend",                                                                                               // 216
+        "class": "btn btn-info"                                                                                        // 217
+      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 218
+        id: "addCollection",                                                                                           // 219
+        "class": "btn btn-primary"                                                                                     // 220
+      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 221
+        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 222
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 223
+        id: "likePost",                                                                                                // 224
+        "class": "btn btn-warning"                                                                                     // 225
+      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 226
+        return Spacebars.mustache(view.lookup("like"));                                                                // 227
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 228
+        id: "objectPost",                                                                                              // 229
+        "class": "btn btn-warning"                                                                                     // 230
+      }, "异议(", Blaze.View("lookup:object", function() {                                                               // 231
+        return Spacebars.mustache(view.lookup("object"));                                                              // 232
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 233
+        id: "topPost",                                                                                                 // 234
+        "class": "btn btn-danger"                                                                                      // 235
+      }, "置顶 "), "\n                    " ];                                                                           // 236
+    }), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({                        // 237
+      "class": "col-xs-3 "                                                                                             // 238
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 239
+      "class": "muted"                                                                                                 // 240
+    }, Blaze.View("lookup:time", function() {                                                                          // 241
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 242
+    })), "\n            ", HTML.P({                                                                                    // 243
+      "class": ""                                                                                                      // 244
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 245
+      return Blaze.View("lookup:post", function() {                                                                    // 246
+        return Spacebars.mustache(view.lookup("post"));                                                                // 247
+      });                                                                                                              // 248
+    })), "\n            ", Blaze.If(function() {                                                                       // 249
+      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 250
+    }, function() {                                                                                                    // 251
+      return [ "\n            ", Blaze.Each(function() {                                                               // 252
         return Spacebars.dataMustache(view.lookup("displayAudio"), Spacebars.dot(view.lookup("."), "captureAudioId"));
-      }, function() {                                                                                                  // 235
-        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 236
-          controls: "",                                                                                                // 237
-          src: function() {                                                                                            // 238
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 239
-          }                                                                                                            // 240
-        })), "\n            " ];                                                                                       // 241
-      }), "\n            " ];                                                                                          // 242
-    }), "\n            ", Blaze.If(function() {                                                                        // 243
-      return Spacebars.call(view.lookup("isGetImage"));                                                                // 244
-    }, function() {                                                                                                    // 245
-      return [ "\n            ", Blaze.Each(function() {                                                               // 246
+      }, function() {                                                                                                  // 254
+        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 255
+          controls: "",                                                                                                // 256
+          src: function() {                                                                                            // 257
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 258
+          }                                                                                                            // 259
+        })), "\n            " ];                                                                                       // 260
+      }), "\n            " ];                                                                                          // 261
+    }), "\n            ", Blaze.If(function() {                                                                        // 262
+      return Spacebars.call(view.lookup("isGetImage"));                                                                // 263
+    }, function() {                                                                                                    // 264
+      return [ "\n            ", Blaze.Each(function() {                                                               // 265
         return Spacebars.dataMustache(view.lookup("displayImage"), Spacebars.dot(view.lookup("."), "captureImageId"));
-      }, function() {                                                                                                  // 248
-        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 249
-          src: function() {                                                                                            // 250
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 251
-          },                                                                                                           // 252
-          alt: "",                                                                                                     // 253
-          "class": "thumbnail"                                                                                         // 254
-        })), "\n            " ];                                                                                       // 255
-      }), "\n            " ];                                                                                          // 256
-    }), "\n            ", Blaze.If(function() {                                                                        // 257
-      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 258
-    }, function() {                                                                                                    // 259
-      return [ "\n            ", Blaze.Each(function() {                                                               // 260
+      }, function() {                                                                                                  // 267
+        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 268
+          src: function() {                                                                                            // 269
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 270
+          },                                                                                                           // 271
+          alt: "",                                                                                                     // 272
+          "class": "thumbnail"                                                                                         // 273
+        })), "\n            " ];                                                                                       // 274
+      }), "\n            " ];                                                                                          // 275
+    }), "\n            ", Blaze.If(function() {                                                                        // 276
+      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 277
+    }, function() {                                                                                                    // 278
+      return [ "\n            ", Blaze.Each(function() {                                                               // 279
         return Spacebars.dataMustache(view.lookup("displayVideo"), Spacebars.dot(view.lookup("."), "captureVideoId"));
-      }, function() {                                                                                                  // 262
-        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 263
-          src: function() {                                                                                            // 264
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 265
-          }                                                                                                            // 266
-        })), "\n            " ];                                                                                       // 267
-      }), "\n            " ];                                                                                          // 268
-    }), "\n            ", Blaze.If(function() {                                                                        // 269
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 270
-    }, function() {                                                                                                    // 271
-      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 272
-        type: "text",                                                                                                  // 273
-        "class": "span8",                                                                                              // 274
-        id: function() {                                                                                               // 275
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 276
-        }                                                                                                              // 277
-      }), "\n                    ", HTML.BUTTON({                                                                      // 278
-        id: "commnetSubmit",                                                                                           // 279
-        "class": "btn btn-success"                                                                                     // 280
-      }, "评论"), "\n                "), "\n            " ];                                                             // 281
-    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 282
-      return Spacebars.call(view.lookup("comments"));                                                                  // 283
-    }, function() {                                                                                                    // 284
-      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 285
-        "class": "postTitle"                                                                                           // 286
-      }, Blaze.View("lookup:user.username", function() {                                                               // 287
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 288
-      }), " ", Blaze.If(function() {                                                                                   // 289
-        return Spacebars.call(view.lookup("to"));                                                                      // 290
-      }, function() {                                                                                                  // 291
-        return HTML.SPAN({                                                                                             // 292
-          style: "color:black;"                                                                                        // 293
-        }, "回复");                                                                                                      // 294
-      }), " ", Blaze.View("lookup:to", function() {                                                                    // 295
-        return Spacebars.mustache(view.lookup("to"));                                                                  // 296
-      })), " :", HTML.BUTTON({                                                                                         // 297
-        id: "displayCommnetButton",                                                                                    // 298
-        type: "button",                                                                                                // 299
-        "class": "btn btn-link"                                                                                        // 300
-      }, Blaze.View("lookup:post", function() {                                                                        // 301
-        return Spacebars.mustache(view.lookup("post"));                                                                // 302
-      }))), "\n                ", HTML.P({                                                                             // 303
-        style: "display:none;",                                                                                        // 304
-        id: function() {                                                                                               // 305
-          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 306
-        },                                                                                                             // 307
-        "class": "commnetP"                                                                                            // 308
-      }, "\n                ", Blaze.If(function() {                                                                   // 309
-        return Spacebars.call(view.lookup("currentUser"));                                                             // 310
-      }, function() {                                                                                                  // 311
-        return [ "\n                    ", HTML.INPUT({                                                                // 312
-          type: "text",                                                                                                // 313
-          "class": "span8",                                                                                            // 314
-          id: function() {                                                                                             // 315
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 316
-          }                                                                                                            // 317
-        }), "\n                    ", HTML.BUTTON({                                                                    // 318
-          id: "commnetSubmitToCommnet",                                                                                // 319
-          "class": "btn btn-success"                                                                                   // 320
-        }, "评论"), "\n                " ];                                                                              // 321
-      }), "\n                "), "\n            " ];                                                                   // 322
-    }), "\n            "), "\n        "), "\n    " ];                                                                  // 323
-  }) ];                                                                                                                // 324
-}));                                                                                                                   // 325
-                                                                                                                       // 326
+      }, function() {                                                                                                  // 281
+        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 282
+          src: function() {                                                                                            // 283
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 284
+          }                                                                                                            // 285
+        })), "\n            " ];                                                                                       // 286
+      }), "\n            " ];                                                                                          // 287
+    }), "\n            ", Blaze.If(function() {                                                                        // 288
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 289
+    }, function() {                                                                                                    // 290
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 291
+        type: "text",                                                                                                  // 292
+        "class": "span8",                                                                                              // 293
+        id: function() {                                                                                               // 294
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 295
+        }                                                                                                              // 296
+      }), "\n                    ", HTML.BUTTON({                                                                      // 297
+        id: "commnetSubmit",                                                                                           // 298
+        "class": "btn btn-success"                                                                                     // 299
+      }, "评论"), "\n                "), "\n            " ];                                                             // 300
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 301
+      return Spacebars.call(view.lookup("comments"));                                                                  // 302
+    }, function() {                                                                                                    // 303
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 304
+        "class": "postTitle"                                                                                           // 305
+      }, HTML.A({                                                                                                      // 306
+        href: "/self",                                                                                                 // 307
+        id: "toViewOther"                                                                                              // 308
+      }, Blaze.View("lookup:user.username", function() {                                                               // 309
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 310
+      })), " ", Blaze.If(function() {                                                                                  // 311
+        return Spacebars.call(view.lookup("to"));                                                                      // 312
+      }, function() {                                                                                                  // 313
+        return HTML.SPAN({                                                                                             // 314
+          style: "color:black;"                                                                                        // 315
+        }, "回复");                                                                                                      // 316
+      }), " ", Blaze.View("lookup:to", function() {                                                                    // 317
+        return Spacebars.mustache(view.lookup("to"));                                                                  // 318
+      })), " :", HTML.BUTTON({                                                                                         // 319
+        id: "displayCommnetButton",                                                                                    // 320
+        type: "button",                                                                                                // 321
+        "class": "btn btn-link"                                                                                        // 322
+      }, Blaze.View("lookup:post", function() {                                                                        // 323
+        return Spacebars.mustache(view.lookup("post"));                                                                // 324
+      }))), "\n                ", HTML.P({                                                                             // 325
+        style: "display:none;",                                                                                        // 326
+        id: function() {                                                                                               // 327
+          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 328
+        },                                                                                                             // 329
+        "class": "commnetP"                                                                                            // 330
+      }, "\n                ", Blaze.If(function() {                                                                   // 331
+        return Spacebars.call(view.lookup("currentUser"));                                                             // 332
+      }, function() {                                                                                                  // 333
+        return [ "\n                    ", HTML.INPUT({                                                                // 334
+          type: "text",                                                                                                // 335
+          "class": "span8",                                                                                            // 336
+          id: function() {                                                                                             // 337
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 338
+          }                                                                                                            // 339
+        }), "\n                    ", HTML.BUTTON({                                                                    // 340
+          id: "commnetSubmitToCommnet",                                                                                // 341
+          "class": "btn btn-success"                                                                                   // 342
+        }, "回复"), "\n                " ];                                                                              // 343
+      }), "\n                "), "\n            " ];                                                                   // 344
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 345
+  }) ];                                                                                                                // 346
+}));                                                                                                                   // 347
+                                                                                                                       // 348
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.lists.js":function(){
@@ -681,27 +711,174 @@ Template["index"] = new Template("Template.index", (function() {                
 Template.__checkName("lists");                                                                                         // 2
 Template["lists"] = new Template("Template.lists", (function() {                                                       // 3
   var view = this;                                                                                                     // 4
-  return HTML.OL("\n    ", HTML.TABLE({                                                                                // 5
-    "class": "table table-striped table-hover"                                                                         // 6
-  }, "\n        ", HTML.THEAD("\n            ", HTML.TR("\n                ", HTML.TH({                                // 7
-    style: "vertical-align:top;"                                                                                       // 8
-  }, "＃"), "\n                ", HTML.TD("名次"), "\n                ", HTML.TD("昵称"), "\n                ", HTML.TD("战斗力排名"), "\n                ", HTML.TD("今日积分"), "\n                ", HTML.TD("总积分"), "\n            "), "\n        "), "\n        ", HTML.TBODY({
-    id: "scoreList"                                                                                                    // 10
-  }, "\n            ", Blaze.Each(function() {                                                                         // 11
-    return Spacebars.call(view.lookup("lists"));                                                                       // 12
-  }, function() {                                                                                                      // 13
+  return [ HTML.Raw('<h2 class="text-primary">十大综合排名最高新闻</h2>\n    '), Blaze.Each(function() {                         // 5
+    return Spacebars.call(view.lookup("goodNews"));                                                                    // 6
+  }, function() {                                                                                                      // 7
+    return [ "\n        ", HTML.DIV({                                                                                  // 8
+      "class": "center well singlePost"                                                                                // 9
+    }, "\n            ", HTML.DIV({                                                                                    // 10
+      "class": ""                                                                                                      // 11
+    }, "\n                ", HTML.DIV({                                                                                // 12
+      "class": "postTitle"                                                                                             // 13
+    }, "\n                    ", HTML.H2({                                                                             // 14
+      "class": "text-primary span10"                                                                                   // 15
+    }, HTML.A({                                                                                                        // 16
+      href: "/self",                                                                                                   // 17
+      id: "toViewOther"                                                                                                // 18
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 19
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 20
+    })), "\n                    ", Blaze.If(function() {                                                               // 21
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 22
+    }, function() {                                                                                                    // 23
+      return [ "\n                    ", HTML.BUTTON({                                                                 // 24
+        id: "addFriend",                                                                                               // 25
+        "class": "btn btn-info"                                                                                        // 26
+      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 27
+        id: "addCollection",                                                                                           // 28
+        "class": "btn btn-primary"                                                                                     // 29
+      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 30
+        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 31
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 32
+        id: "likePost",                                                                                                // 33
+        "class": "btn btn-warning"                                                                                     // 34
+      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 35
+        return Spacebars.mustache(view.lookup("like"));                                                                // 36
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 37
+        id: "objectPost",                                                                                              // 38
+        "class": "btn btn-danger"                                                                                      // 39
+      }, "异议(", Blaze.View("lookup:object", function() {                                                               // 40
+        return Spacebars.mustache(view.lookup("object"));                                                              // 41
+      }), ")"), "\n                    " ];                                                                            // 42
+    }), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({                        // 43
+      "class": "col-xs-3 "                                                                                             // 44
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 45
+      "class": "muted"                                                                                                 // 46
+    }, Blaze.View("lookup:time", function() {                                                                          // 47
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 48
+    })), "\n            ", HTML.P({                                                                                    // 49
+      "class": ""                                                                                                      // 50
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 51
+      return Blaze.View("lookup:post", function() {                                                                    // 52
+        return Spacebars.mustache(view.lookup("post"));                                                                // 53
+      });                                                                                                              // 54
+    })), "\n            ", Blaze.If(function() {                                                                       // 55
+      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 56
+    }, function() {                                                                                                    // 57
+      return [ "\n            ", Blaze.Each(function() {                                                               // 58
+        return Spacebars.dataMustache(view.lookup("displayAudio"), Spacebars.dot(view.lookup("."), "captureAudioId"));
+      }, function() {                                                                                                  // 60
+        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 61
+          controls: "",                                                                                                // 62
+          src: function() {                                                                                            // 63
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 64
+          }                                                                                                            // 65
+        })), "\n            " ];                                                                                       // 66
+      }), "\n            " ];                                                                                          // 67
+    }), "\n            ", Blaze.If(function() {                                                                        // 68
+      return Spacebars.call(view.lookup("isGetImage"));                                                                // 69
+    }, function() {                                                                                                    // 70
+      return [ "\n            ", Blaze.Each(function() {                                                               // 71
+        return Spacebars.dataMustache(view.lookup("displayImage"), Spacebars.dot(view.lookup("."), "captureImageId"));
+      }, function() {                                                                                                  // 73
+        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 74
+          src: function() {                                                                                            // 75
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 76
+          },                                                                                                           // 77
+          alt: "",                                                                                                     // 78
+          "class": "thumbnail"                                                                                         // 79
+        })), "\n            " ];                                                                                       // 80
+      }), "\n            " ];                                                                                          // 81
+    }), "\n            ", Blaze.If(function() {                                                                        // 82
+      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 83
+    }, function() {                                                                                                    // 84
+      return [ "\n            ", Blaze.Each(function() {                                                               // 85
+        return Spacebars.dataMustache(view.lookup("displayVideo"), Spacebars.dot(view.lookup("."), "captureVideoId"));
+      }, function() {                                                                                                  // 87
+        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 88
+          src: function() {                                                                                            // 89
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 90
+          }                                                                                                            // 91
+        })), "\n            " ];                                                                                       // 92
+      }), "\n            " ];                                                                                          // 93
+    }), "\n            ", Blaze.If(function() {                                                                        // 94
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 95
+    }, function() {                                                                                                    // 96
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 97
+        type: "text",                                                                                                  // 98
+        "class": "span8",                                                                                              // 99
+        id: function() {                                                                                               // 100
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 101
+        }                                                                                                              // 102
+      }), "\n                    ", HTML.BUTTON({                                                                      // 103
+        id: "commnetSubmit",                                                                                           // 104
+        "class": "btn btn-success"                                                                                     // 105
+      }, "评论"), "\n                "), "\n            " ];                                                             // 106
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 107
+      return Spacebars.call(view.lookup("comments"));                                                                  // 108
+    }, function() {                                                                                                    // 109
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 110
+        "class": "postTitle"                                                                                           // 111
+      }, HTML.A({                                                                                                      // 112
+        href: "/self",                                                                                                 // 113
+        id: "toViewOther"                                                                                              // 114
+      }, Blaze.View("lookup:user.username", function() {                                                               // 115
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 116
+      })), " ", Blaze.If(function() {                                                                                  // 117
+        return Spacebars.call(view.lookup("to"));                                                                      // 118
+      }, function() {                                                                                                  // 119
+        return HTML.SPAN({                                                                                             // 120
+          style: "color:black;"                                                                                        // 121
+        }, "回复");                                                                                                      // 122
+      }), " ", Blaze.View("lookup:to", function() {                                                                    // 123
+        return Spacebars.mustache(view.lookup("to"));                                                                  // 124
+      })), " :", HTML.BUTTON({                                                                                         // 125
+        id: "displayCommnetButton",                                                                                    // 126
+        type: "button",                                                                                                // 127
+        "class": "btn btn-link"                                                                                        // 128
+      }, Blaze.View("lookup:post", function() {                                                                        // 129
+        return Spacebars.mustache(view.lookup("post"));                                                                // 130
+      }))), "\n                ", HTML.P({                                                                             // 131
+        style: "display:none;",                                                                                        // 132
+        id: function() {                                                                                               // 133
+          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 134
+        },                                                                                                             // 135
+        "class": "commnetP"                                                                                            // 136
+      }, "\n                ", Blaze.If(function() {                                                                   // 137
+        return Spacebars.call(view.lookup("currentUser"));                                                             // 138
+      }, function() {                                                                                                  // 139
+        return [ "\n                    ", HTML.INPUT({                                                                // 140
+          type: "text",                                                                                                // 141
+          "class": "span8",                                                                                            // 142
+          id: function() {                                                                                             // 143
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 144
+          }                                                                                                            // 145
+        }), "\n                    ", HTML.BUTTON({                                                                    // 146
+          id: "commnetSubmitToCommnet",                                                                                // 147
+          "class": "btn btn-success"                                                                                   // 148
+        }, "评论"), "\n                " ];                                                                              // 149
+      }), "\n                "), "\n            " ];                                                                   // 150
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 151
+  }), "\n    ", HTML.OL("\n    ", HTML.Raw('<h3 class="text-danger">十大最活跃用户</h3>'), "\n    ", HTML.TABLE({             // 152
+    "class": "table table-striped table-hover"                                                                         // 153
+  }, "\n        ", HTML.THEAD("\n            ", HTML.TR("\n                ", HTML.TH({                                // 154
+    style: "vertical-align:top;"                                                                                       // 155
+  }, "＃"), "\n                ", HTML.TD("名次"), "\n                ", HTML.TD("昵称"), "\n                ", HTML.TD("UID"), "\n                ", HTML.TD("今日活跃度"), "\n                ", HTML.TD("总活跃度"), "\n            "), "\n        "), "\n        ", HTML.TBODY({
+    id: "scoreList"                                                                                                    // 157
+  }, "\n            ", Blaze.Each(function() {                                                                         // 158
+    return Spacebars.call(view.lookup("lists"));                                                                       // 159
+  }, function() {                                                                                                      // 160
     return [ "\n                ", HTML.TR("\n                    ", HTML.TH(), "\n                    ", HTML.TD(HTML.LI()), "\n                    ", HTML.TD(Blaze.View("lookup:user.username", function() {
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 15
-    })), "\n                    ", HTML.TD(Blaze.View("lookup:rank", function() {                                      // 16
-      return Spacebars.mustache(view.lookup("rank"));                                                                  // 17
-    })), "\n                    ", HTML.TD(Blaze.View("lookup:todayScore", function() {                                // 18
-      return Spacebars.mustache(view.lookup("todayScore"));                                                            // 19
-    })), "\n                    ", HTML.TD(Blaze.View("lookup:totalScore", function() {                                // 20
-      return Spacebars.mustache(view.lookup("totalScore"));                                                            // 21
-    })), "\n                "), "\n            " ];                                                                    // 22
-  }), "\n        "), "\n    "), "\n    ");                                                                             // 23
-}));                                                                                                                   // 24
-                                                                                                                       // 25
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 162
+    })), "\n                    ", HTML.TD(Blaze.View("lookup:rank", function() {                                      // 163
+      return Spacebars.mustache(view.lookup("rank"));                                                                  // 164
+    })), "\n                    ", HTML.TD(Blaze.View("lookup:todayScore", function() {                                // 165
+      return Spacebars.mustache(view.lookup("todayScore"));                                                            // 166
+    })), "\n                    ", HTML.TD(Blaze.View("lookup:totalScore", function() {                                // 167
+      return Spacebars.mustache(view.lookup("totalScore"));                                                            // 168
+    })), "\n                "), "\n            " ];                                                                    // 169
+  }), "\n        "), "\n    "), "\n    ") ];                                                                           // 170
+}));                                                                                                                   // 171
+                                                                                                                       // 172
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.login.js":function(){
@@ -761,158 +938,195 @@ Template["self"] = new Template("Template.self", (function() {                  
     }, function() {                                                                                                    // 10
       return [ "\n            ", HTML.H1({                                                                             // 11
         "class": "text-danger"                                                                                         // 12
-      }, "尊贵的管理员账户！"), "\n        " ];                                                                                 // 13
-    }, function() {                                                                                                    // 14
-      return [ "\n            ", HTML.H4({                                                                             // 15
-        "class": "text-info"                                                                                           // 16
-      }, "普通用户。"), "\n        " ];                                                                                     // 17
-    }), "\n        ", HTML.DL({                                                                                        // 18
-      "class": "dl-horizontal well"                                                                                    // 19
-    }, "\n            ", HTML.DT("用户名"), HTML.DD(Blaze.View("lookup:user.username", function() {                       // 20
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 21
-    })), "\n            ", HTML.DT("总积分"), HTML.DD(Blaze.View("lookup:totalScore", function() {                        // 22
-      return Spacebars.mustache(view.lookup("totalScore"));                                                            // 23
-    })), "\n            ", HTML.DT("今日积分"), HTML.DD(Blaze.View("lookup:todayScore", function() {                       // 24
-      return Spacebars.mustache(view.lookup("todayScore"));                                                            // 25
-    })), "\n            ", HTML.DT("好友总数"), HTML.DD(Blaze.View("lookup:totalFriend", function() {                      // 26
-      return Spacebars.mustache(view.lookup("totalFriend"));                                                           // 27
-    })), "\n            ", HTML.DT("排名"), HTML.DD(Blaze.View("lookup:rank", function() {                               // 28
-      return Spacebars.mustache(view.lookup("rank"));                                                                  // 29
-    })), "\n            ", HTML.DT("注册时间"), HTML.DD(Blaze.View("lookup:time", function() {                             // 30
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 31
-    })), "\n        "), "\n    " ];                                                                                    // 32
-  }), HTML.Raw('\n    <h3 class="text-danger">您发布过的新闻</h3>\n    '), Blaze.Each(function() {                            // 33
-    return Spacebars.call(view.lookup("posts"));                                                                       // 34
-  }, function() {                                                                                                      // 35
-    return [ "\n        ", HTML.DIV({                                                                                  // 36
-      "class": "center singlePost"                                                                                     // 37
-    }, "\n            ", HTML.DIV({                                                                                    // 38
-      "class": ""                                                                                                      // 39
-    }, "\n                ", HTML.DIV({                                                                                // 40
-      "class": "postTitle"                                                                                             // 41
-    }, "\n                    ", HTML.H2({                                                                             // 42
-      "class": "text-primary span10"                                                                                   // 43
-    }, Blaze.View("lookup:user.username", function() {                                                                 // 44
-      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 45
-    }), "\n                    ", HTML.BUTTON({                                                                        // 46
-      id: "addCollection",                                                                                             // 47
-      "class": "btn btn-primary"                                                                                       // 48
-    }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                        // 49
-      return Spacebars.mustache(view.lookup("totalCollection"));                                                       // 50
-    }), ")"), "\n                    ", HTML.BUTTON({                                                                  // 51
-      id: "likePost",                                                                                                  // 52
-      "class": "btn btn-warning"                                                                                       // 53
-    }, "点赞(", Blaze.View("lookup:like", function() {                                                                   // 54
-      return Spacebars.mustache(view.lookup("like"));                                                                  // 55
-    }), ")"), "\n                    "), "\n                "), "\n                ", HTML.DIV({                       // 56
-      "class": "col-xs-3 "                                                                                             // 57
-    }), "\n            "), "\n            ", HTML.P({                                                                  // 58
-      "class": "muted"                                                                                                 // 59
-    }, Blaze.View("lookup:time", function() {                                                                          // 60
-      return Spacebars.mustache(view.lookup("time"));                                                                  // 61
-    })), "\n            ", HTML.P({                                                                                    // 62
-      "class": ""                                                                                                      // 63
-    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 64
-      return Blaze.View("lookup:post", function() {                                                                    // 65
-        return Spacebars.mustache(view.lookup("post"));                                                                // 66
-      });                                                                                                              // 67
-    })), "\n            ", Blaze.If(function() {                                                                       // 68
-      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 69
+      }, "管理员账户", Blaze.View("lookup:user.username", function() {                                                      // 13
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 14
+      }), "！"), "\n        " ];                                                                                        // 15
+    }, function() {                                                                                                    // 16
+      return [ "\n            ", HTML.H4({                                                                             // 17
+        "class": "text-info"                                                                                           // 18
+      }, "普通用户", Blaze.View("lookup:user.username", function() {                                                       // 19
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 20
+      }), "。", Blaze.If(function() {                                                                                   // 21
+        return Spacebars.call(view.lookup("isFriend"));                                                                // 22
+      }, function() {                                                                                                  // 23
+        return HTML.BUTTON({                                                                                           // 24
+          id: "addFriend",                                                                                             // 25
+          "class": "btn btn-info"                                                                                      // 26
+        }, "加好友");                                                                                                     // 27
+      })), "\n        " ];                                                                                             // 28
+    }), "\n        ", HTML.DL({                                                                                        // 29
+      "class": "dl-horizontal well"                                                                                    // 30
+    }, "\n            ", HTML.DT("用户名"), HTML.DD(Blaze.View("lookup:user.username", function() {                       // 31
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 32
+    })), "\n            ", HTML.DT("总积分"), HTML.DD(Blaze.View("lookup:totalScore", function() {                        // 33
+      return Spacebars.mustache(view.lookup("totalScore"));                                                            // 34
+    })), "\n            ", HTML.DT("今日积分"), HTML.DD(Blaze.View("lookup:todayScore", function() {                       // 35
+      return Spacebars.mustache(view.lookup("todayScore"));                                                            // 36
+    })), "\n            ", HTML.DT("好友总数"), HTML.DD(Blaze.View("lookup:totalFriend", function() {                      // 37
+      return Spacebars.mustache(view.lookup("totalFriend"));                                                           // 38
+    })), "\n            ", HTML.DT("被赞总数"), HTML.DD(Blaze.View("lookup:totalLike", function() {                        // 39
+      return Spacebars.mustache(view.lookup("totalLike"));                                                             // 40
+    })), "\n            ", HTML.DT("被异议总数"), HTML.DD(Blaze.View("lookup:totalObject", function() {                     // 41
+      return Spacebars.mustache(view.lookup("totalObject"));                                                           // 42
+    })), "\n            ", HTML.DT("被收藏总数"), HTML.DD(Blaze.View("lookup:totalCollection", function() {                 // 43
+      return Spacebars.mustache(view.lookup("totalCollection"));                                                       // 44
+    })), "\n            ", HTML.DT("发布新闻总数"), HTML.DD(Blaze.View("lookup:totalPost", function() {                      // 45
+      return Spacebars.mustache(view.lookup("totalPost"));                                                             // 46
+    })), "\n            ", HTML.DT("UID"), HTML.DD(Blaze.View("lookup:rank", function() {                              // 47
+      return Spacebars.mustache(view.lookup("rank"));                                                                  // 48
+    })), "\n            ", HTML.DT("注册时间"), HTML.DD(Blaze.View("lookup:time", function() {                             // 49
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 50
+    })), "\n        "), "\n    " ];                                                                                    // 51
+  }), HTML.Raw('\n    <h3 class="text-danger">发布过的新闻</h3>\n    '), Blaze.Each(function() {                             // 52
+    return Spacebars.call(view.lookup("posts"));                                                                       // 53
+  }, function() {                                                                                                      // 54
+    return [ "\n        ", HTML.DIV({                                                                                  // 55
+      "class": "center singlePost"                                                                                     // 56
+    }, "\n            ", HTML.DIV({                                                                                    // 57
+      "class": ""                                                                                                      // 58
+    }, "\n                ", HTML.DIV({                                                                                // 59
+      "class": "postTitle"                                                                                             // 60
+    }, "\n                    ", HTML.H2({                                                                             // 61
+      "class": "text-primary span10"                                                                                   // 62
+    }, HTML.A({                                                                                                        // 63
+      href: "/self",                                                                                                   // 64
+      id: "toViewOther"                                                                                                // 65
+    }, Blaze.View("lookup:user.username", function() {                                                                 // 66
+      return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                       // 67
+    })), "\n                    ", Blaze.If(function() {                                                               // 68
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 69
     }, function() {                                                                                                    // 70
-      return [ "\n            ", Blaze.Each(function() {                                                               // 71
+      return [ "\n                    ", HTML.BUTTON({                                                                 // 71
+        id: "addFriend",                                                                                               // 72
+        "class": "btn btn-info"                                                                                        // 73
+      }, "加好友"), "\n                    ", HTML.BUTTON({                                                               // 74
+        id: "addCollection",                                                                                           // 75
+        "class": "btn btn-primary"                                                                                     // 76
+      }, "收藏(", Blaze.View("lookup:totalCollection", function() {                                                      // 77
+        return Spacebars.mustache(view.lookup("totalCollection"));                                                     // 78
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 79
+        id: "likePost",                                                                                                // 80
+        "class": "btn btn-warning"                                                                                     // 81
+      }, "点赞(", Blaze.View("lookup:like", function() {                                                                 // 82
+        return Spacebars.mustache(view.lookup("like"));                                                                // 83
+      }), ")"), "\n                    ", HTML.BUTTON({                                                                // 84
+        id: "objectPost",                                                                                              // 85
+        "class": "btn btn-danger"                                                                                      // 86
+      }, "异议(", Blaze.View("lookup:object", function() {                                                               // 87
+        return Spacebars.mustache(view.lookup("object"));                                                              // 88
+      }), ")"), "\n                    " ];                                                                            // 89
+    }), "    :\n                    "), "\n                "), "\n                ", HTML.DIV({                        // 90
+      "class": "col-xs-3 "                                                                                             // 91
+    }), "\n            "), "\n            ", HTML.P({                                                                  // 92
+      "class": "muted"                                                                                                 // 93
+    }, Blaze.View("lookup:time", function() {                                                                          // 94
+      return Spacebars.mustache(view.lookup("time"));                                                                  // 95
+    })), "\n            ", HTML.P({                                                                                    // 96
+      "class": ""                                                                                                      // 97
+    }, Spacebars.include(view.lookupTemplate("markdown"), function() {                                                 // 98
+      return Blaze.View("lookup:post", function() {                                                                    // 99
+        return Spacebars.mustache(view.lookup("post"));                                                                // 100
+      });                                                                                                              // 101
+    })), "\n            ", Blaze.If(function() {                                                                       // 102
+      return Spacebars.call(view.lookup("isGetAudio"));                                                                // 103
+    }, function() {                                                                                                    // 104
+      return [ "\n            ", Blaze.Each(function() {                                                               // 105
         return Spacebars.dataMustache(view.lookup("displayAudio"), Spacebars.dot(view.lookup("."), "captureAudioId"));
-      }, function() {                                                                                                  // 73
-        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 74
-          controls: "",                                                                                                // 75
-          src: function() {                                                                                            // 76
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 77
-          }                                                                                                            // 78
-        })), "\n            " ];                                                                                       // 79
-      }), "\n            " ];                                                                                          // 80
-    }), "\n            ", Blaze.If(function() {                                                                        // 81
-      return Spacebars.call(view.lookup("isGetImage"));                                                                // 82
-    }, function() {                                                                                                    // 83
-      return [ "\n            ", Blaze.Each(function() {                                                               // 84
+      }, function() {                                                                                                  // 107
+        return [ "\n            ", HTML.P(HTML.AUDIO({                                                                 // 108
+          controls: "",                                                                                                // 109
+          src: function() {                                                                                            // 110
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 111
+          }                                                                                                            // 112
+        })), "\n            " ];                                                                                       // 113
+      }), "\n            " ];                                                                                          // 114
+    }), "\n            ", Blaze.If(function() {                                                                        // 115
+      return Spacebars.call(view.lookup("isGetImage"));                                                                // 116
+    }, function() {                                                                                                    // 117
+      return [ "\n            ", Blaze.Each(function() {                                                               // 118
         return Spacebars.dataMustache(view.lookup("displayImage"), Spacebars.dot(view.lookup("."), "captureImageId"));
-      }, function() {                                                                                                  // 86
-        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 87
-          src: function() {                                                                                            // 88
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 89
-          },                                                                                                           // 90
-          alt: "",                                                                                                     // 91
-          "class": "thumbnail"                                                                                         // 92
-        })), "\n            " ];                                                                                       // 93
-      }), "\n            " ];                                                                                          // 94
-    }), "\n            ", Blaze.If(function() {                                                                        // 95
-      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 96
-    }, function() {                                                                                                    // 97
-      return [ "\n            ", Blaze.Each(function() {                                                               // 98
+      }, function() {                                                                                                  // 120
+        return [ "\n            ", HTML.P(HTML.IMG({                                                                   // 121
+          src: function() {                                                                                            // 122
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 123
+          },                                                                                                           // 124
+          alt: "",                                                                                                     // 125
+          "class": "thumbnail"                                                                                         // 126
+        })), "\n            " ];                                                                                       // 127
+      }), "\n            " ];                                                                                          // 128
+    }), "\n            ", Blaze.If(function() {                                                                        // 129
+      return Spacebars.call(view.lookup("isGetVideo"));                                                                // 130
+    }, function() {                                                                                                    // 131
+      return [ "\n            ", Blaze.Each(function() {                                                               // 132
         return Spacebars.dataMustache(view.lookup("displayVideo"), Spacebars.dot(view.lookup("."), "captureVideoId"));
-      }, function() {                                                                                                  // 100
-        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 101
-          src: function() {                                                                                            // 102
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 103
-          }                                                                                                            // 104
-        })), "\n            " ];                                                                                       // 105
-      }), "\n            " ];                                                                                          // 106
-    }), "\n            ", Blaze.If(function() {                                                                        // 107
-      return Spacebars.call(view.lookup("currentUser"));                                                               // 108
-    }, function() {                                                                                                    // 109
-      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 110
-        type: "text",                                                                                                  // 111
-        "class": "span8",                                                                                              // 112
-        id: function() {                                                                                               // 113
-          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 114
-        }                                                                                                              // 115
-      }), "\n                    ", HTML.BUTTON({                                                                      // 116
-        id: "commnetSubmit",                                                                                           // 117
-        "class": "btn btn-success"                                                                                     // 118
-      }, "评论"), "\n                "), "\n            " ];                                                             // 119
-    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 120
-      return Spacebars.call(view.lookup("comments"));                                                                  // 121
-    }, function() {                                                                                                    // 122
-      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 123
-        "class": "postTitle"                                                                                           // 124
-      }, Blaze.View("lookup:user.username", function() {                                                               // 125
-        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 126
-      }), " ", Blaze.If(function() {                                                                                   // 127
-        return Spacebars.call(view.lookup("to"));                                                                      // 128
-      }, function() {                                                                                                  // 129
-        return HTML.SPAN({                                                                                             // 130
-          style: "color:black;"                                                                                        // 131
-        }, "回复");                                                                                                      // 132
-      }), " ", Blaze.View("lookup:to", function() {                                                                    // 133
-        return Spacebars.mustache(view.lookup("to"));                                                                  // 134
-      })), " :", HTML.BUTTON({                                                                                         // 135
-        id: "displayCommnetButton",                                                                                    // 136
-        type: "button",                                                                                                // 137
-        "class": "btn btn-link"                                                                                        // 138
-      }, Blaze.View("lookup:post", function() {                                                                        // 139
-        return Spacebars.mustache(view.lookup("post"));                                                                // 140
-      }))), "\n                ", HTML.P({                                                                             // 141
-        style: "display:none;",                                                                                        // 142
-        id: function() {                                                                                               // 143
-          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 144
-        },                                                                                                             // 145
-        "class": "commnetP"                                                                                            // 146
-      }, "\n                ", Blaze.If(function() {                                                                   // 147
-        return Spacebars.call(view.lookup("currentUser"));                                                             // 148
-      }, function() {                                                                                                  // 149
-        return [ "\n                    ", HTML.INPUT({                                                                // 150
-          type: "text",                                                                                                // 151
-          "class": "span8",                                                                                            // 152
-          id: function() {                                                                                             // 153
-            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 154
-          }                                                                                                            // 155
-        }), "\n                    ", HTML.BUTTON({                                                                    // 156
-          id: "commnetSubmitToCommnet",                                                                                // 157
-          "class": "btn btn-success"                                                                                   // 158
-        }, "评论"), "\n                " ];                                                                              // 159
-      }), "\n                "), "\n            " ];                                                                   // 160
-    }), "\n            "), "\n        "), "\n    " ];                                                                  // 161
-  }) ];                                                                                                                // 162
-}));                                                                                                                   // 163
-                                                                                                                       // 164
+      }, function() {                                                                                                  // 134
+        return [ "\n            ", HTML.P(HTML.VIDEO({                                                                 // 135
+          src: function() {                                                                                            // 136
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "url"));                                         // 137
+          }                                                                                                            // 138
+        })), "\n            " ];                                                                                       // 139
+      }), "\n            " ];                                                                                          // 140
+    }), "\n            ", Blaze.If(function() {                                                                        // 141
+      return Spacebars.call(view.lookup("currentUser"));                                                               // 142
+    }, function() {                                                                                                    // 143
+      return [ "\n                ", HTML.P("\n                    ", HTML.INPUT({                                     // 144
+        type: "text",                                                                                                  // 145
+        "class": "span8",                                                                                              // 146
+        id: function() {                                                                                               // 147
+          return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                           // 148
+        }                                                                                                              // 149
+      }), "\n                    ", HTML.BUTTON({                                                                      // 150
+        id: "commnetSubmit",                                                                                           // 151
+        "class": "btn btn-success"                                                                                     // 152
+      }, "评论"), "\n                "), "\n            " ];                                                             // 153
+    }), "\n            ", HTML.DIV("\n            ", Blaze.Each(function() {                                           // 154
+      return Spacebars.call(view.lookup("comments"));                                                                  // 155
+    }, function() {                                                                                                    // 156
+      return [ "\n                ", HTML.P(HTML.SPAN({                                                                // 157
+        "class": "postTitle"                                                                                           // 158
+      }, HTML.A({                                                                                                      // 159
+        href: "/self",                                                                                                 // 160
+        id: "toViewOther"                                                                                              // 161
+      }, Blaze.View("lookup:user.username", function() {                                                               // 162
+        return Spacebars.mustache(Spacebars.dot(view.lookup("user"), "username"));                                     // 163
+      })), " ", Blaze.If(function() {                                                                                  // 164
+        return Spacebars.call(view.lookup("to"));                                                                      // 165
+      }, function() {                                                                                                  // 166
+        return HTML.SPAN({                                                                                             // 167
+          style: "color:black;"                                                                                        // 168
+        }, "回复");                                                                                                      // 169
+      }), " ", Blaze.View("lookup:to", function() {                                                                    // 170
+        return Spacebars.mustache(view.lookup("to"));                                                                  // 171
+      })), " :", HTML.BUTTON({                                                                                         // 172
+        id: "displayCommnetButton",                                                                                    // 173
+        type: "button",                                                                                                // 174
+        "class": "btn btn-link"                                                                                        // 175
+      }, Blaze.View("lookup:post", function() {                                                                        // 176
+        return Spacebars.mustache(view.lookup("post"));                                                                // 177
+      }))), "\n                ", HTML.P({                                                                             // 178
+        style: "display:none;",                                                                                        // 179
+        id: function() {                                                                                               // 180
+          return [ "p", Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id")) ];                                  // 181
+        },                                                                                                             // 182
+        "class": "commnetP"                                                                                            // 183
+      }, "\n                ", Blaze.If(function() {                                                                   // 184
+        return Spacebars.call(view.lookup("currentUser"));                                                             // 185
+      }, function() {                                                                                                  // 186
+        return [ "\n                    ", HTML.INPUT({                                                                // 187
+          type: "text",                                                                                                // 188
+          "class": "span8",                                                                                            // 189
+          id: function() {                                                                                             // 190
+            return Spacebars.mustache(Spacebars.dot(view.lookup("."), "_id"));                                         // 191
+          }                                                                                                            // 192
+        }), "\n                    ", HTML.BUTTON({                                                                    // 193
+          id: "commnetSubmitToCommnet",                                                                                // 194
+          "class": "btn btn-success"                                                                                   // 195
+        }, "回复"), "\n                " ];                                                                              // 196
+      }), "\n                "), "\n            " ];                                                                   // 197
+    }), "\n            "), "\n        "), "\n    " ];                                                                  // 198
+  }) ];                                                                                                                // 199
+}));                                                                                                                   // 200
+                                                                                                                       // 201
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"client.js":["meteor/meteor",function(require){
@@ -930,399 +1144,418 @@ _meteor.Meteor.startup(function () {                                            
     document.addEventListener("deviceready", onDeviceReady, false);                                                    // 5
     function onDeviceReady() {                                                                                         // 6
         console.log(navigator.device.capture);                                                                         // 7
-        //Session.set("info", {success:"navigator success hahaha", error: ""});                                        //
-    }                                                                                                                  // 6
+    }                                                                                                                  //
 });                                                                                                                    //
                                                                                                                        //
 Session.setDefault("currentUrl", { index: "active", login: "", reg: "", friend: "", lists: "", self: "", collections: "" });
 Session.setDefault("info", { success: "", error: "" });                                                                // 13
-Posts = new _meteor.Meteor.Collection("posts");                                                                        // 14
-SystemInfo = new _meteor.Meteor.Collection("systemInfo");                                                              // 15
-UserInfo = new _meteor.Meteor.Collection("userInfo");                                                                  // 16
                                                                                                                        //
-var isGetImage = false;                                                                                                // 18
-var isGetAudio = false;                                                                                                // 19
-var isGetVideo = false;                                                                                                // 20
-var captureImageId = false;                                                                                            // 21
-var captureAudioId = false;                                                                                            // 22
-var captureVideoId = false;                                                                                            // 23
+Posts = new _meteor.Meteor.Collection("posts");                                                                        // 15
+SystemInfo = new _meteor.Meteor.Collection("systemInfo");                                                              // 16
+UserInfo = new _meteor.Meteor.Collection("userInfo");                                                                  // 17
                                                                                                                        //
-Images = new FS.Collection("images", {                                                                                 // 25
-    stores: [new FS.Store.FileSystem("images", { path: "~/uploadsImage" })]                                            // 26
+var isGetImage = false;                                                                                                // 19
+var isGetAudio = false;                                                                                                // 20
+var isGetVideo = false;                                                                                                // 21
+var isGetLocalImage = false;                                                                                           // 22
+var captureImageId = false;                                                                                            // 23
+var captureAudioId = false;                                                                                            // 24
+var captureVideoId = false;                                                                                            // 25
+var locallImageId = false;                                                                                             // 26
+                                                                                                                       //
+Images = new FS.Collection("images", {                                                                                 // 28
+    stores: [new FS.Store.FileSystem("images", { path: "~/uploadsImage" })]                                            // 29
 });                                                                                                                    //
                                                                                                                        //
-Audios = new FS.Collection("audios", {                                                                                 // 29
-    stores: [new FS.Store.FileSystem("audios", { path: "~/uploadsAudio" })]                                            // 30
+Audios = new FS.Collection("audios", {                                                                                 // 32
+    stores: [new FS.Store.FileSystem("audios", { path: "~/uploadsAudio" })]                                            // 33
 });                                                                                                                    //
                                                                                                                        //
-Videos = new FS.Collection("videos", {                                                                                 // 33
-    stores: [new FS.Store.FileSystem("videos", { path: "~/uploadsVideo" })]                                            // 34
+Videos = new FS.Collection("videos", {                                                                                 // 36
+    stores: [new FS.Store.FileSystem("videos", { path: "~/uploadsVideo" })]                                            // 37
 });                                                                                                                    //
                                                                                                                        //
-var captureImageSuccess = function captureImageSuccess(mediaFiles) {                                                   // 37
-    var i, path, len;                                                                                                  // 38
-    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 39
-        path = mediaFiles[i].fullPath;                                                                                 // 40
-        Images.insert(mediaFiles[i], function (err, fileObj) {                                                         // 41
-            isGetImage = true;                                                                                         // 42
-            captureImageId = fileObj._id;                                                                              // 43
-            Session.set("info", { success: "插入图片成功", error: "" });                                                     // 44
+LocalImages = new FS.Collection("localimages", {                                                                       // 40
+    stores: [new FS.Store.FileSystem("localimages", { path: "~/uploadsLocalImage" })]                                  // 41
+});                                                                                                                    //
+                                                                                                                       //
+var captureImageSuccess = function captureImageSuccess(mediaFiles) {                                                   // 44
+    var i, path, len;                                                                                                  // 45
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 46
+        path = mediaFiles[i].fullPath;                                                                                 // 47
+        Images.insert(mediaFiles[i], function (err, fileObj) {                                                         // 48
+            isGetImage = true;                                                                                         // 49
+            captureImageId = fileObj._id;                                                                              // 50
+            Session.set("info", { success: "插入图片成功", error: "" });                                                     // 51
         });                                                                                                            //
     }                                                                                                                  //
 };                                                                                                                     //
                                                                                                                        //
-var captureAudioSuccess = function captureAudioSuccess(mediaFiles) {                                                   // 49
-    var i, path, len;                                                                                                  // 50
-    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 51
-        path = mediaFiles[i].fullPath;                                                                                 // 52
-        Audios.insert(mediaFiles[i], function (err, fileObj) {                                                         // 53
-            isGetAudio = true;                                                                                         // 54
-            captureAudioId = fileObj._id;                                                                              // 55
-            Session.set("info", { success: "插入音频成功", error: "" });                                                     // 56
+var captureAudioSuccess = function captureAudioSuccess(mediaFiles) {                                                   // 56
+    var i, path, len;                                                                                                  // 57
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 58
+        path = mediaFiles[i].fullPath;                                                                                 // 59
+        Audios.insert(mediaFiles[i], function (err, fileObj) {                                                         // 60
+            isGetAudio = true;                                                                                         // 61
+            captureAudioId = fileObj._id;                                                                              // 62
+            Session.set("info", { success: "插入音频成功", error: "" });                                                     // 63
         });                                                                                                            //
     }                                                                                                                  //
 };                                                                                                                     //
                                                                                                                        //
-var captureVideoSuccess = function captureVideoSuccess(mediaFiles) {                                                   // 61
-    var i, path, len;                                                                                                  // 62
-    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 63
-        path = mediaFiles[i].fullPath;                                                                                 // 64
-        Videos.insert(mediaFiles[i], function (err, fileObj) {                                                         // 65
-            isGetVideo = true;                                                                                         // 66
-            captureVideoId = fileObj._id;                                                                              // 67
-            Session.set("info", { success: "插入小视频成功", error: "" });                                                    // 68
+var captureVideoSuccess = function captureVideoSuccess(mediaFiles) {                                                   // 68
+    var i, path, len;                                                                                                  // 69
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {                                                            // 70
+        path = mediaFiles[i].fullPath;                                                                                 // 71
+        Videos.insert(mediaFiles[i], function (err, fileObj) {                                                         // 72
+            isGetVideo = true;                                                                                         // 73
+            captureVideoId = fileObj._id;                                                                              // 74
+            Session.set("info", { success: "插入小视频成功", error: "" });                                                    // 75
         });                                                                                                            //
     }                                                                                                                  //
 };                                                                                                                     //
                                                                                                                        //
 // capture error callback                                                                                              //
-var captureError = function captureError(error) {                                                                      // 74
-    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');                                  // 75
+var captureError = function captureError(error) {                                                                      // 81
+    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');                                  // 82
 };                                                                                                                     //
                                                                                                                        //
-if (_meteor.Meteor.isCordova) {}                                                                                       // 78
-                                                                                                                       //
-Template.info.helpers({                                                                                                // 82
-    info: function () {                                                                                                // 83
+if (_meteor.Meteor.isCordova) {}                                                                                       // 85
+//---------------------------------- Helpers  start --------------------------------                                   //
+Template.info.helpers({                                                                                                // 89
+    info: function () {                                                                                                // 90
         function info() {                                                                                              //
-            return Session.get("info");                                                                                // 84
+            return Session.get("info");                                                                                // 91
         }                                                                                                              //
                                                                                                                        //
         return info;                                                                                                   //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.container.helpers({                                                                                           // 88
-    currentUrl: function () {                                                                                          // 89
+Template.container.helpers({                                                                                           // 95
+    currentUrl: function () {                                                                                          // 96
         function currentUrl() {                                                                                        //
-            return Session.get("currentUrl");                                                                          // 90
+            return Session.get("currentUrl");                                                                          // 97
         }                                                                                                              //
                                                                                                                        //
         return currentUrl;                                                                                             //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.nav.helpers({                                                                                                 // 94
-    active: function () {                                                                                              // 95
+Template.nav.helpers({                                                                                                 // 101
+    active: function () {                                                                                              // 102
         function active() {                                                                                            //
-            return Session.get("currentUrl");                                                                          // 96
+            return Session.get("currentUrl");                                                                          // 103
         }                                                                                                              //
                                                                                                                        //
         return active;                                                                                                 //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.index.helpers({                                                                                               // 100
-    topPosts: function () {                                                                                            // 101
+Template.index.helpers({                                                                                               // 107
+    topPosts: function () {                                                                                            // 108
         function topPosts() {                                                                                          //
-            return Posts.find({ "top": true, "super": 0 }, { sort: { time: -1 } });                                    // 102
+            return Posts.find({ "top": true, "super": 0 }, { sort: { time: -1 } });                                    // 109
         }                                                                                                              //
                                                                                                                        //
         return topPosts;                                                                                               //
     }(),                                                                                                               //
-    posts: function () {                                                                                               // 104
+    posts: function () {                                                                                               // 111
         function posts() {                                                                                             //
-            if (!_meteor.Meteor.userId()) {                                                                            // 105
-                return Posts.find({ "user.username": "admin", "super": 0, "top": false }, { sort: { time: -1 } });     // 106
+            if (!_meteor.Meteor.userId()) {                                                                            // 112
+                return Posts.find({ "user.username": "admin", "super": 0, "top": false }, { sort: { time: -1 } });     // 113
             } else {                                                                                                   //
-                return Posts.find({ "super": 0, "top": false }, { sort: { time: -1 } });                               // 108
+                return Posts.find({ "super": 0, "top": false }, { sort: { time: -1 } });                               // 115
             }                                                                                                          //
         }                                                                                                              //
                                                                                                                        //
         return posts;                                                                                                  //
     }(),                                                                                                               //
-    comments: function () {                                                                                            // 111
+    comments: function () {                                                                                            // 118
         function comments() {                                                                                          //
-            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 112
+            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 119
         }                                                                                                              //
                                                                                                                        //
         return comments;                                                                                               //
     }(),                                                                                                               //
-    getMediaBtn: function () {                                                                                         // 114
+    getMediaBtn: function () {                                                                                         // 121
         function getMediaBtn() {                                                                                       //
-            if (_meteor.Meteor.isCordova) {                                                                            // 115
-                return true;                                                                                           // 116
+            if (_meteor.Meteor.isCordova) {                                                                            // 122
+                return true;                                                                                           // 123
             } else {                                                                                                   //
-                return false;                                                                                          // 118
+                return false;                                                                                          // 125
             }                                                                                                          //
         }                                                                                                              //
                                                                                                                        //
         return getMediaBtn;                                                                                            //
     }(),                                                                                                               //
-    displayImage: function () {                                                                                        // 121
+    displayImage: function () {                                                                                        // 128
         function displayImage(id) {                                                                                    //
-            return Images.find({ "_id": id });                                                                         // 122
+            return Images.find({ "_id": id });                                                                         // 129
         }                                                                                                              //
                                                                                                                        //
         return displayImage;                                                                                           //
     }(),                                                                                                               //
-    displayAudio: function () {                                                                                        // 124
+    displayAudio: function () {                                                                                        // 131
         function displayAudio(id) {                                                                                    //
-            return Audios.find({ "_id": id });                                                                         // 125
+            return Audios.find({ "_id": id });                                                                         // 132
         }                                                                                                              //
                                                                                                                        //
         return displayAudio;                                                                                           //
     }(),                                                                                                               //
-    displayVideo: function () {                                                                                        // 127
+    displayVideo: function () {                                                                                        // 134
         function displayVideo(id) {                                                                                    //
-            return Videos.find({ "_id": id });                                                                         // 128
+            return Videos.find({ "_id": id });                                                                         // 135
         }                                                                                                              //
                                                                                                                        //
         return displayVideo;                                                                                           //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.lists.helpers({                                                                                               // 132
-    lists: function () {                                                                                               // 133
+Template.lists.helpers({                                                                                               // 139
+    goodNews: function () {                                                                                            // 140
+        function goodNews() {                                                                                          //
+            return Posts.find({ "super": 0 }, { sort: { score: -1 }, limit: 10 });                                     // 141
+        }                                                                                                              //
+                                                                                                                       //
+        return goodNews;                                                                                               //
+    }(),                                                                                                               //
+    lists: function () {                                                                                               // 143
         function lists() {                                                                                             //
-            return UserInfo.find({}, { sort: { totalScore: -1 } });                                                    // 134
+            return UserInfo.find({}, { sort: { totalScore: -1 }, limit: 10 });                                         // 144
         }                                                                                                              //
                                                                                                                        //
         return lists;                                                                                                  //
+    }(),                                                                                                               //
+    comments: function () {                                                                                            // 146
+        function comments() {                                                                                          //
+            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 147
+        }                                                                                                              //
+                                                                                                                       //
+        return comments;                                                                                               //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.self.helpers({                                                                                                // 138
-    self: function () {                                                                                                // 139
+Template.self.helpers({                                                                                                // 151
+    self: function () {                                                                                                // 152
         function self() {                                                                                              //
-            return UserInfo.find({ "user._id": _meteor.Meteor.userId() });                                             // 140
+            if (!localStorage.getItem("targetUserId")) {                                                               // 153
+                localStorage.setItem("targetUserId", _meteor.Meteor.userId());                                         // 154
+            }                                                                                                          //
+            return UserInfo.find({ "user._id": localStorage.getItem("targetUserId") });;                               // 156
         }                                                                                                              //
                                                                                                                        //
         return self;                                                                                                   //
     }(),                                                                                                               //
-    posts: function () {                                                                                               // 142
+    isFriend: function () {                                                                                            // 158
+        function isFriend() {                                                                                          //
+            if (!UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": localStorage.getItem("targetUserId") })) {
+                return true;                                                                                           // 160
+            } else {                                                                                                   //
+                return false;                                                                                          // 162
+            }                                                                                                          //
+        }                                                                                                              //
+                                                                                                                       //
+        return isFriend;                                                                                               //
+    }(),                                                                                                               //
+    posts: function () {                                                                                               // 165
         function posts() {                                                                                             //
-            return Posts.find({ "super": 0, "user._id": _meteor.Meteor.userId() }, { sort: { time: -1 } });            // 143
+            var otherPost = Posts.find({ "super": 0, "user._id": localStorage.getItem("targetUserId") }, { sort: { time: -1 } });
+            localStorage.setItem("targetUserId", _meteor.Meteor.userId());                                             // 167
+            return otherPost;                                                                                          // 168
         }                                                                                                              //
                                                                                                                        //
         return posts;                                                                                                  //
+    }(),                                                                                                               //
+    comments: function () {                                                                                            // 170
+        function comments() {                                                                                          //
+            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 171
+        }                                                                                                              //
+                                                                                                                       //
+        return comments;                                                                                               //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.collections.helpers({                                                                                         // 147
-    collections: function () {                                                                                         // 148
+Template.collections.helpers({                                                                                         // 175
+    collections: function () {                                                                                         // 176
         function collections() {                                                                                       //
-            return Posts.find({ "super": 0, "collectioners": _meteor.Meteor.userId() }, { sort: { time: -1 } });       // 149
+            return Posts.find({ "super": 0, "collectioners": _meteor.Meteor.userId() }, { sort: { time: -1 } });       // 177
         }                                                                                                              //
                                                                                                                        //
         return collections;                                                                                            //
+    }(),                                                                                                               //
+    comments: function () {                                                                                            // 179
+        function comments() {                                                                                          //
+            return Posts.find({ "super": this._id }, { sort: { time: 1 } });                                           // 180
+        }                                                                                                              //
+                                                                                                                       //
+        return comments;                                                                                               //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.friend.helpers({                                                                                              // 153
-    friendRank: function () {                                                                                          // 154
-        function friendRank() {                                                                                        //
-            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 155
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { rank: 1 } }, { limit: 10 });              // 156
-        }                                                                                                              //
-                                                                                                                       //
-        return friendRank;                                                                                             //
-    }(),                                                                                                               //
-    friendToday: function () {                                                                                         // 158
+Template.friend.helpers({                                                                                              // 184
+    friendToday: function () {                                                                                         // 185
         function friendToday() {                                                                                       //
-            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 159
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { todayScore: -1 } }, { limit: 10 });       // 160
+            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 186
+            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { time: -1 } });                            // 187
         }                                                                                                              //
                                                                                                                        //
         return friendToday;                                                                                            //
-    }(),                                                                                                               //
-    friendTotal: function () {                                                                                         // 162
-        function friendTotal() {                                                                                       //
-            var Afriend = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() }).Friends;                           // 163
-            return UserInfo.find({ "user._id": { $in: Afriend } }, { sort: { totalScore: -1 } }, { limit: 10 });       // 164
-        }                                                                                                              //
-                                                                                                                       //
-        return friendTotal;                                                                                            //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-_meteor.Meteor.startup(function () {                                                                                   // 168
-    Backbone.history.start({ pushState: true });                                                                       // 169
+//-------------------------------- Helpers End ---------------------------------------                                 //
+                                                                                                                       //
+_meteor.Meteor.startup(function () {                                                                                   // 193
+    Backbone.history.start({ pushState: true });                                                                       // 194
 });                                                                                                                    //
                                                                                                                        //
-var urlRouter = Backbone.Router.extend({                                                                               // 172
-    routes: {                                                                                                          // 173
-        "": "index",                                                                                                   // 174
-        "login": "login",                                                                                              // 175
-        "reg": "reg",                                                                                                  // 176
-        "logout": "logout",                                                                                            // 177
-        "friend": "friend",                                                                                            // 178
-        "lists": "lists",                                                                                              // 179
-        "self": "self",                                                                                                // 180
-        "collections": "collections"                                                                                   // 181
+var urlRouter = Backbone.Router.extend({                                                                               // 197
+    routes: {                                                                                                          // 198
+        "": "index",                                                                                                   // 199
+        "login": "login",                                                                                              // 200
+        "reg": "reg",                                                                                                  // 201
+        "logout": "logout",                                                                                            // 202
+        "friend": "friend",                                                                                            // 203
+        "lists": "lists",                                                                                              // 204
+        "self": "self",                                                                                                // 205
+        "collections": "collections"                                                                                   // 206
     },                                                                                                                 //
-    index: function () {                                                                                               // 183
-        function index() {                                                                                             // 183
+    index: function () {                                                                                               // 208
+        function index() {                                                                                             // 208
             Session.set("currentUrl", { index: "active", login: "", reg: "", friend: "", lists: "", self: "", collections: "" });
         }                                                                                                              //
                                                                                                                        //
         return index;                                                                                                  //
     }(),                                                                                                               //
-    friend: function () {                                                                                              // 186
-        function friend() {                                                                                            // 186
+    friend: function () {                                                                                              // 211
+        function friend() {                                                                                            // 211
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "active", lists: "", self: "", collections: "" });
         }                                                                                                              //
                                                                                                                        //
         return friend;                                                                                                 //
     }(),                                                                                                               //
-    lists: function () {                                                                                               // 189
-        function lists() {                                                                                             // 189
+    lists: function () {                                                                                               // 214
+        function lists() {                                                                                             // 214
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "active", self: "", collections: "" });
         }                                                                                                              //
                                                                                                                        //
         return lists;                                                                                                  //
     }(),                                                                                                               //
-    self: function () {                                                                                                // 192
-        function self() {                                                                                              // 192
+    self: function () {                                                                                                // 217
+        function self() {                                                                                              // 217
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "", self: "active", collections: "" });
         }                                                                                                              //
                                                                                                                        //
         return self;                                                                                                   //
     }(),                                                                                                               //
-    collections: function () {                                                                                         // 195
-        function collections() {                                                                                       // 195
+    collections: function () {                                                                                         // 220
+        function collections() {                                                                                       // 220
             Session.set("currentUrl", { index: "", login: "", reg: "", friend: "", lists: "", self: "", collections: "active" });
         }                                                                                                              //
                                                                                                                        //
         return collections;                                                                                            //
     }(),                                                                                                               //
-    login: function () {                                                                                               // 198
-        function login() {                                                                                             // 198
-            if (_meteor.Meteor.userId()) {                                                                             // 199
-                this.navigate("/", true);                                                                              // 200
-                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 201
+    login: function () {                                                                                               // 223
+        function login() {                                                                                             // 223
+            if (_meteor.Meteor.userId()) {                                                                             // 224
+                this.navigate("/", true);                                                                              // 225
+                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 226
             }                                                                                                          //
             Session.set("currentUrl", { index: "", login: "active", reg: "", friend: "", lists: "", self: "", collections: "" });
         }                                                                                                              //
                                                                                                                        //
         return login;                                                                                                  //
     }(),                                                                                                               //
-    reg: function () {                                                                                                 // 205
-        function reg() {                                                                                               // 205
-            if (_meteor.Meteor.userId()) {                                                                             // 206
-                this.navigate("/", true);                                                                              // 207
-                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 208
+    reg: function () {                                                                                                 // 230
+        function reg() {                                                                                               // 230
+            if (_meteor.Meteor.userId()) {                                                                             // 231
+                this.navigate("/", true);                                                                              // 232
+                Session.set("info", { success: "", error: "用户已在线！" });                                                 // 233
             }                                                                                                          //
             Session.set("currentUrl", { index: "", login: "", reg: "active", friend: "", lists: "", self: "", collections: "" });
         }                                                                                                              //
                                                                                                                        //
         return reg;                                                                                                    //
     }(),                                                                                                               //
-    logout: function () {                                                                                              // 212
-        function logout() {                                                                                            // 212
-            if (_meteor.Meteor.userId()) {                                                                             // 213
-                _meteor.Meteor.logout();                                                                               // 214
-                this.navigate("/", true);                                                                              // 215
-                Session.set("info", { success: "登出成功", error: "" });                                                   // 216
-                SystemInfo.update({ "_id": "1" }, { $inc: { totalLogin: -1 } });                                       // 217
+    logout: function () {                                                                                              // 237
+        function logout() {                                                                                            // 237
+            if (_meteor.Meteor.userId()) {                                                                             // 238
+                _meteor.Meteor.logout();                                                                               // 239
+                this.navigate("/", true);                                                                              // 240
+                Session.set("info", { success: "登出成功", error: "" });                                                   // 241
+                SystemInfo.update({ "_id": "1" }, { $inc: { totalLogin: -1 } });                                       // 242
             } else {                                                                                                   //
-                this.navigate("/", true);                                                                              // 219
-                Session.set("info", { success: "", error: "用户不在线！" });                                                 // 220
+                this.navigate("/", true);                                                                              // 244
+                Session.set("info", { success: "", error: "用户不在线！" });                                                 // 245
             }                                                                                                          //
         }                                                                                                              //
                                                                                                                        //
         return logout;                                                                                                 //
     }(),                                                                                                               //
-    redirect: function () {                                                                                            // 223
-        function redirect(url) {                                                                                       // 223
-            this.navigate(url, true);                                                                                  // 224
+    redirect: function () {                                                                                            // 248
+        function redirect(url) {                                                                                       // 248
+            this.navigate(url, true);                                                                                  // 249
         }                                                                                                              //
                                                                                                                        //
         return redirect;                                                                                               //
     }()                                                                                                                //
 });                                                                                                                    //
-Router = new urlRouter();                                                                                              // 227
+Router = new urlRouter();                                                                                              // 252
                                                                                                                        //
-Template.reg.events({                                                                                                  // 229
-    'click #submit': function () {                                                                                     // 230
-        function clickSubmit(event) {                                                                                  // 230
-            event.preventDefault();                                                                                    // 231
-            if (!SystemInfo.find({ "_id": "1" }, { totalUser: true })['totalUser']) {                                  // 232
-                SystemInfo.insert({ "_id": "1", "totalUser": 0, "totalPost": 0, "totalLogin": 0 });                    // 233
+//------------------------------- events start ------------------------------                                          //
+                                                                                                                       //
+Template.reg.events({                                                                                                  // 256
+    'click #submit': function () {                                                                                     // 257
+        function clickSubmit(event) {                                                                                  // 257
+            event.preventDefault();                                                                                    // 258
+            if (!SystemInfo.find({ "_id": "1" }, { totalUser: true })['totalUser']) {                                  // 259
+                SystemInfo.insert({ "_id": "1", "totalUser": 0, "totalPost": 0, "totalLogin": 0 });                    // 260
             }                                                                                                          //
-            var $username = $("#username").val();                                                                      // 235
-            var $password = $("#password").val();                                                                      // 236
-            var $password_repeat = $("#password-repeat").val();                                                        // 237
-            var isAdmin = false;                                                                                       // 238
-            if ($username == "admin") {                                                                                // 239
-                isAdmin = true;                                                                                        // 240
+            var $username = $("#username").val();                                                                      // 262
+            var $password = $("#password").val();                                                                      // 263
+            var $password_repeat = $("#password-repeat").val();                                                        // 264
+            var isAdmin = false;                                                                                       // 265
+            if ($username == "admin") {                                                                                // 266
+                isAdmin = true;                                                                                        // 267
             }                                                                                                          //
-            if ($password.length === 0 || $username.length === 0) {                                                    // 242
-                Session.set("info", { success: "", error: "用户名或者密码不能为空" });                                            // 243
-                return;                                                                                                // 244
+            if ($username.length >= 11) {                                                                              // 269
+                Session.set("info", { success: "", error: "用户名长度最大为10" });                                             // 270
+                return;                                                                                                // 271
             }                                                                                                          //
-            if ($password !== $password_repeat) {                                                                      // 246
-                Session.set("info", { success: "", error: "两次输入密码不一致" });                                              // 247
-                return;                                                                                                // 248
+            if ($password.length === 0 || $username.length === 0) {                                                    // 273
+                Session.set("info", { success: "", error: "用户名或者密码不能为空" });                                            // 274
+                return;                                                                                                // 275
             }                                                                                                          //
-            Accounts.createUser({                                                                                      // 250
-                username: $username,                                                                                   // 251
-                password: $password }, function (err) {                                                                // 252
-                if (err) {                                                                                             // 254
-                    Session.set("info", { success: "", error: "注册失败" });                                               // 255
+                                                                                                                       //
+            if ($password !== $password_repeat) {                                                                      // 278
+                Session.set("info", { success: "", error: "两次输入密码不一致" });                                              // 279
+                return;                                                                                                // 280
+            }                                                                                                          //
+            Accounts.createUser({                                                                                      // 282
+                username: $username,                                                                                   // 283
+                password: $password }, function (err) {                                                                // 284
+                if (err) {                                                                                             // 286
+                    Session.set("info", { success: "", error: "注册失败,用户名已存在或其他未知原因" });                                 // 287
                 } else {                                                                                               //
-                    Session.set("info", { success: "注册成功", error: "" });                                               // 257
-                    UserInfo.insert({                                                                                  // 258
-                        user: _meteor.Meteor.user(),                                                                   // 259
-                        isAdmin: isAdmin,                                                                              // 260
-                        collections: [],                                                                               // 261
-                        totalCollection: 0,                                                                            // 262
-                        totalScore: 0,                                                                                 // 263
-                        todayScore: 0,                                                                                 // 264
-                        totalFriend: 1,                                                                                // 265
-                        Friends: [_meteor.Meteor.userId()],                                                            // 266
-                        rank: SystemInfo.findOne({ "_id": "1" }, { totalUser: true })["totalUser"],                    // 267
-                        time: new Date()                                                                               // 268
+                    Session.set("info", { success: "注册成功", error: "" });                                               // 289
+                    UserInfo.insert({                                                                                  // 290
+                        user: _meteor.Meteor.user(),                                                                   // 291
+                        isAdmin: isAdmin,                                                                              // 292
+                        collections: [],                                                                               // 293
+                        totalScore: 0,                                                                                 // 294
+                        todayScore: 0,                                                                                 // 295
+                        totalLike: 0,                                                                                  // 296
+                        totalObject: 0,                                                                                // 297
+                        totalCollection: 0,                                                                            // 298
+                        totalPost: 0,                                                                                  // 299
+                        totalFriend: 1,                                                                                // 300
+                        Friends: [_meteor.Meteor.userId()],                                                            // 301
+                        rank: SystemInfo.findOne({ "_id": "1" }, { totalUser: true })["totalUser"],                    // 302
+                        time: new Date()                                                                               // 303
                     });                                                                                                //
-                }                                                                                                      //
-            });                                                                                                        //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalUser": 1 } });                                           // 273
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                          // 274
-        }                                                                                                              //
-                                                                                                                       //
-        return clickSubmit;                                                                                            //
-    }()                                                                                                                //
-});                                                                                                                    //
-                                                                                                                       //
-Template.login.events({                                                                                                // 278
-    'click #submit': function () {                                                                                     // 279
-        function clickSubmit(event) {                                                                                  // 279
-            event.preventDefault();                                                                                    // 280
-            var $username = $("#username").val();                                                                      // 281
-            var $password = $("#password").val();                                                                      // 282
-            if ($password.length === 0 || $username.length === 0) {                                                    // 283
-                Session.set("info", { success: "", error: "用户名或密码不能为空" });                                             // 284
-                return;                                                                                                // 285
-            }                                                                                                          //
-            _meteor.Meteor.loginWithPassword($username, $password, function (err) {                                    // 287
-                if (err) {                                                                                             // 288
-                    Session.set("info", { success: "", error: "登陆失败！用户名与密码不匹配。" });                                    // 289
-                } else {                                                                                               //
-                    Router.redirect("/");                                                                              // 291
-                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                  // 292
-                    Session.set("info", { success: "登陆成功", error: "" });                                               // 293
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 294
-                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 1, totalScore: 1 } }, false, true);   // 295
+                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalUser": 1 } });                                   // 305
+                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                  // 306
                 }                                                                                                      //
             });                                                                                                        //
         }                                                                                                              //
@@ -1331,146 +1564,188 @@ Template.login.events({                                                         
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.index.events({                                                                                                // 305
-    'click #submit': function () {                                                                                     // 306
-        function clickSubmit(event) {                                                                                  // 306
-            event.preventDefault();                                                                                    // 307
-            var $post = $("#post").val();                                                                              // 308
-            if ($post.length === 0 || $post.length >= 300) {                                                           // 309
-                Session.set("info", { success: "", error: "请将字数限制在1-300字以内" });                                        // 310
-                return;                                                                                                // 311
+Template.login.events({                                                                                                // 314
+    'click #submit': function () {                                                                                     // 315
+        function clickSubmit(event) {                                                                                  // 315
+            event.preventDefault();                                                                                    // 316
+            var $username = $("#username").val();                                                                      // 317
+            var $password = $("#password").val();                                                                      // 318
+            if ($password.length === 0 || $username.length === 0) {                                                    // 319
+                Session.set("info", { success: "", error: "用户名或密码不能为空" });                                             // 320
+                return;                                                                                                // 321
             }                                                                                                          //
-            Posts.insert({                                                                                             // 313
-                user: _meteor.Meteor.user(),                                                                           // 314
-                post: $post,                                                                                           // 315
-                "super": 0,                                                                                            // 316
-                to: false,                                                                                             // 317
-                like: 0,                                                                                               // 318
-                Likers: [],                                                                                            // 319
-                totalCollection: 0,                                                                                    // 320
-                collectioners: [],                                                                                     // 321
-                top: false,                                                                                            // 322
-                isGetImage: isGetImage,                                                                                // 323
-                isGetAudio: isGetAudio,                                                                                // 324
-                isGetVideo: isGetVideo,                                                                                // 325
-                captureImageId: captureImageId,                                                                        // 326
-                captureAudioId: captureAudioId,                                                                        // 327
-                captureVideoId: captureVideoId,                                                                        // 328
-                time: new Date() }, function (err) {                                                                   // 329
-                if (err) {                                                                                             // 331
-                    Session.set("info", { success: "", error: "发表失败" });                                               // 332
+            _meteor.Meteor.loginWithPassword($username, $password, function (err) {                                    // 323
+                if (err) {                                                                                             // 324
+                    Session.set("info", { success: "", error: "登陆失败！用户名与密码不匹配。" });                                    // 325
                 } else {                                                                                               //
-                    Session.set("info", { success: "发表成功", error: "" });                                               // 334
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 335
+                    Router.redirect("/");                                                                              // 327
+                    SystemInfo.update({ "_id": "1" }, { $inc: { "totalLogin": 1 } });                                  // 328
+                    Session.set("info", { success: "登陆成功", error: "" });                                               // 329
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 330
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 1, totalScore: 1 } }, false, true);   // 331
+                }                                                                                                      //
+            });                                                                                                        //
+        }                                                                                                              //
+                                                                                                                       //
+        return clickSubmit;                                                                                            //
+    }()                                                                                                                //
+});                                                                                                                    //
+                                                                                                                       //
+Template.index.events({                                                                                                // 341
+    'click #submit': function () {                                                                                     // 342
+        function clickSubmit(event) {                                                                                  // 342
+            event.preventDefault();                                                                                    // 343
+            var $post = $("#post").val();                                                                              // 344
+            if ($post.length === 0 || $post.length >= 300) {                                                           // 345
+                Session.set("info", { success: "", error: "请将字数限制在1-300字以内" });                                        // 346
+                return;                                                                                                // 347
+            }                                                                                                          //
+            Posts.insert({                                                                                             // 349
+                user: _meteor.Meteor.user(),                                                                           // 350
+                post: $post,                                                                                           // 351
+                "super": 0,                                                                                            // 352
+                to: false,                                                                                             // 353
+                like: 0,                                                                                               // 354
+                Likers: [],                                                                                            // 355
+                object: 0,                                                                                             // 356
+                Objecters: [],                                                                                         // 357
+                totalCollection: 0,                                                                                    // 358
+                collectioners: [],                                                                                     // 359
+                top: false,                                                                                            // 360
+                score: 0,                                                                                              // 361
+                isGetImage: isGetImage,                                                                                // 362
+                isGetAudio: isGetAudio,                                                                                // 363
+                isGetVideo: isGetVideo,                                                                                // 364
+                captureImageId: captureImageId,                                                                        // 365
+                captureAudioId: captureAudioId,                                                                        // 366
+                captureVideoId: captureVideoId,                                                                        // 367
+                time: new Date() }, function (err) {                                                                   // 368
+                if (err) {                                                                                             // 370
+                    Session.set("info", { success: "", error: "发表失败" });                                               // 371
+                } else {                                                                                               //
+                    Session.set("info", { success: "发表成功", error: "" });                                               // 373
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 374
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 100, totalScore: 100 } }, false, true);
-                    $("#post").val("");                                                                                // 341
+                    $("#post").val("");                                                                                // 380
                 }                                                                                                      //
             });                                                                                                        //
-            isGetImage = false;                                                                                        // 345
-            isGetAudio = false;                                                                                        // 346
-            isGetVideo = false;                                                                                        // 347
-            captureImageId = false;                                                                                    // 348
-            captureAudioId = false;                                                                                    // 349
-            captureVideoId = false;                                                                                    // 350
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 351
+            isGetImage = false;                                                                                        // 384
+            isGetAudio = false;                                                                                        // 385
+            isGetVideo = false;                                                                                        // 386
+            captureImageId = false;                                                                                    // 387
+            captureAudioId = false;                                                                                    // 388
+            captureVideoId = false;                                                                                    // 389
+            UserInfo.update({ "_id": _meteor.Meteor.userId() }, { $inc: { "totalPost": 1 } }, false, true);            // 390
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 395
         }                                                                                                              //
                                                                                                                        //
         return clickSubmit;                                                                                            //
     }(),                                                                                                               //
-    'click #commnetSubmit': function () {                                                                              // 353
-        function clickCommnetSubmit(event) {                                                                           // 353
-            event.preventDefault();                                                                                    // 354
-            var thisId = "#" + this._id;                                                                               // 355
-            var $comment = $("#" + this._id).val();                                                                    // 356
-            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 357
-                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 358
-                scroll(0, 0);                                                                                          // 359
-                return;                                                                                                // 360
+    'click #commnetSubmit': function () {                                                                              // 397
+        function clickCommnetSubmit(event) {                                                                           // 397
+            event.preventDefault();                                                                                    // 398
+            var thisId = "#" + this._id;                                                                               // 399
+            var $comment = $("#" + this._id).val();                                                                    // 400
+            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 401
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 402
+                scroll(0, 0);                                                                                          // 403
+                return;                                                                                                // 404
             }                                                                                                          //
-            Posts.insert({                                                                                             // 362
-                user: _meteor.Meteor.user(),                                                                           // 363
-                post: $comment,                                                                                        // 364
-                "super": this._id,                                                                                     // 365
-                to: false,                                                                                             // 366
-                time: new Date() }, function (err) {                                                                   // 367
-                if (err) {                                                                                             // 369
-                    Session.set("info", { success: "", error: "评论失败" });                                               // 370
+            Posts.insert({                                                                                             // 406
+                user: _meteor.Meteor.user(),                                                                           // 407
+                post: $comment,                                                                                        // 408
+                "super": this._id,                                                                                     // 409
+                to: false,                                                                                             // 410
+                time: new Date() }, function (err) {                                                                   // 411
+                if (err) {                                                                                             // 413
+                    Session.set("info", { success: "", error: "评论失败" });                                               // 414
                 } else {                                                                                               //
-                    Session.set("info", { success: "评论成功", error: "" });                                               // 372
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 373
+                    Session.set("info", { success: "评论成功", error: "" });                                               // 416
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 417
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
-                    $(thisId).val("");                                                                                 // 379
+                    $(thisId).val("");                                                                                 // 423
                 }                                                                                                      //
             });                                                                                                        //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 383
+                                                                                                                       //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 428
         }                                                                                                              //
                                                                                                                        //
         return clickCommnetSubmit;                                                                                     //
     }(),                                                                                                               //
-    'click #commnetSubmitToCommnet': function () {                                                                     // 385
-        function clickCommnetSubmitToCommnet(event) {                                                                  // 385
-            event.preventDefault();                                                                                    // 386
-            var thisId = "#" + this._id;                                                                               // 387
-            var $commentTo = $("#" + this._id).val();                                                                  // 388
-            if ($commentTo.length === 0 || $commentTo.length >= 100) {                                                 // 389
-                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 390
-                scroll(0, 0);                                                                                          // 391
-                return;                                                                                                // 392
+    'click #commnetSubmitToCommnet': function () {                                                                     // 430
+        function clickCommnetSubmitToCommnet(event) {                                                                  // 430
+            event.preventDefault();                                                                                    // 431
+            var thisId = "#" + this._id;                                                                               // 432
+            var $commentTo = $("#" + this._id).val();                                                                  // 433
+            if ($commentTo.length === 0 || $commentTo.length >= 100) {                                                 // 434
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 435
+                scroll(0, 0);                                                                                          // 436
+                return;                                                                                                // 437
             }                                                                                                          //
-            var userName = Posts.findOne({ "_id": this._id }).user.username;                                           // 394
-            Posts.insert({                                                                                             // 395
-                user: _meteor.Meteor.user(),                                                                           // 396
-                post: $commentTo,                                                                                      // 397
-                "super": this["super"],                                                                                // 398
-                to: userName,                                                                                          // 399
-                time: new Date() }, function (err) {                                                                   // 400
-                if (err) {                                                                                             // 402
-                    Session.set("info", { success: "", error: "回复评论失败" });                                             // 403
+            var userName = Posts.findOne({ "_id": this._id }).user.username;                                           // 439
+            Posts.insert({                                                                                             // 440
+                user: _meteor.Meteor.user(),                                                                           // 441
+                post: $commentTo,                                                                                      // 442
+                "super": this["super"],                                                                                // 443
+                to: userName,                                                                                          // 444
+                time: new Date() }, function (err) {                                                                   // 445
+                if (err) {                                                                                             // 447
+                    Session.set("info", { success: "", error: "回复评论失败" });                                             // 448
                 } else {                                                                                               //
-                    Session.set("info", { success: "回复评论成功", error: "" });                                             // 405
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 406
+                    Session.set("info", { success: "回复评论成功", error: "" });                                             // 450
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 451
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
-                    $(thisId).val("");                                                                                 // 412
+                    $(thisId).val("");                                                                                 // 457
                 }                                                                                                      //
             });                                                                                                        //
-            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 416
-            $(".commnetP").css("display", "none");                                                                     // 417
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 461
+            $(".commnetP").css("display", "none");                                                                     // 462
         }                                                                                                              //
                                                                                                                        //
         return clickCommnetSubmitToCommnet;                                                                            //
     }(),                                                                                                               //
-    'click #displayCommnetButton': function () {                                                                       // 419
-        function clickDisplayCommnetButton(event) {                                                                    // 419
-            event.preventDefault();                                                                                    // 420
-            var thisId = "#" + "p" + this._id;                                                                         // 421
-            $(".commnetP").css("display", "none");                                                                     // 422
-            $(thisId).css("display", "block");                                                                         // 423
+    'click #displayCommnetButton': function () {                                                                       // 464
+        function clickDisplayCommnetButton(event) {                                                                    // 464
+            event.preventDefault();                                                                                    // 465
+            var thisId = "#" + "p" + this._id;                                                                         // 466
+            $(".commnetP").css("display", "none");                                                                     // 467
+            $(thisId).css("display", "block");                                                                         // 468
         }                                                                                                              //
                                                                                                                        //
         return clickDisplayCommnetButton;                                                                              //
     }(),                                                                                                               //
-    'click #addFriend': function () {                                                                                  // 425
-        function clickAddFriend(event) {                                                                               // 425
-            event.preventDefault();                                                                                    // 426
-            var $friendId = this.user._id;                                                                             // 427
-            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 428
-                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 429
-                scroll(0, 0);                                                                                          // 430
-                return;                                                                                                // 431
+    'click #toViewOther': function () {                                                                                // 470
+        function clickToViewOther(event) {                                                                             // 470
+            //event.preventDefault();                                                                                  //
+            localStorage.setItem("targetUserId", this.user._id);                                                       // 472
+            console.log(_meteor.Meteor.userId());                                                                      // 473
+            console.log(targetUserId);                                                                                 // 474
+        }                                                                                                              //
+                                                                                                                       //
+        return clickToViewOther;                                                                                       //
+    }(),                                                                                                               //
+    'click #addFriend': function () {                                                                                  // 476
+        function clickAddFriend(event) {                                                                               // 476
+            event.preventDefault();                                                                                    // 477
+            var $friendId = this.user._id;                                                                             // 478
+            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 479
+                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 480
+                scroll(0, 0);                                                                                          // 481
+                return;                                                                                                // 482
             }                                                                                                          //
                                                                                                                        //
-            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 434
-            UserInfo.update({                                                                                          // 435
-                "_id": userInfoId                                                                                      // 436
+            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 485
+            UserInfo.update({                                                                                          // 486
+                "_id": userInfoId                                                                                      // 487
             }, {                                                                                                       //
-                $addToSet: { "Friends": $friendId },                                                                   // 438
-                $inc: { "totalFriend": 1 }                                                                             // 439
+                $addToSet: { "Friends": $friendId },                                                                   // 489
+                $inc: { "totalFriend": 1 }                                                                             // 490
             }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 443
-                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 444
+                if (err) {                                                                                             // 494
+                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 495
                 } else {                                                                                               //
-                    Session.set("info", { success: "添加成功", error: "" });                                               // 446
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 447
+                    Session.set("info", { success: "添加成功", error: "" });                                               // 497
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 498
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 50, totalScore: 50 } }, false, true);
                 }                                                                                                      //
             });                                                                                                        //
@@ -1478,77 +1753,111 @@ Template.index.events({                                                         
                                                                                                                        //
         return clickAddFriend;                                                                                         //
     }(),                                                                                                               //
-    'click #addCollection': function () {                                                                              // 457
-        function clickAddCollection(event) {                                                                           // 457
-            event.preventDefault();                                                                                    // 458
-            var $PostId = this._id;                                                                                    // 459
-            if (Posts.findOne({ "_id": $PostId, "collectioners": _meteor.Meteor.userId() })) {                         // 460
-                Session.set("info", { success: "", error: "错误：你已经此收藏过此新闻" });                                          // 461
-                scroll(0, 0);                                                                                          // 462
-                return;                                                                                                // 463
+    'click #addCollection': function () {                                                                              // 508
+        function clickAddCollection(event) {                                                                           // 508
+            event.preventDefault();                                                                                    // 509
+            var $PostId = this._id;                                                                                    // 510
+            if (Posts.findOne({ "_id": $PostId, "collectioners": _meteor.Meteor.userId() })) {                         // 511
+                Session.set("info", { success: "", error: "错误：你已经此收藏过此新闻" });                                          // 512
+                scroll(0, 0);                                                                                          // 513
+                return;                                                                                                // 514
             }                                                                                                          //
-            Posts.update({                                                                                             // 465
-                "_id": this._id                                                                                        // 466
+            Posts.update({                                                                                             // 516
+                "_id": this._id                                                                                        // 517
             }, {                                                                                                       //
-                $addToSet: { "collectioners": _meteor.Meteor.userId() },                                               // 468
-                $inc: { "totalCollection": 1 }                                                                         // 469
+                $addToSet: { "collectioners": _meteor.Meteor.userId() },                                               // 519
+                $inc: { "totalCollection": 1, "score": 15 }                                                            // 520
             }, false, true, function (err) {                                                                           //
-                if (err) {                                                                                             // 473
-                    Session.set("info", { success: "", error: "收藏失败" });                                               // 474
+                if (err) {                                                                                             // 524
+                    Session.set("info", { success: "", error: "收藏失败" });                                               // 525
                 } else {                                                                                               //
-                    Session.set("info", { success: "收藏成功", error: "" });                                               // 476
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 477
-                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 478
+                    Session.set("info", { success: "收藏成功", error: "" });                                               // 527
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 528
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 529
                 }                                                                                                      //
             });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": $PostId }).user._id;                                               // 537
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalCollection: 1 } }, false, true);                     // 538
         }                                                                                                              //
                                                                                                                        //
         return clickAddCollection;                                                                                     //
     }(),                                                                                                               //
-    'click #likePost': function () {                                                                                   // 488
-        function clickLikePost(event) {                                                                                // 488
-            event.preventDefault();                                                                                    // 489
-            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 490
-                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 491
-                scroll(0, 0);                                                                                          // 492
-                return;                                                                                                // 493
+    'click #likePost': function () {                                                                                   // 545
+        function clickLikePost(event) {                                                                                // 545
+            event.preventDefault();                                                                                    // 546
+            var thisId = this._id;                                                                                     // 547
+            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 548
+                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 549
+                scroll(0, 0);                                                                                          // 550
+                return;                                                                                                // 551
             }                                                                                                          //
-            Posts.update({                                                                                             // 495
-                "_id": this._id                                                                                        // 496
+            Posts.update({                                                                                             // 553
+                "_id": this._id                                                                                        // 554
             }, {                                                                                                       //
-                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 498
-                $inc: { "like": 1 }                                                                                    // 499
+                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 556
+                $inc: { "like": 1, "score": 10 }                                                                       // 557
             }, false, true, function (err) {                                                                           //
-                if (err) {                                                                                             // 503
-                    Session.set("info", { success: "", error: "点赞失败" });                                               // 504
+                if (err) {                                                                                             // 561
+                    Session.set("info", { success: "", error: "点赞失败" });                                               // 562
                 } else {                                                                                               //
-                    Session.set("info", { success: "点赞成功", error: "" });                                               // 506
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 507
-                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 508
+                    Session.set("info", { success: "点赞成功", error: "" });                                               // 564
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 565
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 566
                 }                                                                                                      //
             });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 574
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalLike: 1 } }, false, true);                           // 575
         }                                                                                                              //
                                                                                                                        //
         return clickLikePost;                                                                                          //
     }(),                                                                                                               //
-    'click #topPost': function () {                                                                                    // 517
-        function clickTopPost(event) {                                                                                 // 517
-            event.preventDefault();                                                                                    // 518
-            if (_meteor.Meteor.user().username != "admin") {                                                           // 519
-                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 520
-                scroll(0, 0);                                                                                          // 521
-                return;                                                                                                // 522
+    'click #objectPost': function () {                                                                                 // 581
+        function clickObjectPost(event) {                                                                              // 581
+            event.preventDefault();                                                                                    // 582
+            var thisId = this._id;                                                                                     // 583
+            if (Posts.findOne({ "_id": this._id, "Objecters": _meteor.Meteor.userId() })) {                            // 584
+                Session.set("info", { success: "", error: "错误：您已经点过异议" });                                             // 585
+                scroll(0, 0);                                                                                          // 586
+                return;                                                                                                // 587
             }                                                                                                          //
-            Posts.update({                                                                                             // 524
-                "_id": this._id                                                                                        // 525
+            Posts.update({                                                                                             // 589
+                "_id": this._id                                                                                        // 590
             }, {                                                                                                       //
-                $set: { "top": true }                                                                                  // 527
-            }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 531
-                    Session.set("info", { success: "", error: "置顶失败" });                                               // 532
+                $addToSet: { "Objecters": _meteor.Meteor.userId() },                                                   // 592
+                $inc: { "object": 1, "score": -8 }                                                                     // 593
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 597
+                    Session.set("info", { success: "", error: "异议无效" });                                               // 598
                 } else {                                                                                               //
-                    Session.set("info", { success: "置顶成功", error: "" });                                               // 534
-                    var userInfoId = Posts.findOne({ "_id": this._id }).user._id;                                      // 535
+                    Session.set("info", { success: "反对有效", error: "" });                                               // 600
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 601
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 602
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 610
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalObject: 1 } }, false, true);                         // 611
+        }                                                                                                              //
+                                                                                                                       //
+        return clickObjectPost;                                                                                        //
+    }(),                                                                                                               //
+    'click #topPost': function () {                                                                                    // 617
+        function clickTopPost(event) {                                                                                 // 617
+            event.preventDefault();                                                                                    // 618
+            if (_meteor.Meteor.user().username != "admin") {                                                           // 619
+                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 620
+                scroll(0, 0);                                                                                          // 621
+                return;                                                                                                // 622
+            }                                                                                                          //
+            Posts.update({                                                                                             // 624
+                "_id": this._id                                                                                        // 625
+            }, {                                                                                                       //
+                $set: { "top": true }                                                                                  // 627
+            }, true, true, function (err) {                                                                            //
+                if (err) {                                                                                             // 631
+                    Session.set("info", { success: "", error: "置顶失败" });                                               // 632
+                } else {                                                                                               //
+                    Session.set("info", { success: "置顶成功", error: "" });                                               // 634
+                    var userInfoId = Posts.findOne({ "_id": this._id }).user._id;                                      // 635
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 80, totalScore: 80 } }, false, true);
                 }                                                                                                      //
             });                                                                                                        //
@@ -1556,78 +1865,161 @@ Template.index.events({                                                         
                                                                                                                        //
         return clickTopPost;                                                                                           //
     }(),                                                                                                               //
-    'click #untopPost': function () {                                                                                  // 545
-        function clickUntopPost(event) {                                                                               // 545
-            event.preventDefault();                                                                                    // 546
-            if (_meteor.Meteor.user().username != "admin") {                                                           // 547
-                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 548
-                scroll(0, 0);                                                                                          // 549
-                return;                                                                                                // 550
+    'click #untopPost': function () {                                                                                  // 645
+        function clickUntopPost(event) {                                                                               // 645
+            event.preventDefault();                                                                                    // 646
+            if (_meteor.Meteor.user().username != "admin") {                                                           // 647
+                Session.set("info", { success: "", error: "错误：您并非管理员。" });                                             // 648
+                scroll(0, 0);                                                                                          // 649
+                return;                                                                                                // 650
             }                                                                                                          //
-            Posts.update({                                                                                             // 552
-                "_id": this._id                                                                                        // 553
+            Posts.update({                                                                                             // 652
+                "_id": this._id                                                                                        // 653
             }, {                                                                                                       //
-                $set: { "top": false }                                                                                 // 555
+                $set: { "top": false }                                                                                 // 655
             }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 559
-                    Session.set("info", { success: "", error: "取消置顶失败" });                                             // 560
+                if (err) {                                                                                             // 659
+                    Session.set("info", { success: "", error: "取消置顶失败" });                                             // 660
                 } else {                                                                                               //
-                    Session.set("info", { success: "取消置顶成功", error: "" });                                             // 562
+                    Session.set("info", { success: "取消置顶成功", error: "" });                                             // 662
                 }                                                                                                      //
             });                                                                                                        //
         }                                                                                                              //
                                                                                                                        //
         return clickUntopPost;                                                                                         //
     }(),                                                                                                               //
-    'click #getImage': function () {                                                                                   // 567
-        function clickGetImage(event) {                                                                                // 567
-            event.preventDefault();                                                                                    // 568
-            navigator.device.capture.captureImage(captureImageSuccess, captureError, { limit: 1 });                    // 569
+    'click #getImage': function () {                                                                                   // 667
+        function clickGetImage(event) {                                                                                // 667
+            event.preventDefault();                                                                                    // 668
+            navigator.device.capture.captureImage(captureImageSuccess, captureError, { limit: 1 });                    // 669
         }                                                                                                              //
                                                                                                                        //
         return clickGetImage;                                                                                          //
     }(),                                                                                                               //
-    'click #getAudio': function () {                                                                                   // 571
-        function clickGetAudio(event) {                                                                                // 571
-            event.preventDefault();                                                                                    // 572
-            navigator.device.capture.captureAudio(captureAudioSuccess, captureError, { limit: 1 });                    // 573
+    'click #getAudio': function () {                                                                                   // 671
+        function clickGetAudio(event) {                                                                                // 671
+            event.preventDefault();                                                                                    // 672
+            navigator.device.capture.captureAudio(captureAudioSuccess, captureError, { limit: 1 });                    // 673
         }                                                                                                              //
                                                                                                                        //
         return clickGetAudio;                                                                                          //
     }(),                                                                                                               //
-    'click #getVideo': function () {                                                                                   // 575
-        function clickGetVideo(event) {                                                                                // 575
-            event.preventDefault();                                                                                    // 576
-            navigator.device.capture.captureVideo(captureVideoSuccess, captureError, { limit: 1 });                    // 577
+    'click #getVideo': function () {                                                                                   // 675
+        function clickGetVideo(event) {                                                                                // 675
+            event.preventDefault();                                                                                    // 676
+            navigator.device.capture.captureVideo(captureVideoSuccess, captureError, { limit: 1 });                    // 677
         }                                                                                                              //
                                                                                                                        //
         return clickGetVideo;                                                                                          //
     }()                                                                                                                //
 });                                                                                                                    //
                                                                                                                        //
-Template.collections.events({                                                                                          // 581
-    'click #addFriend': function () {                                                                                  // 582
-        function clickAddFriend(event) {                                                                               // 582
-            event.preventDefault();                                                                                    // 583
-            var $friendId = this.user._id;                                                                             // 584
-            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 585
-                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 586
-                scroll(0, 0);                                                                                          // 587
-                return;                                                                                                // 588
+Template.collections.events({                                                                                          // 681
+    'click #commnetSubmit': function () {                                                                              // 682
+        function clickCommnetSubmit(event) {                                                                           // 682
+            event.preventDefault();                                                                                    // 683
+            var thisId = "#" + this._id;                                                                               // 684
+            var $comment = $("#" + this._id).val();                                                                    // 685
+            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 686
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 687
+                scroll(0, 0);                                                                                          // 688
+                return;                                                                                                // 689
+            }                                                                                                          //
+            Posts.insert({                                                                                             // 691
+                user: _meteor.Meteor.user(),                                                                           // 692
+                post: $comment,                                                                                        // 693
+                "super": this._id,                                                                                     // 694
+                to: false,                                                                                             // 695
+                time: new Date() }, function (err) {                                                                   // 696
+                if (err) {                                                                                             // 698
+                    Session.set("info", { success: "", error: "评论失败" });                                               // 699
+                } else {                                                                                               //
+                    Session.set("info", { success: "评论成功", error: "" });                                               // 701
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 702
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
+                    $(thisId).val("");                                                                                 // 708
+                }                                                                                                      //
+            });                                                                                                        //
+                                                                                                                       //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 713
+        }                                                                                                              //
+                                                                                                                       //
+        return clickCommnetSubmit;                                                                                     //
+    }(),                                                                                                               //
+    'click #commnetSubmitToCommnet': function () {                                                                     // 715
+        function clickCommnetSubmitToCommnet(event) {                                                                  // 715
+            event.preventDefault();                                                                                    // 716
+            var thisId = "#" + this._id;                                                                               // 717
+            var $commentTo = $("#" + this._id).val();                                                                  // 718
+            if ($commentTo.length === 0 || $commentTo.length >= 100) {                                                 // 719
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 720
+                scroll(0, 0);                                                                                          // 721
+                return;                                                                                                // 722
+            }                                                                                                          //
+            var userName = Posts.findOne({ "_id": this._id }).user.username;                                           // 724
+            Posts.insert({                                                                                             // 725
+                user: _meteor.Meteor.user(),                                                                           // 726
+                post: $commentTo,                                                                                      // 727
+                "super": this["super"],                                                                                // 728
+                to: userName,                                                                                          // 729
+                time: new Date() }, function (err) {                                                                   // 730
+                if (err) {                                                                                             // 732
+                    Session.set("info", { success: "", error: "回复评论失败" });                                             // 733
+                } else {                                                                                               //
+                    Session.set("info", { success: "回复评论成功", error: "" });                                             // 735
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 736
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
+                    $(thisId).val("");                                                                                 // 742
+                }                                                                                                      //
+            });                                                                                                        //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 746
+            $(".commnetP").css("display", "none");                                                                     // 747
+        }                                                                                                              //
+                                                                                                                       //
+        return clickCommnetSubmitToCommnet;                                                                            //
+    }(),                                                                                                               //
+    'click #displayCommnetButton': function () {                                                                       // 749
+        function clickDisplayCommnetButton(event) {                                                                    // 749
+            event.preventDefault();                                                                                    // 750
+            var thisId = "#" + "p" + this._id;                                                                         // 751
+            $(".commnetP").css("display", "none");                                                                     // 752
+            $(thisId).css("display", "block");                                                                         // 753
+        }                                                                                                              //
+                                                                                                                       //
+        return clickDisplayCommnetButton;                                                                              //
+    }(),                                                                                                               //
+    'click #toViewOther': function () {                                                                                // 755
+        function clickToViewOther(event) {                                                                             // 755
+            //event.preventDefault();                                                                                  //
+            localStorage.setItem("targetUserId", this.user._id);                                                       // 757
+            console.log(_meteor.Meteor.userId());                                                                      // 758
+            console.log(targetUserId);                                                                                 // 759
+        }                                                                                                              //
+                                                                                                                       //
+        return clickToViewOther;                                                                                       //
+    }(),                                                                                                               //
+    'click #addFriend': function () {                                                                                  // 761
+        function clickAddFriend(event) {                                                                               // 761
+            event.preventDefault();                                                                                    // 762
+            var $friendId = this.user._id;                                                                             // 763
+            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 764
+                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 765
+                scroll(0, 0);                                                                                          // 766
+                return;                                                                                                // 767
             }                                                                                                          //
                                                                                                                        //
-            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 591
-            UserInfo.update({                                                                                          // 592
-                "_id": userInfoId                                                                                      // 593
+            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 770
+            UserInfo.update({                                                                                          // 771
+                "_id": userInfoId                                                                                      // 772
             }, {                                                                                                       //
-                $addToSet: { "Friends": $friendId },                                                                   // 595
-                $inc: { "totalFriend": 1 }                                                                             // 596
+                $addToSet: { "Friends": $friendId },                                                                   // 774
+                $inc: { "totalFriend": 1 }                                                                             // 775
             }, true, true, function (err) {                                                                            //
-                if (err) {                                                                                             // 600
-                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 601
+                if (err) {                                                                                             // 779
+                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 780
                 } else {                                                                                               //
-                    Session.set("info", { success: "添加成功", error: "" });                                               // 603
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 604
+                    Session.set("info", { success: "添加成功", error: "" });                                               // 782
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 783
                     UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 50, totalScore: 50 } }, false, true);
                 }                                                                                                      //
             });                                                                                                        //
@@ -1635,33 +2027,546 @@ Template.collections.events({                                                   
                                                                                                                        //
         return clickAddFriend;                                                                                         //
     }(),                                                                                                               //
-    'click #likePost': function () {                                                                                   // 614
-        function clickLikePost(event) {                                                                                // 614
-            event.preventDefault();                                                                                    // 615
-            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 616
-                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 617
-                scroll(0, 0);                                                                                          // 618
-                return;                                                                                                // 619
+    'click #addCollection': function () {                                                                              // 793
+        function clickAddCollection(event) {                                                                           // 793
+            event.preventDefault();                                                                                    // 794
+            var $PostId = this._id;                                                                                    // 795
+            if (Posts.findOne({ "_id": $PostId, "collectioners": _meteor.Meteor.userId() })) {                         // 796
+                Session.set("info", { success: "", error: "错误：你已经此收藏过此新闻" });                                          // 797
+                scroll(0, 0);                                                                                          // 798
+                return;                                                                                                // 799
             }                                                                                                          //
-            Posts.update({                                                                                             // 621
-                "_id": this._id                                                                                        // 622
+            Posts.update({                                                                                             // 801
+                "_id": this._id                                                                                        // 802
             }, {                                                                                                       //
-                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 624
-                $inc: { "like": 1 }                                                                                    // 625
+                $addToSet: { "collectioners": _meteor.Meteor.userId() },                                               // 804
+                $inc: { "totalCollection": 1, "score": 15 }                                                            // 805
             }, false, true, function (err) {                                                                           //
-                if (err) {                                                                                             // 629
-                    Session.set("info", { success: "", error: "点赞失败" });                                               // 630
+                if (err) {                                                                                             // 809
+                    Session.set("info", { success: "", error: "收藏失败" });                                               // 810
                 } else {                                                                                               //
-                    Session.set("info", { success: "点赞成功", error: "" });                                               // 632
-                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 633
-                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 634
+                    Session.set("info", { success: "收藏成功", error: "" });                                               // 812
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 813
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 814
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": $PostId }).user._id;                                               // 822
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalCollection: 1 } }, false, true);                     // 823
+        }                                                                                                              //
+                                                                                                                       //
+        return clickAddCollection;                                                                                     //
+    }(),                                                                                                               //
+    'click #likePost': function () {                                                                                   // 830
+        function clickLikePost(event) {                                                                                // 830
+            event.preventDefault();                                                                                    // 831
+            var thisId = this._id;                                                                                     // 832
+            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 833
+                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 834
+                scroll(0, 0);                                                                                          // 835
+                return;                                                                                                // 836
+            }                                                                                                          //
+            Posts.update({                                                                                             // 838
+                "_id": this._id                                                                                        // 839
+            }, {                                                                                                       //
+                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 841
+                $inc: { "like": 1, "score": 10 }                                                                       // 842
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 846
+                    Session.set("info", { success: "", error: "点赞失败" });                                               // 847
+                } else {                                                                                               //
+                    Session.set("info", { success: "点赞成功", error: "" });                                               // 849
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 850
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 851
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 859
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalLike: 1 } }, false, true);                           // 860
+        }                                                                                                              //
+                                                                                                                       //
+        return clickLikePost;                                                                                          //
+    }(),                                                                                                               //
+    'click #objectPost': function () {                                                                                 // 866
+        function clickObjectPost(event) {                                                                              // 866
+            event.preventDefault();                                                                                    // 867
+            var thisId = this._id;                                                                                     // 868
+            if (Posts.findOne({ "_id": this._id, "Objecters": _meteor.Meteor.userId() })) {                            // 869
+                Session.set("info", { success: "", error: "错误：您已经点过异议" });                                             // 870
+                scroll(0, 0);                                                                                          // 871
+                return;                                                                                                // 872
+            }                                                                                                          //
+            Posts.update({                                                                                             // 874
+                "_id": this._id                                                                                        // 875
+            }, {                                                                                                       //
+                $addToSet: { "Objecters": _meteor.Meteor.userId() },                                                   // 877
+                $inc: { "object": 1, "score": -8 }                                                                     // 878
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 882
+                    Session.set("info", { success: "", error: "异议无效" });                                               // 883
+                } else {                                                                                               //
+                    Session.set("info", { success: "反对有效", error: "" });                                               // 885
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 886
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 887
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 895
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalObject: 1 } }, false, true);                         // 896
+        }                                                                                                              //
+                                                                                                                       //
+        return clickObjectPost;                                                                                        //
+    }()                                                                                                                //
+});                                                                                                                    //
+Template.self.events({                                                                                                 // 903
+    'click #commnetSubmit': function () {                                                                              // 904
+        function clickCommnetSubmit(event) {                                                                           // 904
+            event.preventDefault();                                                                                    // 905
+            var thisId = "#" + this._id;                                                                               // 906
+            var $comment = $("#" + this._id).val();                                                                    // 907
+            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 908
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 909
+                scroll(0, 0);                                                                                          // 910
+                return;                                                                                                // 911
+            }                                                                                                          //
+            Posts.insert({                                                                                             // 913
+                user: _meteor.Meteor.user(),                                                                           // 914
+                post: $comment,                                                                                        // 915
+                "super": this._id,                                                                                     // 916
+                to: false,                                                                                             // 917
+                time: new Date() }, function (err) {                                                                   // 918
+                if (err) {                                                                                             // 920
+                    Session.set("info", { success: "", error: "评论失败" });                                               // 921
+                } else {                                                                                               //
+                    Session.set("info", { success: "评论成功", error: "" });                                               // 923
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 924
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
+                    $(thisId).val("");                                                                                 // 930
+                }                                                                                                      //
+            });                                                                                                        //
+                                                                                                                       //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 935
+        }                                                                                                              //
+                                                                                                                       //
+        return clickCommnetSubmit;                                                                                     //
+    }(),                                                                                                               //
+    'click #commnetSubmitToCommnet': function () {                                                                     // 937
+        function clickCommnetSubmitToCommnet(event) {                                                                  // 937
+            event.preventDefault();                                                                                    // 938
+            var thisId = "#" + this._id;                                                                               // 939
+            var $commentTo = $("#" + this._id).val();                                                                  // 940
+            if ($commentTo.length === 0 || $commentTo.length >= 100) {                                                 // 941
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 942
+                scroll(0, 0);                                                                                          // 943
+                return;                                                                                                // 944
+            }                                                                                                          //
+            var userName = Posts.findOne({ "_id": this._id }).user.username;                                           // 946
+            Posts.insert({                                                                                             // 947
+                user: _meteor.Meteor.user(),                                                                           // 948
+                post: $commentTo,                                                                                      // 949
+                "super": this["super"],                                                                                // 950
+                to: userName,                                                                                          // 951
+                time: new Date() }, function (err) {                                                                   // 952
+                if (err) {                                                                                             // 954
+                    Session.set("info", { success: "", error: "回复评论失败" });                                             // 955
+                } else {                                                                                               //
+                    Session.set("info", { success: "回复评论成功", error: "" });                                             // 957
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 958
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
+                    $(thisId).val("");                                                                                 // 964
+                }                                                                                                      //
+            });                                                                                                        //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 968
+            $(".commnetP").css("display", "none");                                                                     // 969
+        }                                                                                                              //
+                                                                                                                       //
+        return clickCommnetSubmitToCommnet;                                                                            //
+    }(),                                                                                                               //
+    'click #displayCommnetButton': function () {                                                                       // 971
+        function clickDisplayCommnetButton(event) {                                                                    // 971
+            event.preventDefault();                                                                                    // 972
+            var thisId = "#" + "p" + this._id;                                                                         // 973
+            $(".commnetP").css("display", "none");                                                                     // 974
+            $(thisId).css("display", "block");                                                                         // 975
+        }                                                                                                              //
+                                                                                                                       //
+        return clickDisplayCommnetButton;                                                                              //
+    }(),                                                                                                               //
+    'click #toViewOther': function () {                                                                                // 977
+        function clickToViewOther(event) {                                                                             // 977
+            //event.preventDefault();                                                                                  //
+            localStorage.setItem("targetUserId", this.user._id);                                                       // 979
+            console.log(_meteor.Meteor.userId());                                                                      // 980
+            console.log(targetUserId);                                                                                 // 981
+        }                                                                                                              //
+                                                                                                                       //
+        return clickToViewOther;                                                                                       //
+    }(),                                                                                                               //
+    'click #addFriend': function () {                                                                                  // 983
+        function clickAddFriend(event) {                                                                               // 983
+            event.preventDefault();                                                                                    // 984
+            var $friendId = this.user._id;                                                                             // 985
+            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 986
+                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 987
+                scroll(0, 0);                                                                                          // 988
+                return;                                                                                                // 989
+            }                                                                                                          //
+                                                                                                                       //
+            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 992
+            UserInfo.update({                                                                                          // 993
+                "_id": userInfoId                                                                                      // 994
+            }, {                                                                                                       //
+                $addToSet: { "Friends": $friendId },                                                                   // 996
+                $inc: { "totalFriend": 1 }                                                                             // 997
+            }, true, true, function (err) {                                                                            //
+                if (err) {                                                                                             // 1001
+                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 1002
+                } else {                                                                                               //
+                    Session.set("info", { success: "添加成功", error: "" });                                               // 1004
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1005
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 50, totalScore: 50 } }, false, true);
                 }                                                                                                      //
             });                                                                                                        //
         }                                                                                                              //
                                                                                                                        //
+        return clickAddFriend;                                                                                         //
+    }(),                                                                                                               //
+    'click #addCollection': function () {                                                                              // 1015
+        function clickAddCollection(event) {                                                                           // 1015
+            event.preventDefault();                                                                                    // 1016
+            var $PostId = this._id;                                                                                    // 1017
+            if (Posts.findOne({ "_id": $PostId, "collectioners": _meteor.Meteor.userId() })) {                         // 1018
+                Session.set("info", { success: "", error: "错误：你已经此收藏过此新闻" });                                          // 1019
+                scroll(0, 0);                                                                                          // 1020
+                return;                                                                                                // 1021
+            }                                                                                                          //
+            Posts.update({                                                                                             // 1023
+                "_id": this._id                                                                                        // 1024
+            }, {                                                                                                       //
+                $addToSet: { "collectioners": _meteor.Meteor.userId() },                                               // 1026
+                $inc: { "totalCollection": 1, "score": 15 }                                                            // 1027
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 1031
+                    Session.set("info", { success: "", error: "收藏失败" });                                               // 1032
+                } else {                                                                                               //
+                    Session.set("info", { success: "收藏成功", error: "" });                                               // 1034
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1035
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 1036
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": $PostId }).user._id;                                               // 1044
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalCollection: 1 } }, false, true);                     // 1045
+        }                                                                                                              //
+                                                                                                                       //
+        return clickAddCollection;                                                                                     //
+    }(),                                                                                                               //
+    'click #likePost': function () {                                                                                   // 1052
+        function clickLikePost(event) {                                                                                // 1052
+            event.preventDefault();                                                                                    // 1053
+            var thisId = this._id;                                                                                     // 1054
+            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 1055
+                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 1056
+                scroll(0, 0);                                                                                          // 1057
+                return;                                                                                                // 1058
+            }                                                                                                          //
+            Posts.update({                                                                                             // 1060
+                "_id": this._id                                                                                        // 1061
+            }, {                                                                                                       //
+                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 1063
+                $inc: { "like": 1, "score": 10 }                                                                       // 1064
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 1068
+                    Session.set("info", { success: "", error: "点赞失败" });                                               // 1069
+                } else {                                                                                               //
+                    Session.set("info", { success: "点赞成功", error: "" });                                               // 1071
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1072
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 1073
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 1081
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalLike: 1 } }, false, true);                           // 1082
+        }                                                                                                              //
+                                                                                                                       //
         return clickLikePost;                                                                                          //
+    }(),                                                                                                               //
+    'click #objectPost': function () {                                                                                 // 1088
+        function clickObjectPost(event) {                                                                              // 1088
+            event.preventDefault();                                                                                    // 1089
+            var thisId = this._id;                                                                                     // 1090
+            if (Posts.findOne({ "_id": this._id, "Objecters": _meteor.Meteor.userId() })) {                            // 1091
+                Session.set("info", { success: "", error: "错误：您已经点过异议" });                                             // 1092
+                scroll(0, 0);                                                                                          // 1093
+                return;                                                                                                // 1094
+            }                                                                                                          //
+            Posts.update({                                                                                             // 1096
+                "_id": this._id                                                                                        // 1097
+            }, {                                                                                                       //
+                $addToSet: { "Objecters": _meteor.Meteor.userId() },                                                   // 1099
+                $inc: { "object": 1, "score": -8 }                                                                     // 1100
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 1104
+                    Session.set("info", { success: "", error: "异议无效" });                                               // 1105
+                } else {                                                                                               //
+                    Session.set("info", { success: "反对有效", error: "" });                                               // 1107
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1108
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 1109
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 1117
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalObject: 1 } }, false, true);                         // 1118
+        }                                                                                                              //
+                                                                                                                       //
+        return clickObjectPost;                                                                                        //
     }()                                                                                                                //
 });                                                                                                                    //
+                                                                                                                       //
+Template.lists.events({                                                                                                // 1126
+    'click #commnetSubmit': function () {                                                                              // 1127
+        function clickCommnetSubmit(event) {                                                                           // 1127
+            event.preventDefault();                                                                                    // 1128
+            var thisId = "#" + this._id;                                                                               // 1129
+            var $comment = $("#" + this._id).val();                                                                    // 1130
+            if ($comment.length === 0 || $comment.length >= 100) {                                                     // 1131
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 1132
+                scroll(0, 0);                                                                                          // 1133
+                return;                                                                                                // 1134
+            }                                                                                                          //
+            Posts.insert({                                                                                             // 1136
+                user: _meteor.Meteor.user(),                                                                           // 1137
+                post: $comment,                                                                                        // 1138
+                "super": this._id,                                                                                     // 1139
+                to: false,                                                                                             // 1140
+                time: new Date() }, function (err) {                                                                   // 1141
+                if (err) {                                                                                             // 1143
+                    Session.set("info", { success: "", error: "评论失败" });                                               // 1144
+                } else {                                                                                               //
+                    Session.set("info", { success: "评论成功", error: "" });                                               // 1146
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1147
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
+                    $(thisId).val("");                                                                                 // 1153
+                }                                                                                                      //
+            });                                                                                                        //
+                                                                                                                       //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 1158
+        }                                                                                                              //
+                                                                                                                       //
+        return clickCommnetSubmit;                                                                                     //
+    }(),                                                                                                               //
+    'click #commnetSubmitToCommnet': function () {                                                                     // 1160
+        function clickCommnetSubmitToCommnet(event) {                                                                  // 1160
+            event.preventDefault();                                                                                    // 1161
+            var thisId = "#" + this._id;                                                                               // 1162
+            var $commentTo = $("#" + this._id).val();                                                                  // 1163
+            if ($commentTo.length === 0 || $commentTo.length >= 100) {                                                 // 1164
+                Session.set("info", { success: "", error: "请将字数限制在1-100字以内" });                                        // 1165
+                scroll(0, 0);                                                                                          // 1166
+                return;                                                                                                // 1167
+            }                                                                                                          //
+            var userName = Posts.findOne({ "_id": this._id }).user.username;                                           // 1169
+            Posts.insert({                                                                                             // 1170
+                user: _meteor.Meteor.user(),                                                                           // 1171
+                post: $commentTo,                                                                                      // 1172
+                "super": this["super"],                                                                                // 1173
+                to: userName,                                                                                          // 1174
+                time: new Date() }, function (err) {                                                                   // 1175
+                if (err) {                                                                                             // 1177
+                    Session.set("info", { success: "", error: "回复评论失败" });                                             // 1178
+                } else {                                                                                               //
+                    Session.set("info", { success: "回复评论成功", error: "" });                                             // 1180
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1181
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 20, totalScore: 20 } }, false, true);
+                    $(thisId).val("");                                                                                 // 1187
+                }                                                                                                      //
+            });                                                                                                        //
+            SystemInfo.update({ "_id": "1" }, { $inc: { "totalPost": 1 } });                                           // 1191
+            $(".commnetP").css("display", "none");                                                                     // 1192
+        }                                                                                                              //
+                                                                                                                       //
+        return clickCommnetSubmitToCommnet;                                                                            //
+    }(),                                                                                                               //
+    'click #displayCommnetButton': function () {                                                                       // 1194
+        function clickDisplayCommnetButton(event) {                                                                    // 1194
+            event.preventDefault();                                                                                    // 1195
+            var thisId = "#" + "p" + this._id;                                                                         // 1196
+            $(".commnetP").css("display", "none");                                                                     // 1197
+            $(thisId).css("display", "block");                                                                         // 1198
+        }                                                                                                              //
+                                                                                                                       //
+        return clickDisplayCommnetButton;                                                                              //
+    }(),                                                                                                               //
+    'click #toViewOther': function () {                                                                                // 1200
+        function clickToViewOther(event) {                                                                             // 1200
+            //event.preventDefault();                                                                                  //
+            localStorage.setItem("targetUserId", this.user._id);                                                       // 1202
+            console.log(_meteor.Meteor.userId());                                                                      // 1203
+            console.log(targetUserId);                                                                                 // 1204
+        }                                                                                                              //
+                                                                                                                       //
+        return clickToViewOther;                                                                                       //
+    }(),                                                                                                               //
+    'click #addFriend': function () {                                                                                  // 1206
+        function clickAddFriend(event) {                                                                               // 1206
+            event.preventDefault();                                                                                    // 1207
+            var $friendId = this.user._id;                                                                             // 1208
+            if (UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                     // 1209
+                Session.set("info", { success: "", error: "错误：此好友已经存在" });                                             // 1210
+                scroll(0, 0);                                                                                          // 1211
+                return;                                                                                                // 1212
+            }                                                                                                          //
+                                                                                                                       //
+            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 1215
+            UserInfo.update({                                                                                          // 1216
+                "_id": userInfoId                                                                                      // 1217
+            }, {                                                                                                       //
+                $addToSet: { "Friends": $friendId },                                                                   // 1219
+                $inc: { "totalFriend": 1 }                                                                             // 1220
+            }, true, true, function (err) {                                                                            //
+                if (err) {                                                                                             // 1224
+                    Session.set("info", { success: "", error: "添加好友失败" });                                             // 1225
+                } else {                                                                                               //
+                    Session.set("info", { success: "添加成功", error: "" });                                               // 1227
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1228
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 50, totalScore: 50 } }, false, true);
+                }                                                                                                      //
+            });                                                                                                        //
+        }                                                                                                              //
+                                                                                                                       //
+        return clickAddFriend;                                                                                         //
+    }(),                                                                                                               //
+    'click #addCollection': function () {                                                                              // 1238
+        function clickAddCollection(event) {                                                                           // 1238
+            event.preventDefault();                                                                                    // 1239
+            var $PostId = this._id;                                                                                    // 1240
+            if (Posts.findOne({ "_id": $PostId, "collectioners": _meteor.Meteor.userId() })) {                         // 1241
+                Session.set("info", { success: "", error: "错误：你已经此收藏过此新闻" });                                          // 1242
+                scroll(0, 0);                                                                                          // 1243
+                return;                                                                                                // 1244
+            }                                                                                                          //
+            Posts.update({                                                                                             // 1246
+                "_id": this._id                                                                                        // 1247
+            }, {                                                                                                       //
+                $addToSet: { "collectioners": _meteor.Meteor.userId() },                                               // 1249
+                $inc: { "totalCollection": 1, "score": 15 }                                                            // 1250
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 1254
+                    Session.set("info", { success: "", error: "收藏失败" });                                               // 1255
+                } else {                                                                                               //
+                    Session.set("info", { success: "收藏成功", error: "" });                                               // 1257
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1258
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 1259
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": $PostId }).user._id;                                               // 1267
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalCollection: 1 } }, false, true);                     // 1268
+        }                                                                                                              //
+                                                                                                                       //
+        return clickAddCollection;                                                                                     //
+    }(),                                                                                                               //
+    'click #likePost': function () {                                                                                   // 1275
+        function clickLikePost(event) {                                                                                // 1275
+            event.preventDefault();                                                                                    // 1276
+            var thisId = this._id;                                                                                     // 1277
+            if (Posts.findOne({ "_id": this._id, "Likers": _meteor.Meteor.userId() })) {                               // 1278
+                Session.set("info", { success: "", error: "错误：您已经点过赞" });                                              // 1279
+                scroll(0, 0);                                                                                          // 1280
+                return;                                                                                                // 1281
+            }                                                                                                          //
+            Posts.update({                                                                                             // 1283
+                "_id": this._id                                                                                        // 1284
+            }, {                                                                                                       //
+                $addToSet: { "Likers": _meteor.Meteor.userId() },                                                      // 1286
+                $inc: { "like": 1, "score": 10 }                                                                       // 1287
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 1291
+                    Session.set("info", { success: "", error: "点赞失败" });                                               // 1292
+                } else {                                                                                               //
+                    Session.set("info", { success: "点赞成功", error: "" });                                               // 1294
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1295
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 1296
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 1304
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalLike: 1 } }, false, true);                           // 1305
+        }                                                                                                              //
+                                                                                                                       //
+        return clickLikePost;                                                                                          //
+    }(),                                                                                                               //
+    'click #objectPost': function () {                                                                                 // 1311
+        function clickObjectPost(event) {                                                                              // 1311
+            event.preventDefault();                                                                                    // 1312
+            var thisId = this._id;                                                                                     // 1313
+            if (Posts.findOne({ "_id": this._id, "Objecters": _meteor.Meteor.userId() })) {                            // 1314
+                Session.set("info", { success: "", error: "错误：您已经点过异议" });                                             // 1315
+                scroll(0, 0);                                                                                          // 1316
+                return;                                                                                                // 1317
+            }                                                                                                          //
+            Posts.update({                                                                                             // 1319
+                "_id": this._id                                                                                        // 1320
+            }, {                                                                                                       //
+                $addToSet: { "Objecters": _meteor.Meteor.userId() },                                                   // 1322
+                $inc: { "object": 1, "score": -8 }                                                                     // 1323
+            }, false, true, function (err) {                                                                           //
+                if (err) {                                                                                             // 1327
+                    Session.set("info", { success: "", error: "异议无效" });                                               // 1328
+                } else {                                                                                               //
+                    Session.set("info", { success: "反对有效", error: "" });                                               // 1330
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1331
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: 5, totalScore: 5 } }, false, true);   // 1332
+                }                                                                                                      //
+            });                                                                                                        //
+            var userInfoId = Posts.findOne({ "_id": thisId }).user._id;                                                // 1340
+            UserInfo.update({ "_id": userInfoId }, { $inc: { totalObject: 1 } }, false, true);                         // 1341
+        }                                                                                                              //
+                                                                                                                       //
+        return clickObjectPost;                                                                                        //
+    }()                                                                                                                //
+});                                                                                                                    //
+                                                                                                                       //
+Template.friend.events({                                                                                               // 1349
+    'click #deleteFriend': function () {                                                                               // 1350
+        function clickDeleteFriend(event) {                                                                            // 1350
+            event.preventDefault();                                                                                    // 1351
+            var $friendId = this.user._id;                                                                             // 1352
+            if (!UserInfo.findOne({ "user._id": _meteor.Meteor.userId(), "Friends": $friendId })) {                    // 1353
+                Session.set("info", { success: "", error: "错误：此好友不存在" });                                              // 1354
+                scroll(0, 0);                                                                                          // 1355
+                return;                                                                                                // 1356
+            }                                                                                                          //
+            if ($friendId == _meteor.Meteor.userId()) {                                                                // 1358
+                Session.set("info", { success: "", error: "错误：不能删除自己" });                                              // 1359
+                scroll(0, 0);                                                                                          // 1360
+                return;                                                                                                // 1361
+            }                                                                                                          //
+                                                                                                                       //
+            var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                            // 1364
+            UserInfo.update({                                                                                          // 1365
+                "_id": userInfoId                                                                                      // 1366
+            }, {                                                                                                       //
+                $pull: { "Friends": $friendId },                                                                       // 1368
+                $inc: { "totalFriend": -1 }                                                                            // 1369
+            }, true, true, function (err) {                                                                            //
+                if (err) {                                                                                             // 1373
+                    Session.set("info", { success: "", error: "删除好友失败" });                                             // 1374
+                } else {                                                                                               //
+                    Session.set("info", { success: "删除成功", error: "" });                                               // 1376
+                    var userInfoId = UserInfo.findOne({ "user._id": _meteor.Meteor.userId() })._id;                    // 1377
+                    UserInfo.update({ "_id": userInfoId }, { $inc: { todayScore: -50, totalScore: -50 } }, false, true);
+                }                                                                                                      //
+            });                                                                                                        //
+        }                                                                                                              //
+                                                                                                                       //
+        return clickDeleteFriend;                                                                                      //
+    }(),                                                                                                               //
+    'click #toViewOther': function () {                                                                                // 1387
+        function clickToViewOther(event) {                                                                             // 1387
+            //event.preventDefault();                                                                                  //
+            localStorage.setItem("targetUserId", this.user._id);                                                       // 1389
+            console.log(_meteor.Meteor.userId());                                                                      // 1390
+            console.log(targetUserId);                                                                                 // 1391
+        }                                                                                                              //
+                                                                                                                       //
+        return clickToViewOther;                                                                                       //
+    }()                                                                                                                //
+});                                                                                                                    //
+                                                                                                                       //
+//------------------------------- events End ------------------------------                                            //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }]}},{"extensions":[".js",".json",".html",".css"]});
