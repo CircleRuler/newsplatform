@@ -1,0 +1,50 @@
+<template name="collections">
+    <h3 class="text-danger">您收藏的新闻</h3>
+    {{#each collections}}
+        <div class="center singlePost">
+            <div class="">
+                <div class="postTitle">
+                    <h2 class="text-primary span10">{{user.username}} 
+                    <button id="addFriend" class="btn btn-info">加好友</button>
+                    <button id="likePost" class="btn btn-warning">点赞({{like}})</button>  :
+                    </h2>
+                </div>
+            </div>
+            <p class="muted">{{time}}</p>
+            <p class="">{{#markdown}}{{post}}{{/markdown}}</p>
+            {{#if isGetAudio}}
+            {{#each displayAudio this.captureAudioId}}
+            <p><audio controls src="{{this.url}}"></audio></p>
+            {{/each}}
+            {{/if}}
+            {{#if isGetImage}}
+            {{#each displayImage this.captureImageId}}
+            <p><img src="{{this.url}}" alt="" class="thumbnail"></p>
+            {{/each}}
+            {{/if}}
+            {{#if isGetVideo}}
+            {{#each displayVideo this.captureVideoId}}
+            <p><video src="{{this.url}}"></video></p>
+            {{/each}}
+            {{/if}}
+            {{#if currentUser}}
+                <p>
+                    <input type="text" class="span8" id="{{this._id}}">
+                    <button id="commnetSubmit" class="btn btn-success">评论</button>
+                </p>
+            {{/if}}
+            <div >
+            {{#each comments}}
+                <p ><span class="postTitle">{{user.username}} {{#if to}}<span style="color:black;">回复</span>{{/if}} {{to}}</span> :<button id="displayCommnetButton" type="button" class="btn btn-link">{{post}}</button></p>
+                <p style="display:none;" id="p{{this._id}}" class="commnetP">
+                {{#if currentUser}}
+                    <input type="text" class="span8" id="{{this._id}}">
+                    <button id="commnetSubmitToCommnet" class="btn btn-success">评论</button>
+                {{/if}}
+                </p>
+            {{/each}}
+            </div>
+        </div>
+    {{/each}}
+
+</template>

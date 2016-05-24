@@ -9,7 +9,7 @@ Meteor.startup(() => {
     }
 });
 
-Session.setDefault("currentUrl", {index: "active", login: "", reg: "",friend:"",lists:"",self:""});
+Session.setDefault("currentUrl", {index: "active", login: "", reg: "",friend:"",lists:"",self:"",collections:""});
 Session.setDefault("info", {success:"",error:""});
 Posts = new Meteor.Collection("posts");
 SystemInfo = new Meteor.Collection("systemInfo");
@@ -76,7 +76,7 @@ var captureError = function(error) {
 };
 
 if(Meteor.isCordova){
-  
+    
 }
 
 Template.info.helpers({
@@ -139,6 +139,15 @@ Template.self.helpers({
     self(){
         return UserInfo.find({"user._id":Meteor.userId()});
     },
+    posts(){
+        return Posts.find({"super":0,"user._id":Meteor.userId()},{sort: {time: -1}});
+    }
+});
+
+Template.collections.helpers({
+    collections(){
+        return Posts.find({"super":0,"collectioners":Meteor.userId()},{sort: {time: -1}});
+    }
 });
 
 Template.friend.helpers({
@@ -168,33 +177,37 @@ var urlRouter = Backbone.Router.extend({
         "logout": "logout",
         "friend": "friend",
         "lists": "lists",
-        "self": "self"
+        "self": "self",
+        "collections":"collections"
     },
     index: function () {
-        Session.set("currentUrl", {index: "active", login: "", reg: "",friend:"",lists:"",self:""});
+        Session.set("currentUrl", {index: "active", login: "", reg: "",friend:"",lists:"",self:"",collections:""});
     },
     friend: function () {
-        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"active",lists:"",self:""});
+        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"active",lists:"",self:"",collections:""});
     },
     lists: function () {
-        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"",lists:"active",self:""});
+        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"",lists:"active",self:"",collections:""});
     },
     self: function () {
-        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"",lists:"",self:"active"});
+        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"",lists:"",self:"active",collections:""});
+    },
+    collections: function () {
+        Session.set("currentUrl", {index: "", login: "", reg: "",friend:"",lists:"",self:"",collections:"active"});
     },
     login: function () {
         if(Meteor.userId()){
             this.navigate("/",true);
             Session.set("info", {success:"", error: "用户已在线！"});
         }
-        Session.set("currentUrl", {index: "", login:"active", reg: "",friend:"",lists:"",self:""});
+        Session.set("currentUrl", {index: "", login:"active", reg: "",friend:"",lists:"",self:"",collections:""});
     },
     reg: function () {
         if(Meteor.userId()){
             this.navigate("/",true);
             Session.set("info", {success:"", error: "用户已在线！"});
         }
-        Session.set("currentUrl", {index: "", login: "", reg: "active",friend:"",lists:"",self:""});
+        Session.set("currentUrl", {index: "", login: "", reg: "active",friend:"",lists:"",self:"",collections:""});
     },
     logout: function () {
         if(Meteor.userId()){
@@ -221,8 +234,11 @@ Template.reg.events({
         }
         var $username = $("#username").val();
         var $password = $("#password").val();
-        var $useremail = $("#useremail").val();
         var $password_repeat = $("#password-repeat").val();
+        var isAdmin = false;
+        if ($username == "admin"){
+            isAdmin = true;
+        }
         if ($password.length === 0 || $username.length === 0) {
             Session.set("info", {success: "", error:"用户名或者密码不能为空"});
             return;
@@ -233,8 +249,7 @@ Template.reg.events({
         }
         Accounts.createUser({
             username: $username,
-            password: $password,
-            email: $useremail},
+            password: $password},
             function(err){
                 if(err){
                     Session.set("info", {success:"", error:"注册失败"});
@@ -242,7 +257,9 @@ Template.reg.events({
                     Session.set("info", {success:"注册成功", error:""});
                     UserInfo.insert({
                         user:Meteor.user(),
-                        isAdmin:false,
+                        isAdmin:isAdmin,
+                        collections:[],
+                        totalCollection:0,
                         totalScore:0,
                         todayScore:0,
                         totalFriend:1,
@@ -289,16 +306,19 @@ Template.index.events({
     'click #submit':function (event) {
         event.preventDefault();
         var $post = $("#post").val();
-        if ($post.length === 0 || $post.length >= 200) {
-            Session.set("info", {success:"", error:"请将字数限制在1-200字以内"});
+        if ($post.length === 0 || $post.length >= 300) {
+            Session.set("info", {success:"", error:"请将字数限制在1-300字以内"});
             return;
         }
         Posts.insert({
             user: Meteor.user(), 
             post: $post, 
             super:0,
+            to:false,
             like:0,
             Likers:[],
+            totalCollection:0,
+            collectioners:[],
             top:false,
             isGetImage:isGetImage,
             isGetAudio:isGetAudio,
@@ -332,6 +352,7 @@ Template.index.events({
     },
     'click #commnetSubmit':function (event) {
         event.preventDefault();
+        var thisId = "#"+this._id;
         var $comment = $("#"+this._id).val();
         if ($comment.length === 0 || $comment.length >= 100) {
             Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
@@ -342,6 +363,7 @@ Template.index.events({
             user: Meteor.user(), 
             post: $comment, 
             super:this._id,
+            to:false,
             time:new Date()},
             function(err){
                 if(err){
@@ -354,11 +376,51 @@ Template.index.events({
                         {$inc:{todayScore:20,totalScore:20}},
                         false,true
                     );
-                    $("#"+this._id).val("");
+                    $(thisId).val("");
                 }
             }
         );
         SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+    },
+    'click #commnetSubmitToCommnet':function (event) {
+        event.preventDefault();
+        var thisId = "#"+this._id;
+        var $commentTo = $("#"+this._id).val();
+        if ($commentTo.length === 0 || $commentTo.length >= 100) {
+            Session.set("info", {success:"", error:"请将字数限制在1-100字以内"});
+            scroll(0,0);
+            return;
+        }
+        var userName = Posts.findOne({"_id":this._id}).user.username; 
+        Posts.insert({
+            user: Meteor.user(), 
+            post: $commentTo, 
+            super:this.super,
+            to:userName,
+            time:new Date()},
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"回复评论失败"});
+                }else{
+                    Session.set("info", {success:"回复评论成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:20,totalScore:20}},
+                        false,true
+                    );
+                    $(thisId).val("");
+                }
+            }
+        );
+        SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
+        $(".commnetP").css("display","none");
+    },
+    'click #displayCommnetButton':function (event) {
+        event.preventDefault();
+        var thisId = "#"+"p"+this._id;
+        $(".commnetP").css("display","none");
+        $(thisId).css("display","block");
     },
     'click #addFriend':function (event) {
         event.preventDefault();
@@ -391,6 +453,37 @@ Template.index.events({
                 }
             }
         );
+    },
+    'click #addCollection':function (event) {
+        event.preventDefault();
+        var $PostId = this._id;
+        if (Posts.findOne({"_id":$PostId,"collectioners":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：你已经此收藏过此新闻"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"collectioners":Meteor.userId()},
+                $inc:{"totalCollection":1}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"收藏失败"});
+                }else{
+                    Session.set("info", {success:"收藏成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        
     },
     'click #likePost':function (event) {
         event.preventDefault();
@@ -483,4 +576,68 @@ Template.index.events({
         event.preventDefault();
         navigator.device.capture.captureVideo(captureVideoSuccess, captureError, {limit:1}); 
     }
-})
+});
+
+Template.collections.events({
+    'click #addFriend':function (event) {
+        event.preventDefault();
+        var $friendId = this.user._id;
+        if (UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
+            Session.set("info", {success:"", error:"错误：此好友已经存在"});
+            scroll(0,0);
+            return;
+        }
+        
+        var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+        UserInfo.update({
+                "_id":userInfoId
+            },{
+                $addToSet:{"Friends":$friendId},
+                $inc:{"totalFriend":1}
+            },
+            true,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"添加好友失败"});
+                }else{
+                    Session.set("info", {success:"添加成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:50,totalScore:50}},
+                        false,true
+                    );
+                }
+            }
+        );
+    },
+    'click #likePost':function (event) {
+        event.preventDefault();
+        if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过赞"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Likers":Meteor.userId()},
+                $inc:{"like":1}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"点赞失败"});
+                }else{
+                    Session.set("info", {success:"点赞成功", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+    }
+});

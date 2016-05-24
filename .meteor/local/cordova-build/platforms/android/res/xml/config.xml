@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.meteor.example.newsplatform" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
-    <name>newsplatform</name>
-    <description>New Meteor Mobile App</description>
     <preference name="webView" value="org.crosswalk.engine.XWalkWebViewEngine" />
     <preference default="17+" name="xwalkVersion" />
     <preference default="--disable-pull-to-refresh-effect" name="xwalkCommandLine" />
