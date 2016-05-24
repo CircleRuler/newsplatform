@@ -6,7 +6,7 @@ textarea{
     resize: none;
 }
 .singlePost{
-    border-top:1px #ccc solid;
+    border-top:1px #ddd solid;
 }
 .postTitle{
     display: inline-block;
@@ -49,4 +49,48 @@ textarea{
   body {
     padding-top: 0;
   }
+}
+div.x-goto-top {
+  display: none;
+  opacity: 0.9;
+  z-index: 999999;
+  position: fixed;
+  bottom: 5%;
+  right: 2%;
+  margin-left: 40px;
+  width: 34px;
+  height: 38px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  border: 1px solid #0593d3;
+}
+div.x-goto-top:hover {
+  background-color: #fafafa;
+  border-color: #0482ba;
+}
+div.x-goto-top:hover div.x-arrow {
+  border-bottom-color: #0482ba;
+}
+div.x-goto-top:hover div.x-stick {
+  background-color: #0482ba;
+}
+div.x-goto-top div.x-arrow {
+  position: absolute;
+  left: 8px;
+  top: -1px;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-bottom-color: #0593d3;
+}
+div.x-goto-top div.x-stick {
+  position: absolute;
+  left: 13px;
+  top: 15px;
+  width: 8px;
+  height: 14px;
+  display: block;
+  border-radius: 1px;
+  background-color: #0593d3;
 }

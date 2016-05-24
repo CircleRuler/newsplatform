@@ -2,15 +2,16 @@ import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
   // code to run on server at startup
-  document.addEventListener("deviceready", onDeviceReady, false);
+    document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
         console.log(navigator.device.capture);
-        //Session.set("info", {success:"navigator success hahaha", error: ""});
     }
+
 });
 
 Session.setDefault("currentUrl", {index: "active", login: "", reg: "",friend:"",lists:"",self:"",collections:""});
 Session.setDefault("info", {success:"",error:""});
+
 Posts = new Meteor.Collection("posts");
 SystemInfo = new Meteor.Collection("systemInfo");
 UserInfo = new Meteor.Collection("userInfo");
@@ -18,9 +19,11 @@ UserInfo = new Meteor.Collection("userInfo");
 var isGetImage = false;
 var isGetAudio = false;
 var isGetVideo = false;
+var isGetLocalImage = false;
 var captureImageId = false;
 var captureAudioId = false;
 var captureVideoId = false;
+var locallImageId = false;
 
 Images = new FS.Collection("images", {
   stores: [new FS.Store.FileSystem("images", {path: "~/uploadsImage"})]
@@ -32,6 +35,10 @@ Audios = new FS.Collection("audios", {
 
 Videos = new FS.Collection("videos", {
   stores: [new FS.Store.FileSystem("videos", {path: "~/uploadsVideo"})]
+});
+
+LocalImages = new FS.Collection("localimages", {
+  stores: [new FS.Store.FileSystem("localimages", {path: "~/uploadsLocalImage"})]
 });
 
 var captureImageSuccess = function(mediaFiles) {
@@ -78,7 +85,7 @@ var captureError = function(error) {
 if(Meteor.isCordova){
     
 }
-
+//---------------------------------- Helpers  start --------------------------------
 Template.info.helpers({
     info(){
         return Session.get("info");
@@ -130,17 +137,32 @@ Template.index.helpers({
 });
 
 Template.lists.helpers({
+    goodNews(){
+        return Posts.find({"super":0},{sort: {score: -1},limit: 10});
+    },
     lists(){
-        return UserInfo.find({},{sort: {totalScore: -1}})
+        return UserInfo.find({},{sort: {totalScore: -1},limit: 10});
     },
 });
 
 Template.self.helpers({
     self(){
-        return UserInfo.find({"user._id":Meteor.userId()});
+        if(!localStorage.getItem("targetUserId")){
+            localStorage.setItem("targetUserId",Meteor.userId());
+        }
+        return UserInfo.find({"user._id":localStorage.getItem("targetUserId")});;
+    },
+    isFriend(){
+        if (!UserInfo.findOne({"user._id":Meteor.userId(),"Friends":localStorage.getItem("targetUserId")})){
+            return true;
+        }else{
+            return false;
+        }
     },
     posts(){
-        return Posts.find({"super":0,"user._id":Meteor.userId()},{sort: {time: -1}});
+        var otherPost = Posts.find({"super":0,"user._id":localStorage.getItem("targetUserId")},{sort: {time: -1}});
+        localStorage.setItem("targetUserId",Meteor.userId());
+        return otherPost;
     }
 });
 
@@ -151,19 +173,13 @@ Template.collections.helpers({
 });
 
 Template.friend.helpers({
-    friendRank(){
-        var Afriend = UserInfo.findOne({"user._id":Meteor.userId()}).Friends;
-        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{rank:1}},{limit: 10 });
-    },
     friendToday(){
         var Afriend = UserInfo.findOne({"user._id":Meteor.userId()}).Friends;
-        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{todayScore:-1}},{limit: 10 });
+        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{time:-1}});
     },
-    friendTotal(){
-        var Afriend = UserInfo.findOne({"user._id":Meteor.userId()}).Friends;
-        return UserInfo.find({"user._id":{$in : Afriend}},{sort:{totalScore:-1}},{limit: 10 });
-    }
 });
+
+//-------------------------------- Helpers End ---------------------------------------
 
 Meteor.startup(function () {
     Backbone.history.start({pushState: true});
@@ -226,6 +242,8 @@ var urlRouter = Backbone.Router.extend({
 });
 Router = new urlRouter;
 
+//------------------------------- events start ------------------------------
+
 Template.reg.events({
     'click #submit': function (event) {
         event.preventDefault();
@@ -239,10 +257,15 @@ Template.reg.events({
         if ($username == "admin"){
             isAdmin = true;
         }
+        if ($username.length >= 11) {
+            Session.set("info", {success: "", error:"用户名长度最大为10"});
+            return;
+        }
         if ($password.length === 0 || $username.length === 0) {
             Session.set("info", {success: "", error:"用户名或者密码不能为空"});
             return;
         }
+        
         if ($password !== $password_repeat) {
             Session.set("info", {success: "",error:"两次输入密码不一致"});
             return;
@@ -252,26 +275,30 @@ Template.reg.events({
             password: $password},
             function(err){
                 if(err){
-                    Session.set("info", {success:"", error:"注册失败"});
+                    Session.set("info", {success:"", error:"注册失败,用户名已存在或其他未知原因"});
                 }else{
                     Session.set("info", {success:"注册成功", error:""});
                     UserInfo.insert({
                         user:Meteor.user(),
                         isAdmin:isAdmin,
                         collections:[],
-                        totalCollection:0,
                         totalScore:0,
                         todayScore:0,
+                        totalLike:0,
+                        totalObject:0,
+                        totalCollection:0,
+                        totalPost:0,
                         totalFriend:1,
                         Friends:[Meteor.userId()],
                         rank:SystemInfo.findOne({"_id":"1"},{totalUser:true})["totalUser"],
                         time:new Date()
                     });
+                    SystemInfo.update({"_id":"1"},{$inc: {"totalUser":1}});
+                    SystemInfo.update({"_id":"1"},{$inc: {"totalLogin":1}});
                 }
             }
         );
-        SystemInfo.update({"_id":"1"},{$inc: {"totalUser":1}});
-        SystemInfo.update({"_id":"1"},{$inc: {"totalLogin":1}});
+        
     }
 });
 
@@ -317,9 +344,12 @@ Template.index.events({
             to:false,
             like:0,
             Likers:[],
+            object:0,
+            Objecters:[],
             totalCollection:0,
             collectioners:[],
             top:false,
+            score:0,
             isGetImage:isGetImage,
             isGetAudio:isGetAudio,
             isGetVideo:isGetVideo,
@@ -348,6 +378,11 @@ Template.index.events({
         captureImageId = false;
         captureAudioId = false;
         captureVideoId = false;
+        UserInfo.update(
+            {"_id":Meteor.userId()},
+            {$inc:{"totalPost":1}},
+            false,true
+        );
         SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
     },
     'click #commnetSubmit':function (event) {
@@ -380,6 +415,7 @@ Template.index.events({
                 }
             }
         );
+        
         SystemInfo.update({"_id":"1"},{$inc: {"totalPost":1}});
     },
     'click #commnetSubmitToCommnet':function (event) {
@@ -421,6 +457,12 @@ Template.index.events({
         var thisId = "#"+"p"+this._id;
         $(".commnetP").css("display","none");
         $(thisId).css("display","block");
+    },
+    'click #toViewOther':function (event) {
+        //event.preventDefault();
+        localStorage.setItem("targetUserId",this.user._id);
+        console.log(Meteor.userId());
+        console.log(targetUserId);
     },
     'click #addFriend':function (event) {
         event.preventDefault();
@@ -466,7 +508,7 @@ Template.index.events({
                 "_id":this._id
             },{
                 $addToSet:{"collectioners":Meteor.userId()},
-                $inc:{"totalCollection":1}
+                $inc:{"totalCollection":1,"score":15}
             },
             false,true,
             function(err){
@@ -483,10 +525,17 @@ Template.index.events({
                 }
             }
         );
+        var userInfoId = Posts.findOne({"_id":$PostId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalCollection:1}},
+            false,true
+        );
         
     },
     'click #likePost':function (event) {
         event.preventDefault();
+        var thisId = this._id;
         if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
             Session.set("info", {success:"", error:"错误：您已经点过赞"});
             scroll(0,0);
@@ -496,7 +545,7 @@ Template.index.events({
                 "_id":this._id
             },{
                 $addToSet:{"Likers":Meteor.userId()},
-                $inc:{"like":1}
+                $inc:{"like":1,"score":10}
             },
             false,true,
             function(err){
@@ -512,6 +561,48 @@ Template.index.events({
                     );
                 }
             }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalLike:1}},
+            false,true
+        );
+    },
+    'click #objectPost':function (event) {
+        event.preventDefault();
+        var thisId = this._id;
+        if (Posts.findOne({"_id":this._id,"Objecters":Meteor.userId()})) {
+            Session.set("info", {success:"", error:"错误：您已经点过异议"});
+            scroll(0,0);
+            return;
+        }
+        Posts.update({
+                "_id":this._id
+            },{
+                $addToSet:{"Objecters":Meteor.userId()},
+                $inc:{"object":1,"score":-8}
+            },
+            false,true,
+            function(err){
+                if(err){
+                    Session.set("info", {success:"", error:"异议无效"});
+                }else{
+                    Session.set("info", {success:"反对有效", error:""});
+                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
+                    UserInfo.update(
+                        {"_id":userInfoId},
+                        {$inc:{todayScore:5,totalScore:5}},
+                        false,true
+                    );
+                }
+            }
+        );
+        var userInfoId = Posts.findOne({"_id":thisId}).user._id;
+        UserInfo.update(
+            {"_id":userInfoId},
+            {$inc:{totalObject:1}},
+            false,true
         );
     },
     'click #topPost':function (event) {
@@ -579,11 +670,19 @@ Template.index.events({
 });
 
 Template.collections.events({
-    'click #addFriend':function (event) {
+    
+});
+Template.friend.events({
+    'click #deleteFriend':function (event) {
         event.preventDefault();
         var $friendId = this.user._id;
-        if (UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
-            Session.set("info", {success:"", error:"错误：此好友已经存在"});
+        if (!UserInfo.findOne({"user._id":Meteor.userId(),"Friends":$friendId})) {
+            Session.set("info", {success:"", error:"错误：此好友不存在"});
+            scroll(0,0);
+            return;
+        }
+        if ($friendId == Meteor.userId()) {
+            Session.set("info", {success:"", error:"错误：不能删除自己"});
             scroll(0,0);
             return;
         }
@@ -592,52 +691,31 @@ Template.collections.events({
         UserInfo.update({
                 "_id":userInfoId
             },{
-                $addToSet:{"Friends":$friendId},
-                $inc:{"totalFriend":1}
+                $pull:{"Friends":$friendId},
+                $inc:{"totalFriend":-1}
             },
             true,true,
             function(err){
                 if(err){
-                    Session.set("info", {success:"", error:"添加好友失败"});
+                    Session.set("info", {success:"", error:"删除好友失败"});
                 }else{
-                    Session.set("info", {success:"添加成功", error:""});
+                    Session.set("info", {success:"删除成功", error:""});
                     var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
                     UserInfo.update(
                         {"_id":userInfoId},
-                        {$inc:{todayScore:50,totalScore:50}},
+                        {$inc:{todayScore:-50,totalScore:-50}},
                         false,true
                     );
                 }
             }
         );
     },
-    'click #likePost':function (event) {
-        event.preventDefault();
-        if (Posts.findOne({"_id":this._id,"Likers":Meteor.userId()})) {
-            Session.set("info", {success:"", error:"错误：您已经点过赞"});
-            scroll(0,0);
-            return;
-        }
-        Posts.update({
-                "_id":this._id
-            },{
-                $addToSet:{"Likers":Meteor.userId()},
-                $inc:{"like":1}
-            },
-            false,true,
-            function(err){
-                if(err){
-                    Session.set("info", {success:"", error:"点赞失败"});
-                }else{
-                    Session.set("info", {success:"点赞成功", error:""});
-                    var userInfoId = UserInfo.findOne({"user._id":Meteor.userId()})._id;
-                    UserInfo.update(
-                        {"_id":userInfoId},
-                        {$inc:{todayScore:5,totalScore:5}},
-                        false,true
-                    );
-                }
-            }
-        );
+    'click #toViewOther':function (event) {
+        //event.preventDefault();
+        localStorage.setItem("targetUserId",this.user._id);
+        console.log(Meteor.userId());
+        console.log(targetUserId);
     }
 });
+
+//------------------------------- events End ------------------------------

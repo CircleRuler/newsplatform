@@ -932,11 +932,11 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/app/app.js?hash=cb39c43937ccde57e77f90857dc9e342af546246",
+      "url": "/app/app.js?hash=d5011ac945d77f2bfa936348a6b22c54856fdfe9",
       "sourceMap": "app/app.js.map",
-      "sourceMapUrl": "/app/cb39c43937ccde57e77f90857dc9e342af546246.map",
-      "size": 209487,
-      "hash": "cb39c43937ccde57e77f90857dc9e342af546246"
+      "sourceMapUrl": "/app/d5011ac945d77f2bfa936348a6b22c54856fdfe9.map",
+      "size": 239583,
+      "hash": "d5011ac945d77f2bfa936348a6b22c54856fdfe9"
     },
     {
       "path": "packages/service-configuration.js",
@@ -954,11 +954,11 @@
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/merged-stylesheets.css?hash=769f76b2f6f11b6ab0c7931966f32cd5461e56a8",
+      "url": "/merged-stylesheets.css?hash=26ae0b33cdde5cc6ff0e429d5306e5ac9b72814d",
       "sourceMap": "merged-stylesheets.css.map",
-      "sourceMapUrl": "/769f76b2f6f11b6ab0c7931966f32cd5461e56a8.map",
-      "size": 150062,
-      "hash": "769f76b2f6f11b6ab0c7931966f32cd5461e56a8"
+      "sourceMapUrl": "/26ae0b33cdde5cc6ff0e429d5306e5ac9b72814d.map",
+      "size": 150898,
+      "hash": "26ae0b33cdde5cc6ff0e429d5306e5ac9b72814d"
     },
     {
       "path": "packages/bootstrap/img/glyphicons-halflings.png",

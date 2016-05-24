@@ -1,20 +1,24 @@
 <template name="self">
     {{#each self}}
         {{#if isAdmin}}
-            <h1 class="text-danger">尊贵的管理员账户！</h1>
+            <h1 class="text-danger">管理员账户{{user.username}}！</h1>
         {{else}}
-            <h4 class="text-info">普通用户。</h4>
+            <h4 class="text-info">普通用户{{user.username}}。{{#if isFriend}}<button id="addFriend" class="btn btn-info">加好友</button>{{/if}}</h4>
         {{/if}}
         <dl class="dl-horizontal well">
             <dt>用户名</dt><dd>{{user.username}}</dd>
             <dt>总积分</dt><dd>{{totalScore}}</dd>
             <dt>今日积分</dt><dd>{{todayScore}}</dd>
             <dt>好友总数</dt><dd>{{totalFriend}}</dd>
-            <dt>排名</dt><dd>{{rank}}</dd>
+            <dt>被赞总数</dt><dd>{{totalLike}}</dd>
+            <dt>被异议总数</dt><dd>{{totalObject}}</dd>
+            <dt>被收藏总数</dt><dd>{{totalCollection}}</dd>
+            <dt>发布新闻总数</dt><dd>{{totalPost}}</dd>
+            <dt>注册顺位</dt><dd>{{rank}}</dd>
             <dt>注册时间</dt><dd>{{time}}</dd>
         </dl>
     {{/each}}
-    <h3 class="text-danger">您发布过的新闻</h3>
+    <h3 class="text-danger">发布过的新闻</h3>
     {{#each posts}}
         <div class="center singlePost">
             <div class="">

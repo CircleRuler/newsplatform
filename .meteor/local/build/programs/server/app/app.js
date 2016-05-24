@@ -179,9 +179,9 @@ function callFunction() {                                                  // 90
                                                                            //
 var _meteor = require('meteor/meteor');                                    // 1
                                                                            //
-_meteor.Meteor.startup(function () {                                       // 3
+_meteor.Meteor.startup(function () {                                       // 4
   // code to run on server at startup                                      //
-                                                                           //
+  UserInfo.update({}, { $set: { todayScore: 0 } }, false, true);           // 6
 });                                                                        //
 /////////////////////////////////////////////////////////////////////////////
 
